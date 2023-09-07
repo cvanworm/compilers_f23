@@ -31,16 +31,12 @@ int main(){
 
 // Uncomment the lines below
 // to take input from file
-// FILE *fp;
-// char filename[50];
-// printf("Enter the filename: \n");
-// scanf("%s",filename);
-// fp = fopen(filename,"r");
-// yyin = fp;
+FILE *fp;
+fp = fopen("file.txt","r");
+yyin = fp;
 
 yylex();
 printf("\nNumber of Capital letters "
 	"in the given input - %d\n", count);
-
 return 0;
 }
