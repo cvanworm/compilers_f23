@@ -2,7 +2,8 @@
 which can be accessed inside yylex()
 and main() ***/
 %{
-int count = 0;
+int cap_count = 0;
+int int_count = 0;
 %}
 
 /*** Rule Section has three rules, first rule
@@ -10,10 +11,16 @@ matches with capital letters, second rule
 matches with any character except newline and
 third rule does not take input after the enter***/
 %%
-[A-Z] {printf("%s capital letter\n", yytext);
-	count++;}
-.	 {printf("%s not a capital letter\n", yytext);}
-\n {return 0;}
+[A-Za-z]+ {printf("%s word\n", yytext);
+	cap_count++;}
+
+[0-9] {printf("%s integer\n", yytext);
+      int_count++;}
+
+.	 {printf("%s not a word\n", yytext);}
+
+\n    {return 0;}
+
 %%
 
 /*** Code Section prints the number of
@@ -36,7 +43,10 @@ fp = fopen("file.txt","r");
 yyin = fp;
 
 yylex();
-printf("\nNumber of Capital letters "
-	"in the given input - %d\n", count);
+printf("\nNumber of words "
+	"in the given input - %d\n", cap_count);
+
+printf("\nNumber of Integers"
+	"in the given input - %d\n", int_count);
 return 0;
 }
