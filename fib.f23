@@ -1,0 +1,31 @@
+// ----------------------------------------------------------------------------
+// This code prints a specified number of digits in the fibonacci sequence
+//
+// Written by: Alicia Thoney
+// Inspired by: https://www.geeksforgeeks.org/python-program-to-print-the-fibonacci-sequence/
+//
+// ----------------------------------------------------------------------------
+program $fib_generator
+{
+    function
+    integer main( 
+            )
+    {
+        integer n := 10;    // Number of digits to print
+        integer num1 := 0;
+        integer num2 := 1;
+        integer next_num := num2;
+        integer count := 1;
+
+        while ( count < n )
+        {
+            print_integer( next_num );
+            num1 := num2;
+            num2 := next_num;
+            next_num := num1 + num2;
+            count++;
+        }
+
+        return 0;
+    } // of main
+} // of $fib_generator
