@@ -1,1 +1,1 @@
-My name is calvin. I am 21 years OLD.
+string hello := "hello"

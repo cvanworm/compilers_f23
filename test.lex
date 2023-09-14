@@ -2,24 +2,43 @@
 which can be accessed inside yylex()
 and main() ***/
 %{
-int cap_count = 0;
-int int_count = 0;
+#include <ctype.h>
 %}
+Blank [ |\t]+
+Digit [0-9]
+Letter [A-Z]|[a-z]
+Comment \/\/.*\n 
+Keyword do|double|else|exit|function|if|integer|print_double|print_integer|print_string|procedure|read_double|read_integer|read_string|return|string|then|while
+Assign :=
+Sconstant \"[^\"]*\"
+
 
 /*** Rule Section has three rules, first rule
 matches with capital letters, second rule
 matches with any character except newline and
 third rule does not take input after the enter***/
 %%
-[A-Za-z]+ {printf("%s word\n", yytext);
-	cap_count++;}
+{Comment} {printf("COMMENT: %s\n", yytext);}
 
-[0-9] {printf("%s integer\n", yytext);
-      int_count++;}
+{Keyword} {int j = 0;
+	char tmp[strlen(yytext)];
+	while (yytext[j]) {
+        tmp[j]=toupper(yytext[j]);
+        j++;
+    }
+	printf("K_%s: %s\n", tmp, yytext);}
 
-.	 {printf("%s not a word\n", yytext);}
+{Assign} {printf("ASSIGN_%s", yytext);}
 
-\n    {return 0;}
+({Letter}|_|$)+({Letter}|{Digit}|_|$)* {printf("IDENTIFIER %s\n", yytext);}
+
+{Sconstant} {printf("SCONSTANT %s\n", yytext);}
+
+{Digit} {printf("%s digit\n", yytext);}
+
+{Blank} {}
+
+\n   {printf("newline\n");}
 
 %%
 
@@ -43,10 +62,6 @@ fp = fopen("file.txt","r");
 yyin = fp;
 
 yylex();
-printf("\nNumber of words "
-	"in the given input - %d\n", cap_count);
 
-printf("\nNumber of Integers"
-	"in the given input - %d\n", int_count);
 return 0;
 }
