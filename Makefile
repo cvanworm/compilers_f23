@@ -9,7 +9,7 @@ clex: lex.yy.c
 	$(CC) -g -o clex lex.yy.c
 
 run: clex
-	./clex
+	./clex > results.txt
 
 clean: 
 	rm clex lex.yy.c
