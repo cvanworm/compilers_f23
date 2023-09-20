@@ -1,0 +1,90 @@
+
+COMMENT: // This code prints a specified number of digits in the fibonacci sequence
+
+COMMENT: //
+
+COMMENT: // Written by: Alicia Thoney
+
+COMMENT: // Inspired by: https://www.geeksforgeeks.org/python-program-to-print-the-fibonacci-sequence/
+
+COMMENT: //
+
+COMMENT: // ----------------------------------------------------------------------------
+
+K_PROGRAM: program
+IDENTIFIER: $fib_generator
+LCURLY: {
+K_FUNCTION: function
+K_INTEGER: integer
+IDENTIFIER: main
+LPAREN: (
+RPAREN: )
+LCURLY: {
+K_INTEGER: integer
+IDENTIFIER: n
+ASSIGN: :=
+ICONSTANT: 10
+SEMI: ;
+COMMENT: // Number of digits to print
+
+K_INTEGER: integer
+IDENTIFIER: num1
+ASSIGN: :=
+ICONSTANT: 0
+SEMI: ;
+K_INTEGER: integer
+IDENTIFIER: num2
+ASSIGN: :=
+ICONSTANT: 1
+SEMI: ;
+K_INTEGER: integer
+IDENTIFIER: next_num
+ASSIGN: :=
+IDENTIFIER: num2
+SEMI: ;
+K_INTEGER: integer
+IDENTIFIER: count
+ASSIGN: :=
+ICONSTANT: 1
+SEMI: ;
+K_WHILE: while
+LPAREN: (
+IDENTIFIER: count
+LT: <
+IDENTIFIER: n
+RPAREN: )
+LCURLY: {
+K_PRINT_INTEGER: print_integer
+LPAREN: (
+IDENTIFIER: next_num
+RPAREN: )
+SEMI: ;
+IDENTIFIER: num1
+ASSIGN: :=
+IDENTIFIER: num2
+SEMI: ;
+IDENTIFIER: num2
+ASSIGN: :=
+IDENTIFIER: next_num
+SEMI: ;
+IDENTIFIER: next_num
+ASSIGN: :=
+IDENTIFIER: num1
+PLUS: +
+IDENTIFIER: num2
+SEMI: ;
+IDENTIFIER: count
+INCREMENT: ++
+SEMI: ;
+RCURLY: }
+K_RETURN: return
+ICONSTANT: 0
+SEMI: ;
+RCURLY: }
+COMMENT: // of main
+
+RCURLY: }
+DIVIDE: /
+DIVIDE: /
+IDENTIFIER: of
+IDENTIFIER: $fib_generator
