@@ -1,4 +1,5 @@
 CC = gcc
+code = fib.f23
 
 all: lex clex run
 
@@ -9,7 +10,7 @@ clex: lex.yy.c
 	$(CC) -g -o clex lex.yy.c
 
 run: clex
-	./clex > results.txt
+	./clex < $(code) > results.txt
 
 clean: 
 	rm clex lex.yy.c results.txt

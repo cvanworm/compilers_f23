@@ -9,7 +9,7 @@ Blank [ |\t]+
 Digit [0-9]
 Int {Digit}+
 Float -?(([0-9]+)|(([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)
-Letter [A-Z]|[a-z]
+Letter [A-Za-z]
 Comment \/\/.*
 Keyword do|double|else|exit|function|if|integer|print_double|print_integer|print_string|procedure|program|read_double|read_integer|read_string|return|string|then|while
 Assignment :=|\+=|-=|\*=|\/=|%=
@@ -17,7 +17,9 @@ Bool &&|\|\||==|>=|>|<=|<|!=|!
 Math \/|-|--|%|\*|\+|\+\+
 Symbol ,|\[|\{|\(|\.|\)|\}|\]|;
 Sconstant \"[^\"]*\"
-Identifier ({Letter}|_|$)+({Letter}|{Digit}|_|$)*
+Identifier ({Letter}|\$|_)({Letter}|\$|_|{Digit}){0,31}
+IdError {Digit}+({Letter}|\$|_)+|({Letter}|{Digit}|\$|_){33,}
+
 
 
 
@@ -27,7 +29,9 @@ matches with any character except newline and
 third rule does not take input after the enter***/
 %%
 
-{Comment} {printf("COMMENT: %s\n", yytext);}
+{IdError} {printf("token(IDERROR, %s)\n", yytext);}
+
+{Comment} {printf("token(COMMENT, %s)\n", yytext);}
 
 {Keyword} {int j = 0;
 	char *tmp = (char *) malloc(strlen(yytext));
@@ -35,120 +39,120 @@ third rule does not take input after the enter***/
         tmp[j]=toupper(yytext[j]);
         j++;
     }
-	printf("K_%s: %s\n", tmp, yytext);}
+	printf("token(K_%s, %s)\n", tmp, yytext);}
 
 {Assignment} {
 	if (strcmp(yytext,":=") == 0){
-		printf("ASSIGN: %s\n", yytext);
+		printf("token(ASSIGN, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"+=") == 0){
-		printf("ASSIGN_PLUS: %s\n", yytext);
+		printf("token(ASSIGN_PLUS, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"-=") == 0){
-		printf("ASSIGN_MINUS: %s\n", yytext);
+		printf("token(ASSIGN_MINUS, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"*=") == 0){
-		printf("ASSIGN_MULTIPLY: %s\n", yytext);
+		printf("token(ASSIGN_MULTIPLY, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"/=") == 0){
-		printf("ASSIGN_DIVIDE: %s\n", yytext);
+		printf("token(ASSIGN_DIVIDE, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"%=") == 0){
-		printf("ASSIGN_MOD: %s\n", yytext);
+		printf("token(ASSIGN_MOD, %s)\n", yytext);
 	}
 }
 
 {Bool} {
     if(strcmp(yytext,"&&") == 0){
-        printf("DAND: %s\n", yytext);
+        printf("token(DAND, %s)\n", yytext);
     }
     else if(strcmp(yytext,"||") == 0){
-        printf("DOR: %s\n", yytext);
+        printf("token(DOR, %s)\n", yytext);
     }
     else if(strcmp(yytext,"==") == 0){
-        printf("DEQ: %s\n", yytext);
+        printf("token(DEQ, %s)\n", yytext);
     }
     else if(strcmp(yytext,">=") == 0){
-        printf("GEQ: %s\n", yytext);
+        printf("token(GEQ, %s)\n", yytext);
     }
     else if(strcmp(yytext,">") == 0){
-        printf("GT: %s\n", yytext);
+        printf("token(GT, %s)\n", yytext);
     }
     else if(strcmp(yytext,"<=") == 0){
-        printf("LEQ: %s\n", yytext);
+        printf("token(LEQ, %s)\n", yytext);
     }
     else if(strcmp(yytext,"<") == 0){
-        printf("LT: %s\n", yytext);
+        printf("token(LT, %s)\n", yytext);
     }
     else if(strcmp(yytext,"!=") == 0){
-        printf("NE: %s\n", yytext);
+        printf("token(NE, %s)\n", yytext);
     }
     else if(strcmp(yytext,"!") == 0){
-        printf("NOT: %s\n", yytext);
+        printf("token(NOT, %s)\n", yytext);
     }
 }
 
 {Math} {
 	if (strcmp(yytext,"/") == 0){
-		printf("DIVIDE: %s\n", yytext);
+		printf("token(DIVIDE, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"-") == 0){
-		printf("MINUS: %s\n", yytext);
+		printf("token(MINUS, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"--") == 0){
-		printf("DECREMENT: %s\n", yytext);
+		printf("token(DECREMENT, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"%") == 0){
-		printf("MOD: %s\n", yytext);
+		printf("token(MOD, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"*") == 0){
-		printf("MULTIPLY: %s\n", yytext);
+		printf("token(MULTIPLY, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"+") == 0){
-		printf("PLUS: %s\n", yytext);
+		printf("token(PLUS, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"++") == 0){
-		printf("INCREMENT: %s\n", yytext);
+		printf("token(INCREMENT, %s)\n", yytext);
 	}
 }
 
 {Symbol} {
 	if (strcmp(yytext,",") == 0){
-		printf("COMMA: %s\n", yytext);
+		printf("token(COMMA, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"[") == 0){
-		printf("LBRACKET: %s\n", yytext);
+		printf("token(LBRACKET, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"{") == 0){
-		printf("LCURLY: %s\n", yytext);
+		printf("token(LCURLY, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"(") == 0){
-		printf("LPAREN: %s\n", yytext);
+		printf("token(LPAREN, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,".") == 0){
-		printf("PERIOD: %s\n", yytext);
+		printf("token(PERIOD, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"]") == 0){
-		printf("RBRACKET: %s\n", yytext);
+		printf("token(RBRACKET, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,"}") == 0){
-		printf("RCURLY: %s\n", yytext);
+		printf("token(RCURLY, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,")") == 0){
-		printf("RPAREN: %s\n", yytext);
+		printf("token(RPAREN, %s)\n", yytext);
 	}
 	else if (strcmp(yytext,";") == 0){
-		printf("SEMI: %s\n", yytext);
+		printf("token(SEMI, %s)\n", yytext);
 	}
 }
 
-{Identifier} {printf("IDENTIFIER: %s\n", yytext);}
+{Identifier} {printf("token(IDENTIFIER, %s)\n", yytext);}
 
-{Int} {printf("ICONSTANT: %s\n", yytext);}
+{Int} {printf("token(ICONSTANT, %s)\n", yytext);}
 
-{Float} {printf("DCONSTANT: %s\n", yytext);}
+{Float} {printf("token(DCONSTANT, %s)\n", yytext);}
 
-{Sconstant} {printf("SCONSTANT: %s\n", yytext);}
+{Sconstant} {printf("token(SCONSTANT, %s)\n", yytext);}
 
 {Blank} {}
 
@@ -171,9 +175,9 @@ int main(){
 
 	// Uncomment the lines below
 	// to take input from file
-	FILE *ifp;
-	ifp = fopen("file.txt","r");
-	yyin = ifp;
+	// FILE *ifp;
+	// ifp = fopen("file.txt","r");
+	// yyin = ifp;
 
 
 	yylex();
