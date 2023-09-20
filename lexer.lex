@@ -163,7 +163,7 @@ third rule does not take input after the enter***/
 /*** Code Section prints the number of
 capital letter present in the given input***/
 int yywrap(){}
-int main(){
+int main(int argc, char *argv[]){
 
 	// Explanation:
 	// yywrap() - wraps the above rule section
