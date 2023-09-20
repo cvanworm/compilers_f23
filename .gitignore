@@ -1,4 +1,3 @@
 clex
 lex.yy.c
-results.txt
-results1.txt
+/results
