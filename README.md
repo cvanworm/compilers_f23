@@ -3,7 +3,7 @@ This lexer outputs a series of tokens for a predefined language to a file named 
 
 ### How to run
 - `$ make ` to compile and run lexer on our example program (fib.f23)
-- `$ make code=mg.f23 ` to run lexer on the class program (mg.f23)
+- `$ make code=mg.f23 ` to compile and run lexer on the class program (mg.f23)
 - `$ make clean ` to remove extra files.
 
 ### Technologies
