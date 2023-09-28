@@ -35,7 +35,7 @@ Assignment :=|\+=|-=|\*=|\/=|%=
 Bool &&|\|\||==|>=|>|<=|<|!=|!
 Math \/|-|--|%|\*|\+|\+\+
 Symbol ,|\[|\{|\(|\.|\)|\}|\]|;
-Sconstant \"[^\"]*\"
+Sconstant \"(\\.|[^"\\])*\"
 Identifier ({Letter}|\$|_)({Letter}|\$|_|{Digit}){0,31}
 IdError {Digit}+({Letter}|\$|_)+|({Letter}|{Digit}|\$|_){33,}
 
@@ -301,7 +301,7 @@ return ICONSTANT;}
 
 {Sconstant} {
 	printf("token(SCONSTANT, %s)\n", yytext);
-// return SCONSTANT;
+	return SCONSTANT;
 }
 
 {Blank} {}

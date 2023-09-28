@@ -22,7 +22,7 @@ Declare: K_INTEGER IDENTIFIER SEMI
 ;
 Assign: IDENTIFIER ASSIGN ICONSTANT SEMI
 ;
-Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI | K_PRINT_STRING LPAREN SCONSTANT RPAREN
+Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
 ;
 Epsilon: ;
 
@@ -32,7 +32,7 @@ Epsilon: ;
   
 int yyerror(char *msg)
  {
-  printf("invalid string\n");
+  printf("invalid program: %s\n", msg);
   exit(0);
  }
   
