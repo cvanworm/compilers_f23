@@ -12,17 +12,17 @@
 code: Program {printf("valid program\n");
              exit(0);}
 ;
-Program: K_PROGRAM IDENTIFIER LCURLY Function RCURLY
+Program: K_PROGRAM IDENTIFIER LCURLY Function RCURLY {printf("Top node\n");}
 ;
-Function: K_FUNCTION K_INTEGER IDENTIFIER LPAREN RPAREN LCURLY Statements RCURLY 
+Function: K_FUNCTION K_INTEGER IDENTIFIER LPAREN RPAREN LCURLY Statements RCURLY {printf("Function node\n");}
 ;
-Statements: Declare Statements | Assign Statements | Print Statements | Epsilon
+Statements: Declare Statements | Assign Statements | Print Statements | Epsilon {printf("Statement node\n");}
 ;
-Declare: K_INTEGER IDENTIFIER SEMI
+Declare: K_INTEGER IDENTIFIER SEMI {printf("Declare node\n");}
 ;
-Assign: IDENTIFIER ASSIGN ICONSTANT SEMI
+Assign: IDENTIFIER ASSIGN ICONSTANT SEMI {printf("Assign node\n");}
 ;
-Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI {printf("Print node\n");}
 ;
 Epsilon: ;
 
