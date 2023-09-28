@@ -5,13 +5,29 @@
   #include<stdlib.h>
  %}
   
-%token IDERROR COMMENT ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY ASSIGN_DIVIDE ASSIGN_MOD DAND 
+%token K_PROGRAM IDENTIFIER LCURLY K_FUNCTION K_INTEGER LPAREN RPAREN SEMI ASSIGN ICONSTANT K_PRINT_INTEGER K_PRINT_STRING RCURLY SCONSTANT
   
 /* Rule Section */
 %%
-stmt: COMMENT {printf("valid string\n");}
-   | COMMENT stmt
+code: Program {printf("valid program\n");
+             exit(0);}
 ;
+Program: K_PROGRAM IDENTIFIER LCURLY Function RCURLY
+;
+Function: K_FUNCTION K_INTEGER IDENTIFIER LPAREN RPAREN LCURLY Statements RCURLY 
+;
+Statements: Declare Statements | Assign Statements | Print Statements | Epsilon
+;
+Declare: K_INTEGER IDENTIFIER SEMI
+;
+Assign: IDENTIFIER ASSIGN ICONSTANT SEMI
+;
+Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI | K_PRINT_STRING LPAREN SCONSTANT RPAREN
+;
+Epsilon: ;
+
+
+
 %%
   
 int yyerror(char *msg)
