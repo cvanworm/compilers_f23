@@ -2,7 +2,6 @@ program tiny_example_2
 {
     function integer main()
     {
-        print_string( "i" )
-        print_integer( i );
+        print_string( "Hello\n" );
     }
-}
+} 
