@@ -5,12 +5,12 @@
   #include<stdlib.h>
  %}
   
-%token A B NL COMMENT
+%token IDERROR COMMENT ASSIGN ASSIGN_PLUS ASSIGN_MINUS ASSIGN_MULTIPLY ASSIGN_DIVIDE ASSIGN_MOD DAND 
   
 /* Rule Section */
 %%
-stmt: COMMENT {printf("valid string\n");
-             exit(0);}
+stmt: COMMENT {printf("valid string\n");}
+   | COMMENT stmt
 ;
 %%
   
