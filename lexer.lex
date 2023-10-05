@@ -70,7 +70,7 @@ third rule does not take input after the enter***/
 
 {K_ELSE} {
 	printf("token(K_ELSE, %s)\n", yytext);
-	// return K_ELSE;
+	return K_ELSE;
 }
 
 {K_EXIT} {
@@ -85,7 +85,7 @@ third rule does not take input after the enter***/
 
 {K_IF} {
 	printf("token(K_IF, %s)\n", yytext);
-	// return K_IF;
+	return K_IF;
 }
 
 {K_INTEGER} {
@@ -145,7 +145,7 @@ third rule does not take input after the enter***/
 
 {K_THEN} {
 	printf("token(K_THEN, %s)\n", yytext);
-	// return K_THEN;
+	return K_THEN;
 }
 
 {K_WHILE} {
@@ -183,39 +183,39 @@ third rule does not take input after the enter***/
 {Bool} {
     if(strcmp(yytext,"&&") == 0){
         printf("token(DAND, %s)\n", yytext);
-		// return DAND;
+		return DAND;
     }
     else if(strcmp(yytext,"||") == 0){
         printf("token(DOR, %s)\n", yytext);
-		// return DOR;
+		return DOR;
     }
     else if(strcmp(yytext,"==") == 0){
         printf("token(DEQ, %s)\n", yytext);
-		// return DEQ;
+		return DEQ;
     }
     else if(strcmp(yytext,">=") == 0){
         printf("token(GEQ, %s)\n", yytext);
-		// return GEQ;
+		return GEQ;
     }
     else if(strcmp(yytext,">") == 0){
         printf("token(GT, %s)\n", yytext);
-		// return GT;
+		return GT;
     }
     else if(strcmp(yytext,"<=") == 0){
         printf("token(LEQ, %s)\n", yytext);
-		// return LEQ;
+		return LEQ;
     }
     else if(strcmp(yytext,"<") == 0){
         printf("token(LT, %s)\n", yytext);
-		// return LT;
+		return LT;
     }
     else if(strcmp(yytext,"!=") == 0){
         printf("token(NE, %s)\n", yytext);
-		// return NE;
+		return NE;
     }
     else if(strcmp(yytext,"!") == 0){
         printf("token(NOT, %s)\n", yytext);
-		// return NOT;
+		return NOT;
     }
 }
 
@@ -301,7 +301,7 @@ return ICONSTANT;}
 
 {Sconstant} {
 	printf("token(SCONSTANT, %s)\n", yytext);
-// return SCONSTANT;
+	return SCONSTANT;
 }
 
 {Blank} {}

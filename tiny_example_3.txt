@@ -1,0 +1,24 @@
+program tiny_example_2
+{
+    function integer main()
+    {
+        integer i;
+        i := 5;
+
+        if ( i == 0 ) then
+        {
+            print_string( "i" );
+            print_string( "i" );
+        }
+        else
+        {
+            print_string( "i" );
+            print_string( "i" );
+        }
+
+        if ( dsoln <= 0 ) then
+            print_string( "i" );
+        else
+            print_string( "i" );
+    }
+}

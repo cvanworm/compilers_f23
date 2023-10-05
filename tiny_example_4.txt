@@ -1,0 +1,21 @@
+program tiny_example_2
+{
+    function integer main()
+    {
+        integer i := -5;                 // Loop variable
+        integer end := 5;               // Loop end variable
+
+        while ( i <= end )
+        {
+            if ( i < 0 ) then
+                print_string( "i is negative" );
+            else
+                print_string( "i is positive" );
+            if ( i = 0 ) then
+            {
+                print_string( "i is zero" );
+            }   
+            i++;
+        }
+    }
+}
