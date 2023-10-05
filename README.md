@@ -14,3 +14,20 @@ This program uses flex. To download flex on Linux use the commands below. [Read 
 ### Authors
 - Calvin VanWormer
 - Alicia Thoney
+
+
+
+
+----------------------------------------
+# YACC
+1. `lex lexer.lex`
+1. `yacc -d test.yacc`
+1. `gcc lex.yy.c  y.tab.c -w`
+1. `a./out`
+
+- remove print statements?
+- return tokens
+- add tokens to yacc
+- make rules
+- update Makefile
+- read in multiple lines
