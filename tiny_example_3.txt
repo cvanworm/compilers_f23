@@ -10,6 +10,11 @@ program tiny_example_2
             print_string( "i" );
             print_string( "i" );
         }
+        else if ( i == 2 ) then
+        {
+            print_string( "i" );
+            print_string( "i" );
+        }
         else
         {
             print_string( "i" );
@@ -18,7 +23,11 @@ program tiny_example_2
 
         if ( dsoln <= 0 ) then
             print_string( "i" );
+        else if ( i == 2) then
+            print_string( "i" );
         else
             print_string( "i" );
+
+
     }
 }
