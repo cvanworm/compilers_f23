@@ -2,24 +2,7 @@ program tiny_example_2
 {
     function integer main()
     {
-        integer i;
-        i:=4;
-        string k;
-        k := "hello";
-        i++;
-        i--;
-        integer j;
-        j := i++;
-        j := 1 + 2;
-        j := 5 - 3;
-        j := 9;
-        j := 1 + 1 - 1;
-        j := 1 + 9 * 9;
-        j := 1 - 9 / 9;
-        j := 8 / 8;
-        j := i * i;
-        j := 1 + 9 * (5+6) + -(9);
-        print_string(k);
-
+        print_string( "i" );
+        print_integer( i );
     }
 } 
