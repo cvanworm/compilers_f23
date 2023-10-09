@@ -87,7 +87,12 @@ extern int yydebug;
     DAND = 288,                    /* DAND  */
     DOR = 289,                     /* DOR  */
     K_ELSE = 290,                  /* K_ELSE  */
-    K_WHILE = 291                  /* K_WHILE  */
+    K_WHILE = 291,                 /* K_WHILE  */
+    K_PROCEDURE = 292,             /* K_PROCEDURE  */
+    COMMA = 293,                   /* COMMA  */
+    K_RETURN = 294,                /* K_RETURN  */
+    K_DOUBLE = 295,                /* K_DOUBLE  */
+    K_DO = 296                     /* K_DO  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -130,6 +135,11 @@ extern int yydebug;
 #define DOR 289
 #define K_ELSE 290
 #define K_WHILE 291
+#define K_PROCEDURE 292
+#define COMMA 293
+#define K_RETURN 294
+#define K_DOUBLE 295
+#define K_DO 296
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

@@ -60,12 +60,12 @@ third rule does not take input after the enter***/
 
 {K_DO} {
 	printf("token(K_DO, %s)\n", yytext);
-	// return K_DO;
+	return K_DO;
 }
 
 {K_DOUBLE} {
 	printf("token(K_DOUBLE, %s)\n", yytext);
-	// return K_DOUBLE;
+	return K_DOUBLE;
 }
 
 {K_ELSE} {
@@ -110,7 +110,7 @@ third rule does not take input after the enter***/
 
 {K_PROCEDURE} {
 	printf("token(K_PROCEDURE, %s)\n", yytext);
-	// return K_PROCEDURE;
+	return K_PROCEDURE;
 }
 
 {K_PROGRAM} {
@@ -135,7 +135,7 @@ third rule does not take input after the enter***/
 
 {K_RETURN} {
 	printf("token(K_RETURN, %s)\n", yytext);
-	// return K_RETURN;
+	return K_RETURN;
 }
 
 {K_STRING} {
@@ -253,7 +253,7 @@ third rule does not take input after the enter***/
 {Symbol} {
 	if (strcmp(yytext,",") == 0){
 		printf("token(COMMA, %s)\n", yytext);
-		// return COMMA;
+		return COMMA;
 	}
 	else if (strcmp(yytext,"[") == 0){
 		printf("token(LBRACKET, %s)\n", yytext);

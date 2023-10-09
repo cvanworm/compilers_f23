@@ -20,4 +20,15 @@ program tiny_example_2
             i++;
         }
     }
+
+    function string main2()
+    {
+        print_string("hey hey hey");
+        return name := 6;
+    }
+
+    procedure name(integer i, integer k)
+    {
+        print_integer(i);
+    }
 }
