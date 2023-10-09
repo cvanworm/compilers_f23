@@ -35,7 +35,7 @@ Assignment :=|\+=|-=|\*=|\/=|%=
 Bool &&|\|\||==|>=|>|<=|<|!=|!
 Math \/|-|--|%|\*|\+|\+\+
 Symbol ,|\[|\{|\(|\.|\)|\}|\]|;
-Sconstant \"[^\"]*\"
+Sconstant \"(\\.|[^"\\])*\"
 Identifier ({Letter}|\$|_)({Letter}|\$|_|{Digit}){0,31}
 IdError {Digit}+({Letter}|\$|_)+|({Letter}|{Digit}|\$|_){33,}
 
@@ -140,7 +140,7 @@ third rule does not take input after the enter***/
 
 {K_STRING} {
 	printf("token(K_STRING, %s)\n", yytext);
-	// return K_STRING;
+	return K_STRING;
 }
 
 {K_THEN} {
@@ -150,7 +150,7 @@ third rule does not take input after the enter***/
 
 {K_WHILE} {
 	printf("token(K_WHILE, %s)\n", yytext);
-	// return K_WHILE;
+	return K_WHILE;
 }
 
 {Assignment} {
@@ -222,15 +222,15 @@ third rule does not take input after the enter***/
 {Math} {
 	if (strcmp(yytext,"/") == 0){
 		printf("token(DIVIDE, %s)\n", yytext);
-		// return DIVIDE;
+		return DIVIDE;
 	}
 	else if (strcmp(yytext,"-") == 0){
 		printf("token(MINUS, %s)\n", yytext);
-		// return MINUS;
+		return MINUS;
 	}
 	else if (strcmp(yytext,"--") == 0){
 		printf("token(DECREMENT, %s)\n", yytext);
-		// return DECREMENT;
+		return DECREMENT;
 	}
 	else if (strcmp(yytext,"%") == 0){
 		printf("token(MOD, %s)\n", yytext);
@@ -238,15 +238,15 @@ third rule does not take input after the enter***/
 	}
 	else if (strcmp(yytext,"*") == 0){
 		printf("token(MULTIPLY, %s)\n", yytext);
-		// return MULTIPLY;
+		return MULTIPLY;
 	}
 	else if (strcmp(yytext,"+") == 0){
 		printf("token(PLUS, %s)\n", yytext);
-		// return PLUS;
+		return PLUS;
 	}
 	else if (strcmp(yytext,"++") == 0){
 		printf("token(INCREMENT, %s)\n", yytext);
-		// return INCREMENT;
+		return INCREMENT;
 	}
 }
 

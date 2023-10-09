@@ -68,18 +68,26 @@ extern int yydebug;
     K_PRINT_STRING = 269,          /* K_PRINT_STRING  */
     RCURLY = 270,                  /* RCURLY  */
     SCONSTANT = 271,               /* SCONSTANT  */
-    K_IF = 272,                    /* K_IF  */
-    K_THEN = 273,                  /* K_THEN  */
-    DEQ = 274,                     /* DEQ  */
-    GEQ = 275,                     /* GEQ  */
-    GT = 276,                      /* GT  */
-    LEQ = 277,                     /* LEQ  */
-    LT = 278,                      /* LT  */
-    NE = 279,                      /* NE  */
-    NOT = 280,                     /* NOT  */
-    DAND = 281,                    /* DAND  */
-    DOR = 282,                     /* DOR  */
-    K_ELSE = 283                   /* K_ELSE  */
+    PLUS = 272,                    /* PLUS  */
+    MINUS = 273,                   /* MINUS  */
+    MULTIPLY = 274,                /* MULTIPLY  */
+    DIVIDE = 275,                  /* DIVIDE  */
+    DECREMENT = 276,               /* DECREMENT  */
+    INCREMENT = 277,               /* INCREMENT  */
+    K_STRING = 278,                /* K_STRING  */
+    K_IF = 279,                    /* K_IF  */
+    K_THEN = 280,                  /* K_THEN  */
+    DEQ = 281,                     /* DEQ  */
+    GEQ = 282,                     /* GEQ  */
+    GT = 283,                      /* GT  */
+    LEQ = 284,                     /* LEQ  */
+    LT = 285,                      /* LT  */
+    NE = 286,                      /* NE  */
+    NOT = 287,                     /* NOT  */
+    DAND = 288,                    /* DAND  */
+    DOR = 289,                     /* DOR  */
+    K_ELSE = 290,                  /* K_ELSE  */
+    K_WHILE = 291                  /* K_WHILE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -102,18 +110,26 @@ extern int yydebug;
 #define K_PRINT_STRING 269
 #define RCURLY 270
 #define SCONSTANT 271
-#define K_IF 272
-#define K_THEN 273
-#define DEQ 274
-#define GEQ 275
-#define GT 276
-#define LEQ 277
-#define LT 278
-#define NE 279
-#define NOT 280
-#define DAND 281
-#define DOR 282
-#define K_ELSE 283
+#define PLUS 272
+#define MINUS 273
+#define MULTIPLY 274
+#define DIVIDE 275
+#define DECREMENT 276
+#define INCREMENT 277
+#define K_STRING 278
+#define K_IF 279
+#define K_THEN 280
+#define DEQ 281
+#define GEQ 282
+#define GT 283
+#define LEQ 284
+#define LT 285
+#define NE 286
+#define NOT 287
+#define DAND 288
+#define DOR 289
+#define K_ELSE 290
+#define K_WHILE 291
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
