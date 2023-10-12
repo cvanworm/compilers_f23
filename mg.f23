@@ -28,7 +28,7 @@ program $two_grid_solver
         integer i := 0;                     // Loop variable
 
         while ( i >= 0 && i <= s1 )
-            dsoln := dval;
+            dsoln[i++] := dval;
 
     }   // of set_constant
 
