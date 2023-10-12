@@ -1,10 +1,10 @@
 all: lex yacc clex run
 
-lex: ab.lex
-	lex ab.lex
+lex: math1.lex
+	lex math1.lex
 
-yacc: ab.yacc
-	yacc -d ab.yacc
+yacc: math1.yacc
+	yacc -d math1.yacc
 
 clex: lex.yy.c
 	gcc -o clex lex.yy.c y.tab.c -w

@@ -289,8 +289,11 @@ third rule does not take input after the enter***/
 	}
 }
 
-{Identifier} {printf("token(IDENTIFIER, %s)\n", yytext);
-return IDENTIFIER;}
+{Identifier} {
+	printf("token(IDENTIFIER, %s)\n", yytext);
+	yylval.sval = strdup(yytext);
+	return IDENTIFIER;
+	}
 
 {Int} {printf("token(ICONSTANT, %s)\n", yytext);
 return ICONSTANT;}

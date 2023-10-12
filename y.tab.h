@@ -54,8 +54,8 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    K_PROGRAM = 258,               /* K_PROGRAM  */
-    IDENTIFIER = 259,              /* IDENTIFIER  */
+    IDENTIFIER = 258,              /* IDENTIFIER  */
+    K_PROGRAM = 259,               /* K_PROGRAM  */
     LCURLY = 260,                  /* LCURLY  */
     K_FUNCTION = 261,              /* K_FUNCTION  */
     K_INTEGER = 262,               /* K_INTEGER  */
@@ -101,8 +101,8 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define K_PROGRAM 258
-#define IDENTIFIER 259
+#define IDENTIFIER 258
+#define K_PROGRAM 259
 #define LCURLY 260
 #define K_FUNCTION 261
 #define K_INTEGER 262
@@ -143,7 +143,17 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 8 "text.yacc"
+
+    double dval;
+    char* sval;
+
+#line 154 "y.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
