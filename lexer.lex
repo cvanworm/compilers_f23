@@ -60,12 +60,12 @@ third rule does not take input after the enter***/
 
 {K_DO} {
 	printf("token(K_DO, %s)\n", yytext);
-	// return K_DO;
+	return K_DO;
 }
 
 {K_DOUBLE} {
 	printf("token(K_DOUBLE, %s)\n", yytext);
-	// return K_DOUBLE;
+	return K_DOUBLE;
 }
 
 {K_ELSE} {
@@ -79,7 +79,7 @@ third rule does not take input after the enter***/
 }
 
 {K_FUNCTION} {
-	printf("token(K_FUNCTION, %s)\n", yytext);
+	// printf("token(K_FUNCTION, %s)\n", yytext);
 	return K_FUNCTION;
 }
 
@@ -89,7 +89,9 @@ third rule does not take input after the enter***/
 }
 
 {K_INTEGER} {
-	printf("token(K_INTEGER, %s)\n", yytext);
+	// printf("%s\n", yytext);
+	// printf("token(K_INTEGER, %s)\n", yytext);
+	yylval.sval = strdup(yytext);
 	return K_INTEGER;
 }
 
@@ -99,22 +101,22 @@ third rule does not take input after the enter***/
 }
 
 {K_PRINT_INTEGER} {
-	printf("token(K_PRINT_INTEGER, %s)\n", yytext);
+	// printf("token(K_PRINT_INTEGER, %s)\n", yytext);
 	return K_PRINT_INTEGER;
 }
 
 {K_PRINT_STRING} {
-	printf("token(K_PRINT_STRING, %s)\n", yytext);
+	// printf("token(K_PRINT_STRING, %s)\n", yytext);
 	return K_PRINT_STRING;
 }
 
 {K_PROCEDURE} {
 	printf("token(K_PROCEDURE, %s)\n", yytext);
-	// return K_PROCEDURE;
+	return K_PROCEDURE;
 }
 
 {K_PROGRAM} {
-	printf("token(K_PROGRAM, %s)\n", yytext);
+	// printf("token(K_PROGRAM, %s)\n", yytext);
 	return K_PROGRAM;
 }
 
@@ -135,11 +137,12 @@ third rule does not take input after the enter***/
 
 {K_RETURN} {
 	printf("token(K_RETURN, %s)\n", yytext);
-	// return K_RETURN;
+	return K_RETURN;
 }
 
 {K_STRING} {
-	printf("token(K_STRING, %s)\n", yytext);
+	// printf("token(K_STRING, %s)\n", yytext);
+	yylval.sval = strdup(yytext);
 	return K_STRING;
 }
 
@@ -155,7 +158,7 @@ third rule does not take input after the enter***/
 
 {Assignment} {
 	if (strcmp(yytext,":=") == 0){
-		printf("token(ASSIGN, %s)\n", yytext);
+		// printf("token(ASSIGN, %s)\n", yytext);
 		return ASSIGN;
 	}
 	else if (strcmp(yytext,"+=") == 0){
@@ -253,18 +256,18 @@ third rule does not take input after the enter***/
 {Symbol} {
 	if (strcmp(yytext,",") == 0){
 		printf("token(COMMA, %s)\n", yytext);
-		// return COMMA;
+		return COMMA;
 	}
 	else if (strcmp(yytext,"[") == 0){
 		printf("token(LBRACKET, %s)\n", yytext);
 		// return LBRACKET;
 	}
 	else if (strcmp(yytext,"{") == 0){
-		printf("token(LCURLY, %s)\n", yytext);
+		// printf("token(LCURLY, %s)\n", yytext);
 		return LCURLY;
 	}
 	else if (strcmp(yytext,"(") == 0){
-		printf("token(LPAREN, %s)\n", yytext);
+		// printf("token(LPAREN, %s)\n", yytext);
 		return LPAREN;
 	}
 	else if (strcmp(yytext,".") == 0){
@@ -276,31 +279,37 @@ third rule does not take input after the enter***/
 		// return RBRACKET;
 	}
 	else if (strcmp(yytext,"}") == 0){
-		printf("token(RCURLY, %s)\n", yytext);
+		// printf("token(RCURLY, %s)\n", yytext);
 		return RCURLY;
 	}
 	else if (strcmp(yytext,")") == 0){
-		printf("token(RPAREN, %s)\n", yytext);
+		// printf("token(RPAREN, %s)\n", yytext);
 		return RPAREN;
 	}
 	else if (strcmp(yytext,";") == 0){
-		printf("token(SEMI, %s)\n", yytext);
+		// printf("token(SEMI, %s)\n", yytext);
 		return SEMI;
 	}
 }
 
-{Identifier} {printf("token(IDENTIFIER, %s)\n", yytext);
-return IDENTIFIER;}
+{Identifier} {
+	// printf("IDENTIFIER: %s\n", yytext);
+	yylval.sval = strdup(yytext);
+	return IDENTIFIER;}
 
-{Int} {printf("token(ICONSTANT, %s)\n", yytext);
-return ICONSTANT;}
+{Int} {
+	// printf("token(ICONSTANT, %s)\n", yytext);
+	yylval.ival = atoi(yytext);
+	return ICONSTANT;
+}
 
 {Float} {printf("token(DCONSTANT, %s)\n", yytext);
 // return DCONSTANT;
 }
 
 {Sconstant} {
-	printf("token(SCONSTANT, %s)\n", yytext);
+	// printf("token(SCONSTANT, %s)\n", yytext);
+	yylval.sval = strdup(yytext);
 	return SCONSTANT;
 }
 
