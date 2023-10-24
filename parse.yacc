@@ -15,6 +15,8 @@
 
 %token <ival> ICONSTANT
 
+%token <dval> DCONSTANT
+
 %type <sval> Type
   
 %token K_PROGRAM LCURLY K_FUNCTION  LPAREN RPAREN SEMI ASSIGN K_PRINT_INTEGER K_PRINT_STRING RCURLY PLUS MINUS MULTIPLY DIVIDE DECREMENT INCREMENT  K_IF K_THEN DEQ GEQ GT LEQ LT NE NOT DAND DOR K_ELSE K_WHILE K_PROCEDURE COMMA K_RETURN K_DO
@@ -54,7 +56,7 @@ ElseIf: K_ELSE K_IF LPAREN Condition RPAREN K_THEN LCURLY Statements RCURLY Else
 ;
 While: K_WHILE LPAREN Condition RPAREN LCURLY Statements RCURLY | K_WHILE LPAREN Condition RPAREN Statement
 ;
-Condition: IDENTIFIER BoolComp ICONSTANT | IDENTIFIER BoolComp IDENTIFIER | IDENTIFIER BoolComp ICONSTANT DAND Condition
+Condition: IDENTIFIER BoolComp NumConstant | IDENTIFIER BoolComp IDENTIFIER | IDENTIFIER BoolComp NumConstant DAND Condition
 ;
 Else: K_ELSE LCURLY Statements RCURLY | K_ELSE Statement | Epsilon
 ;
@@ -67,13 +69,13 @@ Assign: IDENTIFIER ASSIGN SCONSTANT SEMI
 ;
 IncDec: INCREMENT SEMI | DECREMENT SEMI
 ;
-Math: IDENTIFIER IncDec | ICONSTANT IncDec | Expr
+Math: IDENTIFIER IncDec | NumConstant IncDec | Expr
 ;
 Expr: Expr PLUS Term | Expr MINUS Term | Term
 ;
 Term: Term MULTIPLY Factor | Term DIVIDE Factor | Factor
 ;
-Factor: ICONSTANT { $<ival>$ = $1; printf("%d\n", $1); } | IDENTIFIER { $<sval>$ = $1; }| LPAREN Math RPAREN | MINUS LPAREN Math RPAREN
+Factor: NumConstant | IDENTIFIER { $<sval>$ = $1; }| LPAREN Math RPAREN | MINUS LPAREN Math RPAREN
 ;
 Arguments: IDENTIFIER | IDENTIFIER COMMA MoreArgs | Epsilon
 ;
@@ -81,9 +83,11 @@ MoreArgs: IDENTIFIER | IDENTIFIER COMMA MoreArgs
 ;
 Return: K_RETURN IDENTIFIER SEMI
 | K_RETURN IDENTIFIER LPAREN Arguments RPAREN SEMI
-| K_RETURN ICONSTANT SEMI
+| K_RETURN NumConstant SEMI
 | K_RETURN Assign
 | Epsilon
+;
+NumConstant: ICONSTANT { $<ival>$ = $1; printf("%d\n", $1); } | DCONSTANT { $<dval>$ = $1; printf("%f\n", $1); }
 ;
 Epsilon: ;
 
