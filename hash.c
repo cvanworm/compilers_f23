@@ -14,10 +14,12 @@ struct node {
 };
 
 // like constructor
-void setNode(struct node* node, char* key, char* value)
+void setNode(struct node* node, char* key, void* value)
 {
 	node->key = key;
 	node->value = value;
+	// printf("Location added: %p\n", value);
+	// printf("value added: %d\n", *(int*)value);
 	node->next = NULL;
 	return;
 };
@@ -71,7 +73,7 @@ int hashFunction(struct hashMap* mp, char* key)
 	return bucketIndex;
 }
 
-void insert(struct hashMap* mp, char* key, char* value)
+void insert(struct hashMap* mp, char* key, void* value)
 {
 
 	// Getting bucket index for the given
@@ -142,7 +144,7 @@ void delete (struct hashMap* mp, char* key)
 	return;
 }
 
-char* search(struct hashMap* mp, char* key)
+void* search(struct hashMap* mp, char* key)
 {
 
 	// Getting the bucket index
@@ -163,9 +165,9 @@ char* search(struct hashMap* mp, char* key)
 
 	// If no key found in the hashMap
 	// equal to the given key
-	char* errorMssg = (char*)malloc(sizeof(char) * 25);
-	errorMssg = "Oops! No data found.\n";
-	return errorMssg;
+	// char* errorMssg = (char*)malloc(sizeof(char) * 25);
+	// errorMssg = "Oops! No data found.\n";
+	return NULL;
 }
 
 // Drivers code
@@ -177,26 +179,55 @@ int main()
 		= (struct hashMap*)malloc(sizeof(struct hashMap));
 	initializeHashMap(mp);
 
-	insert(mp, "Yogaholic", "Anjali");
-	insert(mp, "pluto14", "Vartika");
-	insert(mp, "elite_Programmer", "Manish");
-	insert(mp, "GFG", "GeeksforGeeks");
-	insert(mp, "decentBoy", "Mayank");
+	// insert(mp, "pluto14", "Vartika");
+	// insert(mp, "elite_Programmer", "Manish");
+	// insert(mp, "GFG", "GeeksforGeeks");
+	// insert(mp, "decentBoy", "Mayank");
+	// insert(mp, "Yogaholic", "Rishabh");
+	// insert(mp, "integer", "12345");
 
-	printf("%s\n", search(mp, "elite_Programmer"));
-	printf("%s\n", search(mp, "Yogaholic"));
-	printf("%s\n", search(mp, "pluto14"));
-	printf("%s\n", search(mp, "decentBoy"));
-	printf("%s\n", search(mp, "GFG"));
+	// printf("%s\n", search(mp, "elite_Programmer"));
+	// printf("%s\n", search(mp, "Yogaholic"));
+	// printf("%s\n", search(mp, "pluto14"));
+	// printf("%s\n", search(mp, "decentBoy"));
+	// printf("%s\n", search(mp, "GFG"));
+	
+	float val = 1.33;
+	int val1 = 10;
+	int val2 = 15;
+	float val3 = 1.5;
+	char* val4 = "Hello";
+	// printf("Val location: %p\n", &val);
+	insert(mp, "val", &val);
+	insert(mp, "val", &val1);
+	insert(mp, "val2", &val2);
+	insert(mp, "val3", &val3);
+	insert(mp, "val4", val4);
 
+	void *p = search(mp, "val");
+	printf("Val found: %f\n", *(float*)p);
+	printf("Val found: %d\n", *(int*)p);
+
+	p = search(mp, "val2");
+	printf("Val2 found: %d\n", *(int*)p);
+
+	p = search(mp, "val3");
+	printf("Val3 found: %f\n", *(float*)p);
+
+	p = search(mp, "val4");
+	printf("Val4 found: %s\n", (char*)p);
+
+	// printf("Location found: %p\n", p);
+
+	// char* sval = search(mp, "integer");
 	// Key is not inserted
-	printf("%s\n", search(mp, "randomKey"));
+	// printf("%s\n", search(mp, "randomKey"));
 
-	printf("\nAfter deletion : \n");
+	// printf("\nAfter deletion : \n");
 
 	// Deletion of key
-	delete (mp, "decentBoy");
-	printf("%s\n", search(mp, "decentBoy"));
+	// delete (mp, "integer");
+	// printf("%s\n", search(mp, "integer"));
 
 	return 0;
 }
