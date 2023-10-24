@@ -2,7 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Linked List node
+// 
+struct variable
+{
+	char* type;
+	void* value;
+};
+
+
+// node
 struct node {
 
 	// key is string
@@ -178,6 +186,13 @@ int main()
 	struct hashMap* mp
 		= (struct hashMap*)malloc(sizeof(struct hashMap));
 	initializeHashMap(mp);
+	int g = 10;
+	struct variable* var = (struct variable*)malloc(sizeof(struct variable));
+	var->type = "int";
+	var->value = &g;
+
+	insert(mp, "var", var);
+
 
 	// insert(mp, "pluto14", "Vartika");
 	// insert(mp, "elite_Programmer", "Manish");
@@ -216,6 +231,10 @@ int main()
 
 	p = search(mp, "val4");
 	printf("Val4 found: %s\n", (char*)p);
+
+	p = search(mp, "var");
+	printf("var found: %s\n", ((struct variable*)p)->type);
+	printf("var found: %d\n", *(int*)((struct variable*)p)->value);
 
 	// printf("Location found: %p\n", p);
 
