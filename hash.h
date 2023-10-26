@@ -6,7 +6,7 @@
 struct variable
 {
 	char* type;
-	void* value;
+	char* value;
 };
 
 
@@ -17,12 +17,12 @@ struct node {
 	char* key;
 	
 	// value is also string
-	void* value;
+	struct variable* value;
 	struct node* next;
 };
 
 // like constructor
-void setNode(struct node* node, char* key, void* value)
+void setNode(struct node* node, char* key, struct variable* value)
 {
 	node->key = key;
 	node->value = value;
@@ -81,7 +81,7 @@ int hashFunction(struct hashMap* mp, char* key)
 	return bucketIndex;
 }
 
-void insert(struct hashMap* mp, char* key, void* value)
+void insert(struct hashMap* mp, char* key, struct variable* value)
 {
 
 	// Getting bucket index for the given
@@ -152,7 +152,7 @@ void delete (struct hashMap* mp, char* key)
 	return;
 }
 
-void* search(struct hashMap* mp, char* key)
+struct variable* search(struct hashMap* mp, char* key)
 {
 
 	// Getting the bucket index
@@ -175,78 +175,39 @@ void* search(struct hashMap* mp, char* key)
 	// equal to the given key
 	// char* errorMssg = (char*)malloc(sizeof(char) * 25);
 	// errorMssg = "Oops! No data found.\n";
-	return NULL;
+	struct variable* errorMssg = (struct variable*)malloc(sizeof(struct variable));
+	errorMssg->type = "none";
+	errorMssg->value = "none";
+	return errorMssg;
 }
 
 // Drivers code
-int main()
-{
+// int main()
+// {
 
-	// Initialize the value of mp
-	struct hashMap* mp
-		= (struct hashMap*)malloc(sizeof(struct hashMap));
-	initializeHashMap(mp);
-	int g = 10;
-	struct variable* var = (struct variable*)malloc(sizeof(struct variable));
-	var->type = "int";
-	var->value = &g;
+// 	// Initialize the value of mp
+// 	struct hashMap* mp
+// 		= (struct hashMap*)malloc(sizeof(struct hashMap));
+// 	initializeHashMap(mp);
 
-	insert(mp, "var", var);
+// 	struct variable* var = (struct variable*)malloc(sizeof(struct variable));
+// 	struct variable* var1 = (struct variable*)malloc(sizeof(struct variable));
 
+// 	var->type = "int";
+// 	var->value = "15";
+// 	insert(mp, "var", var);
 
-	// insert(mp, "pluto14", "Vartika");
-	// insert(mp, "elite_Programmer", "Manish");
-	// insert(mp, "GFG", "GeeksforGeeks");
-	// insert(mp, "decentBoy", "Mayank");
-	// insert(mp, "Yogaholic", "Rishabh");
-	// insert(mp, "integer", "12345");
+// 	var1->type = "string";
+// 	var1->value = "hello";
+// 	insert(mp, "var1", var1);
 
-	// printf("%s\n", search(mp, "elite_Programmer"));
-	// printf("%s\n", search(mp, "Yogaholic"));
-	// printf("%s\n", search(mp, "pluto14"));
-	// printf("%s\n", search(mp, "decentBoy"));
-	// printf("%s\n", search(mp, "GFG"));
-	
-	float val = 1.33;
-	int val1 = 10;
-	int val2 = 15;
-	float val3 = 1.5;
-	char* val4 = "Hello";
-	// printf("Val location: %p\n", &val);
-	insert(mp, "val", &val);
-	insert(mp, "val", &val1);
-	insert(mp, "val2", &val2);
-	insert(mp, "val3", &val3);
-	insert(mp, "val4", val4);
+// 	struct variable* s = search(mp, "var");
+// 	printf("Type found: %s\n", s->type);
+// 	printf("Val found: %d\n", atoi(s->value));
 
-	void *p = search(mp, "val");
-	printf("Val found: %f\n", *(float*)p);
-	printf("Val found: %d\n", *(int*)p);
+// 	s = search(mp, "var1");
+// 	printf("Type found: %s\n", s->type);
+// 	printf("Val found: %s\n", s->value);
 
-	p = search(mp, "val2");
-	printf("Val2 found: %d\n", *(int*)p);
-
-	p = search(mp, "val3");
-	printf("Val3 found: %f\n", *(float*)p);
-
-	p = search(mp, "val4");
-	printf("Val4 found: %s\n", (char*)p);
-
-	p = search(mp, "var");
-	printf("var found: %s\n", ((struct variable*)p)->type);
-	printf("var found: %d\n", *(int*)((struct variable*)p)->value);
-
-	// printf("Location found: %p\n", p);
-
-	// char* sval = search(mp, "integer");
-	// Key is not inserted
-	// printf("%s\n", search(mp, "randomKey"));
-
-	// printf("\nAfter deletion : \n");
-
-	// Deletion of key
-	// delete (mp, "integer");
-	// printf("%s\n", search(mp, "integer"));
-
-	return 0;
-}
+// 	return 0;
+// }

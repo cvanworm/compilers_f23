@@ -2,9 +2,8 @@ program tiny_example_1
 {
 	function integer main()
 	{
-		i := 441;
-		i := -90;
-		i := -9.7;
+		var := 441;
+		num := 13;
 
 	}
 }

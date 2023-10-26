@@ -298,7 +298,8 @@ third rule does not take input after the enter***/
 
 {Int} {
 	// printf("token(ICONSTANT, %s)\n", yytext);
-	yylval.ival = atoi(yytext);
+	// yylval.ival = atoi(yytext);
+	yylval.sval = strdup(yytext);
 	return ICONSTANT;
 }
 
