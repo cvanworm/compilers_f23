@@ -8,7 +8,7 @@ and main() ***/
 %}
 Blank [ |\t]+
 Digit [0-9]
-Int {Digit}+
+Int -?{Digit}+
 Float -?(([0-9]+)|(([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))([dD][-+]?[0-9]+)?)
 Letter [A-Za-z]
 Comment \/\/.*
@@ -90,7 +90,6 @@ third rule does not take input after the enter***/
 
 {K_INTEGER} {
 	// printf("%s\n", yytext);
-	// printf("token(K_INTEGER, %s)\n", yytext);
 	yylval.sval = strdup(yytext);
 	return K_INTEGER;
 }
@@ -299,12 +298,15 @@ third rule does not take input after the enter***/
 
 {Int} {
 	// printf("token(ICONSTANT, %s)\n", yytext);
-	yylval.ival = atoi(yytext);
+	// yylval.ival = atoi(yytext);
+	yylval.sval = strdup(yytext);
 	return ICONSTANT;
 }
 
-{Float} {printf("token(DCONSTANT, %s)\n", yytext);
-// return DCONSTANT;
+{Float} {
+	// printf("token(DCONSTANT, %s)\n", yytext);
+	yylval.dval = atof(yytext);
+	return DCONSTANT;
 }
 
 {Sconstant} {
