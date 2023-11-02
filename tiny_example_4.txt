@@ -1,34 +1,15 @@
-program tiny_example_2
+program tiny_example_4
 {
     function integer main()
     {
         integer i;
-        i := 5;                 // Loop variable
-        integer end;
-        end := 5;               // Loop end variable
-
-        while ( i <= end )
-        {
-            if ( i < 0 ) then
-                print_string( "i is negative" );
-            else
-                print_string( "i is positive" );
-            if ( i == 0 ) then
-            {
-                print_string( "i is zero" );
-            }   
-            i++;
-        }
-    }
-
-    function string main2()
-    {
-        print_string("hey hey hey");
-        return name := 6;
-    }
-
-    procedure name(integer i, integer k)
-    {
-        print_integer(i);
+        double  a;
+        i := 441;
+        a := ( 3 * i ) / 2.0d0;
+        print_string( "i = " );
+        print_integer( i );
+        print_string( ", a = " );
+        print_double( a );
+        print_string( "\n" );
     }
 }

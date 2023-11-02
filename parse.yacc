@@ -28,7 +28,7 @@
 
 %type <sval> Type
   
-%token K_PROGRAM LCURLY K_FUNCTION  LPAREN RPAREN SEMI ASSIGN K_PRINT_INTEGER K_PRINT_STRING RCURLY PLUS MINUS MULTIPLY DIVIDE DECREMENT INCREMENT  K_IF K_THEN DEQ GEQ GT LEQ LT NE NOT DAND DOR K_ELSE K_WHILE K_PROCEDURE COMMA K_RETURN K_DO
+%token K_PROGRAM LCURLY K_FUNCTION  LPAREN RPAREN SEMI ASSIGN K_PRINT_INTEGER K_PRINT_STRING RCURLY PLUS MINUS MULTIPLY DIVIDE DECREMENT INCREMENT  K_IF K_THEN DEQ GEQ GT LEQ LT NE NOT DAND DOR K_ELSE K_WHILE K_PROCEDURE COMMA K_RETURN K_DO K_PRINT_DOUBLE
   
 /* Rule Section */
 %%
@@ -51,13 +51,27 @@ MoreParams: Type IDENTIFIER | Type IDENTIFIER COMMA MoreParams
 ;
 Type: K_INTEGER { $$ = $1; } | K_STRING { $$ = $1; } | K_DOUBLE { $$ = $1;}
 ;
-Statements: Statement Statements | If Statements | While Statements | Epsilon {printf("Statements node:\n"); printStars();}
+Statements: Statement Statements
+| If Statements
+| While Statements
+| Epsilon {printf("Statements node:\n"); printStars();}
 ;
-Statement: Declare | Assign | Print | IDENTIFIER IncDec 
+Statement: Declare
+| Assign
+| Print
+| FunctionCall
+| IDENTIFIER IncDec 
+;
+FunctionCall: IDENTIFIER LPAREN Arguments RPAREN SEMI {printf("%s\nFunction Call node: \n", $1);printStars();}
 ;
 Declare: Type IDENTIFIER SEMI {printf("%s\n%s\nDeclare node: \n", $2, $1);printStars();}
 ;
-Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI {printf("%s\nprint_integer\nprint node: \n", $3); printStars();} | K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI {printf("%s\nprint_string\nprint node: \n", $3); printStars();}
+Print: K_PRINT_INTEGER LPAREN IDENTIFIER RPAREN SEMI {printf("%s\nprint_integer\nprint node: \n", $3); printStars();}
+| K_PRINT_INTEGER LPAREN ICONSTANT RPAREN SEMI {printf("%s\nprint_integer\nprint node: \n", $3); printStars();}
+| K_PRINT_STRING LPAREN IDENTIFIER RPAREN SEMI {printf("%s\nprint_string\nprint node: \n", $3); printStars();}
+| K_PRINT_STRING LPAREN SCONSTANT RPAREN SEMI {printf("%s\nprint_string\nprint node: \n", $3); printStars();}
+| K_PRINT_DOUBLE LPAREN DCONSTANT RPAREN SEMI {printf("%s\nprint_double\nprint node: \n", $3); printStars();}
+| K_PRINT_DOUBLE LPAREN IDENTIFIER RPAREN SEMI {printf("%s\nprint_double\nprint node: \n", $3); printStars();}
 ;
 If: K_IF LPAREN Condition RPAREN K_THEN LCURLY Statements RCURLY ElseIf | K_IF LPAREN Condition RPAREN K_THEN Statement ElseIf
 ;
@@ -71,7 +85,7 @@ Else: K_ELSE LCURLY Statements RCURLY | K_ELSE Statement | Epsilon
 ;
 BoolComp: DEQ | GEQ | GT | LEQ | LT | NE
 ;
-Assign: IDENTIFIER ASSIGN SCONSTANT SEMI 
+Assign: IDENTIFIER ASSIGN SCONSTANT SEMI {printf("%s\n%s\nAssign node: \n", $3, $1);printStars();}
 | IDENTIFIER IncDec SEMI
 | IDENTIFIER ASSIGN Math SEMI {
   printf("%s\nAssign node: \n", $1);
@@ -97,9 +111,11 @@ Term: Term MULTIPLY Factor | Term DIVIDE Factor | Factor
 ;
 Factor: NumConstant | IDENTIFIER { $<sval>$ = $1; }| LPAREN Math RPAREN | MINUS LPAREN Math RPAREN
 ;
-Arguments: IDENTIFIER | IDENTIFIER COMMA MoreArgs | Epsilon
+Arguments: IDENTIFIER {printf("%s\nArgument: \n", $1);}
+| IDENTIFIER COMMA MoreArgs | Epsilon
 ;
-MoreArgs: IDENTIFIER | IDENTIFIER COMMA MoreArgs
+MoreArgs: IDENTIFIER {printf("%s\nArgument: \n", $1);}
+| IDENTIFIER COMMA MoreArgs {printf("%s\nArgument: \n", $1);}
 ;
 Return: K_RETURN IDENTIFIER SEMI
 | K_RETURN IDENTIFIER LPAREN Arguments RPAREN SEMI

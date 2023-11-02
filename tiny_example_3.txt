@@ -1,33 +1,18 @@
-program tiny_example_2
+program tiny_example_3
 {
+    procedure pr_int( integer i )
+    {
+        string title;
+        title := "printing integer ";
+        print_string(title);
+        print_integer(i);
+        print_string("\n");
+    }
+
     function integer main()
     {
         integer i;
-        i := 5;
-
-        if ( i == 0 ) then
-        {
-            print_string( "i" );
-            print_string( "i" );
-        }
-        else if ( i == 2 ) then
-        {
-            print_string( "i" );
-            print_string( "i" );
-        }
-        else
-        {
-            print_string( "i" );
-            print_string( "i" );
-        }
-
-        if ( dsoln <= 0 ) then
-            i := 5 + 10 * (3 + 5);
-        else if ( i == 2) then
-            print_string( "i" );
-        else
-            i++;
-
-
+        i := 441;
+        pr_int( i );
     }
 }

@@ -96,7 +96,7 @@ third rule does not take input after the enter***/
 
 {K_PRINT_DOUBLE} {
 	printf("token(K_PRINT_DOUBLE, %s)\n", yytext);
-	// return K_PRINT_DOUBLE;
+	return K_PRINT_DOUBLE;
 }
 
 {K_PRINT_INTEGER} {

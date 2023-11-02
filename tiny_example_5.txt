@@ -1,0 +1,8 @@
+program tiny_example_3
+{
+    procedure pr_int( integer i )
+    {
+        string title;
+        title := "Hello";
+    }
+}

@@ -1,0 +1,61 @@
+i
+integer
+NODE 11: Declare node: 
+**************************************************
+token(K_DOUBLE, double)
+a
+i
+NODE 10: Declare node: 
+**************************************************
+441
+i
+NODE 9: Assign node: 
+id: i type: int value 441
+id: i var struct int,441
+key found: |i|
+Type found: int
+Val found: 441
+**************************************************
+3
+token(MULTIPLY, *)
+token(DIVIDE, /)
+2.000000
+a
+NODE 8: Assign node: 
+id: a type: int value 3
+id: a var struct int,3
+key found: |a|
+Type found: int
+Val found: 3
+**************************************************
+"i = "
+print_string
+NODE 7: print node: 
+**************************************************
+i
+print_integer
+NODE 6: print node: 
+**************************************************
+", a = "
+print_string
+NODE 5: print node: 
+**************************************************
+token(K_PRINT_DOUBLE, print_double)
+a
+print_double
+NODE 4: print node: 
+**************************************************
+"\n"
+print_string
+NODE 3: print node: 
+**************************************************
+NODE 2: Statements node:
+**************************************************
+NODE 1: Function node: main
+**************************************************
+NODE 0: Program node: tiny_example_4
+**************************************************
+valid code
+key found: |a|
+Type found: none
+Val found: none
