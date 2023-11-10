@@ -1,0 +1,614 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    KEYWORD
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID LCURLY function RCURLY
+Rule 2     function -> FUNCTION INTEGER ID LPAREN RPAREN LCURLY statements RCURLY
+Rule 3     statements -> statements statements
+Rule 4     statements -> epsilon
+Rule 5     statements -> declare
+Rule 6     statements -> assign
+Rule 7     statements -> print
+Rule 8     declare -> INTEGER ID SEMI
+Rule 9     declare -> DOUBLE ID SEMI
+Rule 10    assign -> ID ASSIGN ICONSTANT SEMI
+Rule 11    assign -> ID ASSIGN DCONSTANT SEMI
+Rule 12    print -> PRINT_INTEGER LPAREN ID RPAREN SEMI
+Rule 13    print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+Rule 14    print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI
+Rule 15    epsilon -> <empty>
+
+Terminals, with rules where they appear
+
+ASSIGN               : 10 11
+COMMENT              : 
+DCONSTANT            : 11
+DOUBLE               : 9
+FUNCTION             : 2
+ICONSTANT            : 10
+ID                   : 1 2 8 9 10 11 12 14
+INTEGER              : 2 8
+KEYWORD              : 
+LCURLY               : 1 2
+LPAREN               : 2 12 13 14
+PRINT_DOUBLE         : 14
+PRINT_INTEGER        : 12
+PRINT_STRING         : 13
+PROGRAM              : 1
+RCURLY               : 1 2
+RPAREN               : 2 12 13 14
+SCONSTANT            : 13
+SEMI                 : 8 9 10 11 12 13 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign               : 6
+declare              : 5
+epsilon              : 4
+function             : 1
+print                : 7
+program              : 0
+statements           : 2 3 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID LCURLY function RCURLY
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID LCURLY function RCURLY
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . LCURLY function RCURLY
+
+    LCURLY          shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID LCURLY . function RCURLY
+    (2) function -> . FUNCTION INTEGER ID LPAREN RPAREN LCURLY statements RCURLY
+
+    FUNCTION        shift and go to state 6
+
+    function                       shift and go to state 5
+
+state 5
+
+    (1) program -> PROGRAM ID LCURLY function . RCURLY
+
+    RCURLY          shift and go to state 7
+
+
+state 6
+
+    (2) function -> FUNCTION . INTEGER ID LPAREN RPAREN LCURLY statements RCURLY
+
+    INTEGER         shift and go to state 8
+
+
+state 7
+
+    (1) program -> PROGRAM ID LCURLY function RCURLY .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID LCURLY function RCURLY .)
+
+
+state 8
+
+    (2) function -> FUNCTION INTEGER . ID LPAREN RPAREN LCURLY statements RCURLY
+
+    ID              shift and go to state 9
+
+
+state 9
+
+    (2) function -> FUNCTION INTEGER ID . LPAREN RPAREN LCURLY statements RCURLY
+
+    LPAREN          shift and go to state 10
+
+
+state 10
+
+    (2) function -> FUNCTION INTEGER ID LPAREN . RPAREN LCURLY statements RCURLY
+
+    RPAREN          shift and go to state 11
+
+
+state 11
+
+    (2) function -> FUNCTION INTEGER ID LPAREN RPAREN . LCURLY statements RCURLY
+
+    LCURLY          shift and go to state 12
+
+
+state 12
+
+    (2) function -> FUNCTION INTEGER ID LPAREN RPAREN LCURLY . statements RCURLY
+    (3) statements -> . statements statements
+    (4) statements -> . epsilon
+    (5) statements -> . declare
+    (6) statements -> . assign
+    (7) statements -> . print
+    (15) epsilon -> .
+    (8) declare -> . INTEGER ID SEMI
+    (9) declare -> . DOUBLE ID SEMI
+    (10) assign -> . ID ASSIGN ICONSTANT SEMI
+    (11) assign -> . ID ASSIGN DCONSTANT SEMI
+    (12) print -> . PRINT_INTEGER LPAREN ID RPAREN SEMI
+    (13) print -> . PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    (14) print -> . PRINT_DOUBLE LPAREN ID RPAREN SEMI
+
+  ! shift/reduce conflict for INTEGER resolved as shift
+  ! shift/reduce conflict for DOUBLE resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for PRINT_INTEGER resolved as shift
+  ! shift/reduce conflict for PRINT_STRING resolved as shift
+  ! shift/reduce conflict for PRINT_DOUBLE resolved as shift
+    RCURLY          reduce using rule 15 (epsilon -> .)
+    INTEGER         shift and go to state 13
+    DOUBLE          shift and go to state 20
+    ID              shift and go to state 14
+    PRINT_INTEGER   shift and go to state 21
+    PRINT_STRING    shift and go to state 22
+    PRINT_DOUBLE    shift and go to state 23
+
+  ! INTEGER         [ reduce using rule 15 (epsilon -> .) ]
+  ! DOUBLE          [ reduce using rule 15 (epsilon -> .) ]
+  ! ID              [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_INTEGER   [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_STRING    [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_DOUBLE    [ reduce using rule 15 (epsilon -> .) ]
+
+    statements                     shift and go to state 15
+    epsilon                        shift and go to state 16
+    declare                        shift and go to state 17
+    assign                         shift and go to state 18
+    print                          shift and go to state 19
+
+state 13
+
+    (8) declare -> INTEGER . ID SEMI
+
+    ID              shift and go to state 24
+
+
+state 14
+
+    (10) assign -> ID . ASSIGN ICONSTANT SEMI
+    (11) assign -> ID . ASSIGN DCONSTANT SEMI
+
+    ASSIGN          shift and go to state 25
+
+
+state 15
+
+    (2) function -> FUNCTION INTEGER ID LPAREN RPAREN LCURLY statements . RCURLY
+    (3) statements -> statements . statements
+    (3) statements -> . statements statements
+    (4) statements -> . epsilon
+    (5) statements -> . declare
+    (6) statements -> . assign
+    (7) statements -> . print
+    (15) epsilon -> .
+    (8) declare -> . INTEGER ID SEMI
+    (9) declare -> . DOUBLE ID SEMI
+    (10) assign -> . ID ASSIGN ICONSTANT SEMI
+    (11) assign -> . ID ASSIGN DCONSTANT SEMI
+    (12) print -> . PRINT_INTEGER LPAREN ID RPAREN SEMI
+    (13) print -> . PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    (14) print -> . PRINT_DOUBLE LPAREN ID RPAREN SEMI
+
+  ! shift/reduce conflict for RCURLY resolved as shift
+  ! shift/reduce conflict for INTEGER resolved as shift
+  ! shift/reduce conflict for DOUBLE resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for PRINT_INTEGER resolved as shift
+  ! shift/reduce conflict for PRINT_STRING resolved as shift
+  ! shift/reduce conflict for PRINT_DOUBLE resolved as shift
+    RCURLY          shift and go to state 27
+    INTEGER         shift and go to state 13
+    DOUBLE          shift and go to state 20
+    ID              shift and go to state 14
+    PRINT_INTEGER   shift and go to state 21
+    PRINT_STRING    shift and go to state 22
+    PRINT_DOUBLE    shift and go to state 23
+
+  ! INTEGER         [ reduce using rule 15 (epsilon -> .) ]
+  ! DOUBLE          [ reduce using rule 15 (epsilon -> .) ]
+  ! ID              [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_INTEGER   [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_STRING    [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_DOUBLE    [ reduce using rule 15 (epsilon -> .) ]
+  ! RCURLY          [ reduce using rule 15 (epsilon -> .) ]
+
+    statements                     shift and go to state 26
+    epsilon                        shift and go to state 16
+    declare                        shift and go to state 17
+    assign                         shift and go to state 18
+    print                          shift and go to state 19
+
+state 16
+
+    (4) statements -> epsilon .
+
+    RCURLY          reduce using rule 4 (statements -> epsilon .)
+    INTEGER         reduce using rule 4 (statements -> epsilon .)
+    DOUBLE          reduce using rule 4 (statements -> epsilon .)
+    ID              reduce using rule 4 (statements -> epsilon .)
+    PRINT_INTEGER   reduce using rule 4 (statements -> epsilon .)
+    PRINT_STRING    reduce using rule 4 (statements -> epsilon .)
+    PRINT_DOUBLE    reduce using rule 4 (statements -> epsilon .)
+
+
+state 17
+
+    (5) statements -> declare .
+
+    RCURLY          reduce using rule 5 (statements -> declare .)
+    INTEGER         reduce using rule 5 (statements -> declare .)
+    DOUBLE          reduce using rule 5 (statements -> declare .)
+    ID              reduce using rule 5 (statements -> declare .)
+    PRINT_INTEGER   reduce using rule 5 (statements -> declare .)
+    PRINT_STRING    reduce using rule 5 (statements -> declare .)
+    PRINT_DOUBLE    reduce using rule 5 (statements -> declare .)
+
+
+state 18
+
+    (6) statements -> assign .
+
+    RCURLY          reduce using rule 6 (statements -> assign .)
+    INTEGER         reduce using rule 6 (statements -> assign .)
+    DOUBLE          reduce using rule 6 (statements -> assign .)
+    ID              reduce using rule 6 (statements -> assign .)
+    PRINT_INTEGER   reduce using rule 6 (statements -> assign .)
+    PRINT_STRING    reduce using rule 6 (statements -> assign .)
+    PRINT_DOUBLE    reduce using rule 6 (statements -> assign .)
+
+
+state 19
+
+    (7) statements -> print .
+
+    RCURLY          reduce using rule 7 (statements -> print .)
+    INTEGER         reduce using rule 7 (statements -> print .)
+    DOUBLE          reduce using rule 7 (statements -> print .)
+    ID              reduce using rule 7 (statements -> print .)
+    PRINT_INTEGER   reduce using rule 7 (statements -> print .)
+    PRINT_STRING    reduce using rule 7 (statements -> print .)
+    PRINT_DOUBLE    reduce using rule 7 (statements -> print .)
+
+
+state 20
+
+    (9) declare -> DOUBLE . ID SEMI
+
+    ID              shift and go to state 28
+
+
+state 21
+
+    (12) print -> PRINT_INTEGER . LPAREN ID RPAREN SEMI
+
+    LPAREN          shift and go to state 29
+
+
+state 22
+
+    (13) print -> PRINT_STRING . LPAREN SCONSTANT RPAREN SEMI
+
+    LPAREN          shift and go to state 30
+
+
+state 23
+
+    (14) print -> PRINT_DOUBLE . LPAREN ID RPAREN SEMI
+
+    LPAREN          shift and go to state 31
+
+
+state 24
+
+    (8) declare -> INTEGER ID . SEMI
+
+    SEMI            shift and go to state 32
+
+
+state 25
+
+    (10) assign -> ID ASSIGN . ICONSTANT SEMI
+    (11) assign -> ID ASSIGN . DCONSTANT SEMI
+
+    ICONSTANT       shift and go to state 33
+    DCONSTANT       shift and go to state 34
+
+
+state 26
+
+    (3) statements -> statements statements .
+    (3) statements -> statements . statements
+    (3) statements -> . statements statements
+    (4) statements -> . epsilon
+    (5) statements -> . declare
+    (6) statements -> . assign
+    (7) statements -> . print
+    (15) epsilon -> .
+    (8) declare -> . INTEGER ID SEMI
+    (9) declare -> . DOUBLE ID SEMI
+    (10) assign -> . ID ASSIGN ICONSTANT SEMI
+    (11) assign -> . ID ASSIGN DCONSTANT SEMI
+    (12) print -> . PRINT_INTEGER LPAREN ID RPAREN SEMI
+    (13) print -> . PRINT_STRING LPAREN SCONSTANT RPAREN SEMI
+    (14) print -> . PRINT_DOUBLE LPAREN ID RPAREN SEMI
+
+  ! reduce/reduce conflict for INTEGER resolved using rule 3 (statements -> statements statements .)
+  ! reduce/reduce conflict for DOUBLE resolved using rule 3 (statements -> statements statements .)
+  ! reduce/reduce conflict for ID resolved using rule 3 (statements -> statements statements .)
+  ! reduce/reduce conflict for PRINT_INTEGER resolved using rule 3 (statements -> statements statements .)
+  ! reduce/reduce conflict for PRINT_STRING resolved using rule 3 (statements -> statements statements .)
+  ! reduce/reduce conflict for PRINT_DOUBLE resolved using rule 3 (statements -> statements statements .)
+  ! reduce/reduce conflict for RCURLY resolved using rule 3 (statements -> statements statements .)
+  ! shift/reduce conflict for INTEGER resolved as shift
+  ! shift/reduce conflict for DOUBLE resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for PRINT_INTEGER resolved as shift
+  ! shift/reduce conflict for PRINT_STRING resolved as shift
+  ! shift/reduce conflict for PRINT_DOUBLE resolved as shift
+    RCURLY          reduce using rule 3 (statements -> statements statements .)
+    INTEGER         shift and go to state 13
+    DOUBLE          shift and go to state 20
+    ID              shift and go to state 14
+    PRINT_INTEGER   shift and go to state 21
+    PRINT_STRING    shift and go to state 22
+    PRINT_DOUBLE    shift and go to state 23
+
+  ! INTEGER         [ reduce using rule 3 (statements -> statements statements .) ]
+  ! DOUBLE          [ reduce using rule 3 (statements -> statements statements .) ]
+  ! ID              [ reduce using rule 3 (statements -> statements statements .) ]
+  ! PRINT_INTEGER   [ reduce using rule 3 (statements -> statements statements .) ]
+  ! PRINT_STRING    [ reduce using rule 3 (statements -> statements statements .) ]
+  ! PRINT_DOUBLE    [ reduce using rule 3 (statements -> statements statements .) ]
+  ! INTEGER         [ reduce using rule 15 (epsilon -> .) ]
+  ! DOUBLE          [ reduce using rule 15 (epsilon -> .) ]
+  ! ID              [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_INTEGER   [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_STRING    [ reduce using rule 15 (epsilon -> .) ]
+  ! PRINT_DOUBLE    [ reduce using rule 15 (epsilon -> .) ]
+  ! RCURLY          [ reduce using rule 15 (epsilon -> .) ]
+
+    statements                     shift and go to state 26
+    epsilon                        shift and go to state 16
+    declare                        shift and go to state 17
+    assign                         shift and go to state 18
+    print                          shift and go to state 19
+
+state 27
+
+    (2) function -> FUNCTION INTEGER ID LPAREN RPAREN LCURLY statements RCURLY .
+
+    RCURLY          reduce using rule 2 (function -> FUNCTION INTEGER ID LPAREN RPAREN LCURLY statements RCURLY .)
+
+
+state 28
+
+    (9) declare -> DOUBLE ID . SEMI
+
+    SEMI            shift and go to state 35
+
+
+state 29
+
+    (12) print -> PRINT_INTEGER LPAREN . ID RPAREN SEMI
+
+    ID              shift and go to state 36
+
+
+state 30
+
+    (13) print -> PRINT_STRING LPAREN . SCONSTANT RPAREN SEMI
+
+    SCONSTANT       shift and go to state 37
+
+
+state 31
+
+    (14) print -> PRINT_DOUBLE LPAREN . ID RPAREN SEMI
+
+    ID              shift and go to state 38
+
+
+state 32
+
+    (8) declare -> INTEGER ID SEMI .
+
+    RCURLY          reduce using rule 8 (declare -> INTEGER ID SEMI .)
+    INTEGER         reduce using rule 8 (declare -> INTEGER ID SEMI .)
+    DOUBLE          reduce using rule 8 (declare -> INTEGER ID SEMI .)
+    ID              reduce using rule 8 (declare -> INTEGER ID SEMI .)
+    PRINT_INTEGER   reduce using rule 8 (declare -> INTEGER ID SEMI .)
+    PRINT_STRING    reduce using rule 8 (declare -> INTEGER ID SEMI .)
+    PRINT_DOUBLE    reduce using rule 8 (declare -> INTEGER ID SEMI .)
+
+
+state 33
+
+    (10) assign -> ID ASSIGN ICONSTANT . SEMI
+
+    SEMI            shift and go to state 39
+
+
+state 34
+
+    (11) assign -> ID ASSIGN DCONSTANT . SEMI
+
+    SEMI            shift and go to state 40
+
+
+state 35
+
+    (9) declare -> DOUBLE ID SEMI .
+
+    RCURLY          reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+    INTEGER         reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+    DOUBLE          reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+    ID              reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+    PRINT_INTEGER   reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+    PRINT_STRING    reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+    PRINT_DOUBLE    reduce using rule 9 (declare -> DOUBLE ID SEMI .)
+
+
+state 36
+
+    (12) print -> PRINT_INTEGER LPAREN ID . RPAREN SEMI
+
+    RPAREN          shift and go to state 41
+
+
+state 37
+
+    (13) print -> PRINT_STRING LPAREN SCONSTANT . RPAREN SEMI
+
+    RPAREN          shift and go to state 42
+
+
+state 38
+
+    (14) print -> PRINT_DOUBLE LPAREN ID . RPAREN SEMI
+
+    RPAREN          shift and go to state 43
+
+
+state 39
+
+    (10) assign -> ID ASSIGN ICONSTANT SEMI .
+
+    RCURLY          reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+    INTEGER         reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+    DOUBLE          reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+    ID              reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+    PRINT_INTEGER   reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+    PRINT_STRING    reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+    PRINT_DOUBLE    reduce using rule 10 (assign -> ID ASSIGN ICONSTANT SEMI .)
+
+
+state 40
+
+    (11) assign -> ID ASSIGN DCONSTANT SEMI .
+
+    RCURLY          reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+    INTEGER         reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+    DOUBLE          reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+    ID              reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+    PRINT_INTEGER   reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+    PRINT_STRING    reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+    PRINT_DOUBLE    reduce using rule 11 (assign -> ID ASSIGN DCONSTANT SEMI .)
+
+
+state 41
+
+    (12) print -> PRINT_INTEGER LPAREN ID RPAREN . SEMI
+
+    SEMI            shift and go to state 44
+
+
+state 42
+
+    (13) print -> PRINT_STRING LPAREN SCONSTANT RPAREN . SEMI
+
+    SEMI            shift and go to state 45
+
+
+state 43
+
+    (14) print -> PRINT_DOUBLE LPAREN ID RPAREN . SEMI
+
+    SEMI            shift and go to state 46
+
+
+state 44
+
+    (12) print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .
+
+    RCURLY          reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+    INTEGER         reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+    DOUBLE          reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+    ID              reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+    PRINT_INTEGER   reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+    PRINT_STRING    reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+    PRINT_DOUBLE    reduce using rule 12 (print -> PRINT_INTEGER LPAREN ID RPAREN SEMI .)
+
+
+state 45
+
+    (13) print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .
+
+    RCURLY          reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+    INTEGER         reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+    DOUBLE          reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+    ID              reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+    PRINT_INTEGER   reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+    PRINT_STRING    reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+    PRINT_DOUBLE    reduce using rule 13 (print -> PRINT_STRING LPAREN SCONSTANT RPAREN SEMI .)
+
+
+state 46
+
+    (14) print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .
+
+    RCURLY          reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+    INTEGER         reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+    DOUBLE          reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+    ID              reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+    PRINT_INTEGER   reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+    PRINT_STRING    reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+    PRINT_DOUBLE    reduce using rule 14 (print -> PRINT_DOUBLE LPAREN ID RPAREN SEMI .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for INTEGER in state 12 resolved as shift
+WARNING: shift/reduce conflict for DOUBLE in state 12 resolved as shift
+WARNING: shift/reduce conflict for ID in state 12 resolved as shift
+WARNING: shift/reduce conflict for PRINT_INTEGER in state 12 resolved as shift
+WARNING: shift/reduce conflict for PRINT_STRING in state 12 resolved as shift
+WARNING: shift/reduce conflict for PRINT_DOUBLE in state 12 resolved as shift
+WARNING: shift/reduce conflict for RCURLY in state 15 resolved as shift
+WARNING: shift/reduce conflict for INTEGER in state 15 resolved as shift
+WARNING: shift/reduce conflict for DOUBLE in state 15 resolved as shift
+WARNING: shift/reduce conflict for ID in state 15 resolved as shift
+WARNING: shift/reduce conflict for PRINT_INTEGER in state 15 resolved as shift
+WARNING: shift/reduce conflict for PRINT_STRING in state 15 resolved as shift
+WARNING: shift/reduce conflict for PRINT_DOUBLE in state 15 resolved as shift
+WARNING: shift/reduce conflict for INTEGER in state 26 resolved as shift
+WARNING: shift/reduce conflict for DOUBLE in state 26 resolved as shift
+WARNING: shift/reduce conflict for ID in state 26 resolved as shift
+WARNING: shift/reduce conflict for PRINT_INTEGER in state 26 resolved as shift
+WARNING: shift/reduce conflict for PRINT_STRING in state 26 resolved as shift
+WARNING: shift/reduce conflict for PRINT_DOUBLE in state 26 resolved as shift
+WARNING: reduce/reduce conflict in state 26 resolved using rule (statements -> statements statements)
+WARNING: rejected rule (epsilon -> <empty>) in state 26

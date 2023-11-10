@@ -1,4 +1,1 @@
-clex
-lex.yy.c
-/results
-diff.py
+__pycache__
