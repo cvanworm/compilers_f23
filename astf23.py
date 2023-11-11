@@ -43,7 +43,7 @@ def get_children(children):
     return leaves
 
 
-def leaf_node(token, left, right):
+def node(token, left, right):
     """token (string)
     value (string)"""
     return {
