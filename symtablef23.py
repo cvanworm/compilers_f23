@@ -2,6 +2,16 @@ sym_table = []
 
 # add symbol to table
 def symbol_add(scope, token, name, value='', symtype=''):
+    """Adds a symbol to the symbol table, or updates its value if it already exists
+
+    Parameters:
+    scope (string): Scope of the symbol
+    token (string): Token of the symbol
+    name (string): Name of the symbol
+    value (string): Value of the symbol
+    symtype (string): Type of the symbol
+
+    """
     symbol = {
         'scope': scope,
         'token': token,
@@ -19,6 +29,16 @@ def symbol_add(scope, token, name, value='', symtype=''):
 
 # retrive symbol from table
 def symbol_find(scope, name):
+    """Finds a symbol in the symbol table
+
+    Parameters:
+    scope (string): Scope of the symbol
+    name (string): Name of the symbol
+
+    Returns:
+    symbol || none:Symbol if found, None otherwise
+    
+    """
     for symbol in sym_table:
         if symbol['scope'] == scope and symbol['name'] == name:
             return symbol
