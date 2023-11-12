@@ -26,16 +26,28 @@ def function_node(id, return_type, children):
     node:Function node
 
     """
-    if children == [None]:
-        return {
-            "name": "FUNCTION",
-            "node": id,
-            "return_type": return_type,
-        }
     return {
         "name": "FUNCTION",
         "node": id,
         "return_type": return_type,
+        "children": children,
+    }
+
+def procedure_node(id, parameters, children):
+    """Creates and returns a procedure node
+
+    Parameters:
+    id (string): Name of the procedure
+    children (list[node]): List of children nodes
+
+    Returns:
+    node:Procedure node
+
+    """
+    return {
+        "name": "PROCEDURE",
+        "node": id,
+        "parameters": parameters,
         "children": children,
     }
 
@@ -89,6 +101,38 @@ def node(token, left, right):
     }
 
 
+def add_node_numbers(ast):
+    """Adds node numbers to the AST
+
+    Parameters:
+    ast (node): Root node of the AST
+
+    Returns:
+    node:Root node of the AST with node numbers
+    """
+    def add_node_numbers_helper(ast, node_number):
+        print("NODE", ast)
+        if "children" not in ast:
+            # ast["name"] += ' ' + str(node_number)
+            # node_number += 1
+            # print("AST", ast)
+            pass
+        else:
+            print("CHILDREN", ast["children"])
+            ast["name"] += ' #' + str(node_number)
+            # ast["node#"] = str(node_number)
+            print("AST", ast)
+            for child in ast["children"]:
+                print("CHILD", child)
+                node_number += 1
+                child = add_node_numbers_helper(child, node_number)
+        return ast
+    ast = add_node_numbers_helper(ast, 0)
+    return ast
+
+   
+
+
 def print_ast(ast):
     """Prints the AST in a tree format
 
@@ -96,7 +140,18 @@ def print_ast(ast):
     ast (node): Root node of the AST
 
     """
+    ast = add_node_numbers(ast)
     root = nested_dict_to_tree(ast)
     print('\n{:=^80}'.format("Abstract Syntax Tree"))
-    root.show(attr_list=["node", "return_type"])
+    root.show(attr_list=["node", "return_type", "parameters", "node#"])
+    # root.show(attr_list=["node", "return_type", "node#"])
     print("="*80)
+
+declare = node("DECLARE", 'integer', 'i')
+statements = statements_node(declare)
+function = function_node("main", "integer", [statements])
+root = program_node("tiny", [function])
+
+# print("ROOT", root)
+# print_ast(add_node_numbers(root))
+
