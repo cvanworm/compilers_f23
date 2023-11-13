@@ -62,10 +62,11 @@ def statements_node(children):
     node:Statements node
 
     """
-    return {
-        "name": "STATEMENTS",
-        "children": get_children(children),
-    }
+    # return {
+    #     "name": "STATEMENTS",
+    #     "children": get_children(children),
+    # }
+    return get_children(children)
 
 def find_leaves(leaves, nested):
     if type(nested) == dict:

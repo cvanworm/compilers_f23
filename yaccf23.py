@@ -32,13 +32,13 @@ def p_program_body_empty(p):
 def p_function(p):
     'function : K_FUNCTION K_INTEGER ID LPAREN RPAREN LCURLY statements RCURLY'
     p[7] = statements_node(p[7])
-    p[0] = function_node(p[3], p[2], [p[7]])
+    p[0] = function_node(p[3], p[2], p[7])
     symbol_add('function', p[1], p[3])
 
 def p_procedure(p):
     'procedure : K_PROCEDURE ID LPAREN parameter_list RPAREN LCURLY statements RCURLY'
     p[7] = statements_node(p[7])
-    p[0] = procedure_node(p[2], [p[4]], [p[7]])
+    p[0] = procedure_node(p[2], [p[4]], p[7])
     symbol_add('procedure', p[1], p[2])
 
 def p_parameter_list(p):
