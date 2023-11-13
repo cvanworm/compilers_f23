@@ -11,7 +11,8 @@ def program_node(id, children):
     node:Program node
 
     """
-    return {"name": "PROGRAM", "node": id, "children": children}
+    # print("CHILDREN", get_children(children))
+    return {"name": "PROGRAM", "id": id, "children": get_children(children)}
 
 
 def function_node(id, return_type, children):
@@ -28,7 +29,7 @@ def function_node(id, return_type, children):
     """
     return {
         "name": "FUNCTION",
-        "node": id,
+        "id": id,
         "return_type": return_type,
         "children": children,
     }
@@ -46,8 +47,8 @@ def procedure_node(id, parameters, children):
     """
     return {
         "name": "PROCEDURE",
-        "node": id,
-        "parameters": parameters,
+        "id": id,
+        "parameters": get_parameters(parameters),
         "children": children,
     }
 
@@ -67,18 +68,28 @@ def statements_node(children):
     }
 
 def find_leaves(leaves, nested):
-        if type(nested) == dict:
-            leaves.append(nested)
-        elif type(nested) == list and len(nested) > 0:
-            find_leaves(leaves, nested.pop())
-            find_leaves(leaves, nested)
+    if type(nested) == dict:
+        leaves.append(nested)
+    elif type(nested) == list and len(nested) > 0:
+        find_leaves(leaves, nested.pop())
+        find_leaves(leaves, nested)
 
 def get_children(children):
     leaves = []
     find_leaves(leaves, children)
-    # print("LEAVES",leaves)
     return leaves
 
+def find_parameters(params, nested):
+    if type(nested) == tuple:
+        params.append(nested)
+    elif type(nested) == list and len(nested) > 0:
+        find_parameters(params, nested.pop())
+        find_parameters(params, nested)
+
+def get_parameters(parameters):
+    params = []
+    find_parameters(params, parameters)
+    return params
 
 def node(token, left, right):
     """Creates and returns a generic node with exactly TWO children
@@ -111,19 +122,15 @@ def add_node_numbers(ast):
     node:Root node of the AST with node numbers
     """
     def add_node_numbers_helper(ast, node_number):
-        print("NODE", ast)
         if "children" not in ast:
             # ast["name"] += ' ' + str(node_number)
             # node_number += 1
             # print("AST", ast)
             pass
         else:
-            print("CHILDREN", ast["children"])
             ast["name"] += ' #' + str(node_number)
             # ast["node#"] = str(node_number)
-            print("AST", ast)
             for child in ast["children"]:
-                print("CHILD", child)
                 node_number += 1
                 child = add_node_numbers_helper(child, node_number)
         return ast
@@ -143,7 +150,7 @@ def print_ast(ast):
     ast = add_node_numbers(ast)
     root = nested_dict_to_tree(ast)
     print('\n{:=^80}'.format("Abstract Syntax Tree"))
-    root.show(attr_list=["node", "return_type", "parameters", "node#"])
+    root.show(attr_list=["id", "return_type", "parameters", "node#"])
     # root.show(attr_list=["node", "return_type", "node#"])
     print("="*80)
 
