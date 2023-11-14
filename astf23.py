@@ -111,19 +111,15 @@ def add_node_numbers(ast):
     node:Root node of the AST with node numbers
     """
     def add_node_numbers_helper(ast, node_number):
-        print("NODE", ast)
         if "children" not in ast:
             # ast["name"] += ' ' + str(node_number)
             # node_number += 1
             # print("AST", ast)
             pass
         else:
-            print("CHILDREN", ast["children"])
             ast["name"] += ' #' + str(node_number)
             # ast["node#"] = str(node_number)
-            print("AST", ast)
             for child in ast["children"]:
-                print("CHILD", child)
                 node_number += 1
                 child = add_node_numbers_helper(child, node_number)
         return ast

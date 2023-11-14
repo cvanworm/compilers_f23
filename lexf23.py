@@ -121,12 +121,20 @@ def t_KEYWORD(t):
     return t
 
 def t_DCONSTANT(t):
-    r'[+-]?[0-9]+\.[0-9]+'
-    t.value = float(t.value)
+    r'([+-]?[0-9]+\.[0-9]*)([dD][+-]?[0-9]+)?'
+    try:
+        t.value = float(t.value)
+    except ValueError:
+        numbers = []
+        if 'd' in t.value:
+            numbers = t.value.split('d')
+        elif 'D' in t.value:
+            numbers = t.value.split('D')
+        t.value = float(numbers[0]) * (10 ** float(numbers[1]))
     return t
 
 def t_ICONSTANT(t):
-    r'[0-9]+'
+    r'-?[0-9]+'
     t.value = int(t.value)
     return t
 
@@ -152,8 +160,8 @@ lexer = lex.lex()
 # lexer = lex.lex(debug=True)
 
 # Give the lexer some input
-file = open("tiniest.txt", "r")
-lexer.input(file.read())
+# file = open("tiniest.txt", "r")
+# lexer.input(file.read())
 
 # Tokenize
 # while True:

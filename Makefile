@@ -1,21 +1,12 @@
-code = tiny_example_1.txt
+code = 1
 
-all: lex yacc clex run py
+all: copy py
 
-lex: lexer.lex
-	lex lexer.lex
+copy: tiniest.txt
+	cp ./examples/tiny_example_$(code).txt tiniest.txt
 
-yacc: parse.yacc
-	yacc -d parse.yacc
-
-clex: lex.yy.c
-	gcc -o clex lex.yy.c y.tab.c -w
-
-run: clex
-	./clex < $(code) > results.txt
-
-py: addNodeNums.py
-	python3 addNodeNums.py
+py: yaccf23.py
+	python3 yaccf23.py -s > results.txt
 
 clean: 
-	rm clex lex.yy.c results.txt y.tab.c y.tab.h
+	rm parser.out parsetab.py results.txt
