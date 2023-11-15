@@ -1,3 +1,4 @@
+
 access_times = {
     "R": 1,
     "F": 2,
@@ -10,5 +11,8 @@ access_times = {
     # "Everything else": 1,
 }
 
-
+def main(p):
+    # print(symbol_get_type("statements", "i"))
+    # symbol_add_mem("statements", "i", 143280)
+    pass
 

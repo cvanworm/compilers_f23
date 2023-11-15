@@ -3,16 +3,18 @@ import ply.yacc as yacc
 # Get the token map from the lexer.  This is required.
 from lexf23 import tokens
 # Get the symbol table
-from symtablef23 import symbol_add, print_symbol_table, symbol_find
+import symtablef23 as symbol_table
 # Get the AST
 from astf23 import program_node, function_node, print_ast, node, statements_node, procedure_node
+# code generation
+from codegenf23 import main
 # flags
 import sys
 
 def p_program(p):
     'program : K_PROGRAM ID LCURLY program_body RCURLY'
     p[0] = program_node(p[2], [p[4]])
-    symbol_add('global', p[1], p[2])
+    SymbolTable.add('global', p[1], p[2])
     print("valid code".upper())
     return p[0]
 
@@ -33,13 +35,13 @@ def p_function(p):
     'function : K_FUNCTION K_INTEGER ID LPAREN RPAREN LCURLY statements RCURLY'
     p[7] = statements_node(p[7])
     p[0] = function_node(p[3], p[2], p[7])
-    symbol_add('function', p[1], p[3])
+    SymbolTable.add('function', p[1], p[3])
 
 def p_procedure(p):
     'procedure : K_PROCEDURE ID LPAREN parameter_list RPAREN LCURLY statements RCURLY'
     p[7] = statements_node(p[7])
     p[0] = procedure_node(p[2], [p[4]], p[7])
-    symbol_add('procedure', p[1], p[2])
+    SymbolTable.add('procedure', p[1], p[2])
 
 def p_parameter_list(p):
     '''parameter_list : parameter_list COMMA parameter
@@ -54,7 +56,7 @@ def p_parameter(p):
                 | K_DOUBLE ID
                 | K_STRING ID'''
     p[0] = (p[2], p[1])
-    symbol_add('parameter', p[1], p[2], '', p[1])
+    SymbolTable.add('parameter', p[1], p[2], '', p[1])
 
 def p_parameter_empty(p):
     'parameter : epsilon'
@@ -79,7 +81,7 @@ def p_statements_empty(p):
 def p_declare(p):
     '''declare : K_INTEGER ID SEMI
              | K_DOUBLE ID SEMI'''    
-    symbol_add('statements', 'id', p[2], '', p[1])
+    SymbolTable.add('statements', 'id', p[2], '', p[1])
     p[0] = node("DECLARE", p[2], p[1])
 
 def p_assign(p):
@@ -87,10 +89,10 @@ def p_assign(p):
             | ID ASSIGN DCONSTANT SEMI
             | ID ASSIGN SCONSTANT SEMI
             | ID ASSIGN math SEMI'''
-    err = symbol_find('statements', p[1])
+    err = SymbolTable.get_value('statements', p[1])
     if err == None:
         sys.exit("Error: variable " + p[1] + " not declared on line " + str(p.lineno(1)))
-    symbol_add('statements', 'id', p[1], p[3])
+    SymbolTable.add('statements', 'id', p[1], p[3])
     p[0] = node("ASSIGN", p[3], p[1])
 
 
@@ -155,7 +157,7 @@ def p_factor_num(p):
 
 def p_factor_id(p):
     'factor : ID'
-    err = symbol_find('statements', p[1])
+    err = SymbolTable.get_value('statements', p[1])
     if err == None:
         sys.exit("Error: variable " + p[1] + " not defined on line " + str(p.lineno(1)))
     p[0] = err
@@ -184,17 +186,22 @@ if len(sys.argv) > 1:
 # Build the parser
 parser = yacc.yacc()
 
+# SymbolTable instance
+SymbolTable = symbol_table.SymbolTable()
+
 s = open('tiniest.txt','r').read()
 p = parser.parse(s)
 
+# main(p)
+
 if len(sys.argv) > 1:
     if sys.argv[1] == "-s":
-        print_symbol_table()
+        SymbolTable.print()
     elif sys.argv[1] == "-a":
         print_ast(p)
     elif sys.argv[1] == "-r":
         print(p)
     elif sys.argv[1] == "-all":
         print_ast(p)
-        print_symbol_table()
+        SymbolTable.print()
 
