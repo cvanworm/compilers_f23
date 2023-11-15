@@ -47,6 +47,11 @@ def symbol_find(scope, name):
 def symbol_count():
     return len(sym_table)
 
+def stack_size():
+    r = 0
+    fr = 0
+    
+
 def get_symbol_table():
     return sym_table
 

@@ -1,4 +1,7 @@
+# Tree visualization
 from bigtree import nested_dict_to_tree
+# Create deep copy of tree for node number visualization
+import copy
 
 def program_node(id, children):
     """Creates and returns a program node
@@ -123,21 +126,12 @@ def add_node_numbers(ast):
     node:Root node of the AST with node numbers
     """
     def add_node_numbers_helper(ast, node_number):
-        if "children" not in ast:
-            # ast["name"] += ' ' + str(node_number)
-            # node_number += 1
-            print("leaf", ast['name'])
-            # pass
-        else:
+        if "children" in ast:
             ast["name"] += ' #' + str(node_number)
-            print("node", ast['name'])
-            # ast["node#"] = str(node_number)
             for child in ast["children"]:
                 node_number += 1
                 child = add_node_numbers_helper(child, node_number)
-        return ast
     ast = add_node_numbers_helper(ast, 0)
-    return ast
 
    
 
@@ -149,18 +143,13 @@ def print_ast(ast):
     ast (node): Root node of the AST
 
     """
-    ast = add_node_numbers(ast)
-    root = nested_dict_to_tree(ast)
+    copy_ast = copy.deepcopy(ast)
+    add_node_numbers(copy_ast)
+    root = nested_dict_to_tree(copy_ast)
     print('\n{:=^80}'.format("Abstract Syntax Tree"))
     root.show(attr_list=["id", "return_type", "parameters", "node#"])
     # root.show(attr_list=["node", "return_type", "node#"])
     print("="*80)
 
-declare = node("DECLARE", 'integer', 'i')
-statements = statements_node(declare)
-function = function_node("main", "integer", [statements])
-root = program_node("tiny", [function])
 
-# print("ROOT", root)
-# print_ast(add_node_numbers(root))
 
