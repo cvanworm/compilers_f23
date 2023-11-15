@@ -70,6 +70,18 @@ class SymbolTable:
         symbol = self.__find_symbol(scope, name)
         return symbol.get_type() if symbol else None
     
+    def get_mem(self, scope, name):
+        """Returns the memory address of a symbol in the symbol table
+
+        Parameters:
+        scope (string): Scope of the symbol
+        name (string): Name of the symbol
+
+        Returns:
+        symbol.memory || None
+        """
+        symbol = self.__find_symbol(scope, name)
+        return symbol.memory if symbol else None
 
     def print(self):
         print('\n{:=^100}'.format("SYMBOL TABLE"))
