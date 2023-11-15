@@ -192,7 +192,7 @@ SymbolTable = symbol_table.SymbolTable()
 s = open('tiniest.txt','r').read()
 p = parser.parse(s)
 
-# main(p)
+main(p, SymbolTable)
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "-s":
@@ -202,6 +202,7 @@ if len(sys.argv) > 1:
     elif sys.argv[1] == "-r":
         print(p)
     elif sys.argv[1] == "-all":
+        print(p)
         print_ast(p)
         SymbolTable.print()
 

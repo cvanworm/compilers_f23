@@ -151,13 +151,6 @@ def print_ast(ast):
     # root.show(attr_list=["node", "return_type", "node#"])
     print("="*80)
 
-
-def walkTree():
-    """Walks the AST and performs code generation in yourmain.h"""
-    mainf = open("yourmain.h", "a")
-
-    type = type_find(scope, name)
     
-    mainf.close()
     
     
