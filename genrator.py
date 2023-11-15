@@ -1,3 +1,4 @@
+from symtablef23 import symbol_find, symbol_add_mem, mem_find
 
 def assign_int(scope, name, stack_index, ir_index, filename):
     """Prints generated code for an integer assignment to yourmain.h
@@ -12,7 +13,7 @@ def assign_int(scope, name, stack_index, ir_index, filename):
     Returns:
     ir_index: Current index of next empty integer register
     """
-    value = sybol_find(scope, name)
+    value = symbol_find(scope, name)
 
     filename.write(f"R[{ir_index}] = {value}\n")
     filename.write(f"F23_Time += 1\n")
@@ -36,7 +37,7 @@ def assign_float(scope, name, stack_index, fr_index, filename):
     Returns:
     fr_index: Current index of next empty float register
     """
-    value = sybol_find(scope, name)
+    value = symbol_find(scope, name)
 
     filename.write(f"F[{fr_index}] = {value}\n")
     filename.write(f"F23_Time += 1\n")
@@ -59,8 +60,8 @@ def assign_string(scope, name):
     #I am not sure what to do here yet
 
 
-def print_statement(scope, name, filename):
-    """Prints generated code for print statement to yourmain.h regardless of type
+def print_variable(scope, name, type, filename):
+    """Prints generated code for a variable print statement to yourmain.h regardless of type
 
     Parameters:
     scope (string): Scope of the symbol
@@ -69,6 +70,18 @@ def print_statement(scope, name, filename):
     """
     mem = mem_find(scope, name)
 
+    filename.write(f"print_{type}({mem})\n")
+    filename.write(f"F23_Time += 20\n")
+
+def print_string_literal(value, filename):
+    """Prints generated code for a string literal print statement to yourmain.h
+
+    Parameters:
+    value (string): Value of the string literal
+    filename (string): Name of the file to write to
+    """
+    filename.write(f"Mem[] = {value}\n")
+    filename.write(f"F23_Time += 20\n")
     filename.write(f"print_int({mem})\n")
     filename.write(f"F23_Time += 20\n")
 
