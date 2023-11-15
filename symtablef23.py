@@ -41,7 +41,7 @@ def symbol_find(scope, name):
     """
     for symbol in sym_table:
         if symbol['scope'] == scope and symbol['name'] == name:
-            return symbol
+            return symbol['value']
     return None
 
 def symbol_count():

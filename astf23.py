@@ -126,10 +126,11 @@ def add_node_numbers(ast):
         if "children" not in ast:
             # ast["name"] += ' ' + str(node_number)
             # node_number += 1
-            # print("AST", ast)
-            pass
+            print("leaf", ast['name'])
+            # pass
         else:
             ast["name"] += ' #' + str(node_number)
+            print("node", ast['name'])
             # ast["node#"] = str(node_number)
             for child in ast["children"]:
                 node_number += 1
