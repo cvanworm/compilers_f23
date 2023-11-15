@@ -82,7 +82,7 @@ def print_string_literal(value, filename):
     """
     filename.write(f"Mem[] = {value}\n")
     filename.write(f"F23_Time += 20\n")
-    filename.write(f"print_int({mem})\n")
+    filename.write(f"print_int(Mem[])\n")
     filename.write(f"F23_Time += 20\n")
 
 
