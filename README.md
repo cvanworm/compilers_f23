@@ -24,7 +24,7 @@ Our code generator (codegenf23.py) generates code for the program. It walks the 
 ## Technologies
 This program uses ply and bigtree. Ply is the Python yacc and lex library. Bigtree is a library used to visualize the abstract syntax tree. To download these libraries on Linux use the commands below. [Read more here](https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-generator/)
 - `$ sudo apt install python3-pip`
-- `$ pip install ply`sudo apt-get install flex
+- `$ pip install ply`
 - `$ pip install 'bigtree[all]'`
 
 ### Authors
