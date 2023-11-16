@@ -202,7 +202,7 @@ if len(sys.argv) > 1:
     elif sys.argv[1] == "-r":
         print(p)
     elif sys.argv[1] == "-all":
-        print(p)
+        # print(p)
         print_ast(p)
         SymbolTable.print()
 

@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable
+from genrator import assign_int, print_variable, print_sconstant
 
 access_times = {
     "R": 1,
@@ -12,8 +12,8 @@ access_times = {
     # "Everything else": 1,
 }
 SI = 0
-IR = 0
-FR = 0
+IR = 1
+FR = 1
 
 def main(tree, symboltable):
     global file
@@ -21,8 +21,9 @@ def main(tree, symboltable):
     SymbolTable = symboltable
     file = open("yourmain.h", "w+")
     file.write("int yourmain() {\n")
-    
+    file.write(f"SR -= {SymbolTable.get_symbol_counts()};\n")
     walk(tree)
+    file.write(f"SR += {SymbolTable.get_symbol_counts()};\n")
     file.write("return 0;\n")
     file.write("}\n")
     file.close()
@@ -54,6 +55,9 @@ def assign_code(scope, name):
     
 
 def print_code(scope, name):
-    type = SymbolTable.get_type(scope, name)
-    mem = SymbolTable.get_mem(scope, name)
-    print_variable(mem, type, file)
+    if name[0] == '"':
+        print_sconstant(name, file)
+    else:
+        type = SymbolTable.get_type(scope, name)
+        mem = SymbolTable.get_mem(scope, name)
+        print_variable(mem, type, file)

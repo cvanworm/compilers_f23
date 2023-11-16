@@ -88,7 +88,9 @@ class SymbolTable:
         print("\n{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format("Scope", "Token", "Name", "Value", "Type", "Memory"))
         for symbol in self.symbols:
             print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(symbol.scope, str(symbol.token), symbol.name, str(symbol.value), symbol.type, symbol.memory))
-        print("\nNumber of symbols:" , self.__get_total_symbols())
+        print()
+        self.__get_symbol_stats()
+        print(f"SR offset: {self.get_symbol_counts()}")
         print("="*100)
 
     def __find_symbol(self, scope, name):
@@ -106,8 +108,13 @@ class SymbolTable:
                 return symbol
         return None
     
-    def __get_total_symbols(self):
-        return self.integers + self.doubles + self.strings
+    def __get_symbol_stats(self):
+        print("Number of integers:", self.integers)
+        print("Number of doubles:", self.doubles)
+        print("Number of strings:", self.strings)
+
+    def get_symbol_counts(self):
+        return self.integers + (2 * self.doubles ) + (4 * self.strings)
     
 
 

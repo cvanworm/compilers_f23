@@ -146,10 +146,10 @@ def print_ast(ast):
     copy_ast = copy.deepcopy(ast)
     add_node_numbers(copy_ast)
     root = nested_dict_to_tree(copy_ast)
-    print('\n{:=^80}'.format("Abstract Syntax Tree"))
+    print('\n{:=^100}'.format("Abstract Syntax Tree"))
     root.show(attr_list=["id", "return_type", "parameters", "node#"])
     # root.show(attr_list=["node", "return_type", "node#"])
-    print("="*80)
+    print("="*100)
 
     
     

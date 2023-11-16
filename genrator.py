@@ -19,6 +19,29 @@ def assign_int(value, stack_index, ir_index, filename):
     return f"Mem[SR + {stack_index}]"
 
 
+def print_sconstant(sconstant, filename):
+    """Prints generated code for a string constant to yourmain.h
+
+    Parameters:
+    sconstant (string): Value of the string literal
+    filename (string): Name of the file to write to
+    """
+    filename.write(f"print_string({sconstant});\n")
+    filename.write(f"F23_Time += 1;\n")
+
+def print_variable(mem, type, filename):
+    """Prints generated code for a variable print statement to yourmain.h regardless of type
+
+    Parameters:
+    mem (string): Memory address of the variable
+    type (string): Type of the variable
+    filename (string): Name of the file to write to
+    """
+    if type == "integer":
+        filename.write(f"print_int({mem});\n")
+    filename.write(f"F23_Time += 20 + 1;\n")
+
+
 def assign_float(scope, name, stack_index, fr_index, filename):
     """Prints generated code for an float assignment to yourmain.h
 
@@ -52,29 +75,6 @@ def assign_string(scope, name):
     #I am not sure what to do here yet
 
 
-def print_variable(mem, type, filename):
-    """Prints generated code for a variable print statement to yourmain.h regardless of type
-
-    Parameters:
-    mem (string): Memory address of the variable
-    type (string): Type of the variable
-    filename (string): Name of the file to write to
-    """
-    if type == "integer":
-        filename.write(f"print_int({mem});\n")
-    filename.write(f"F23_Time += 20;\n")
-
-def print_string_literal(value, filename):
-    """Prints generated code for a string literal print statement to yourmain.h
-
-    Parameters:
-    value (string): Value of the string literal
-    filename (string): Name of the file to write to
-    """
-    filename.write(f"Mem[] = {value}\n")
-    filename.write(f"F23_Time += 20\n")
-    filename.write(f"print_int(Mem[])\n")
-    filename.write(f"F23_Time += 20\n")
 
 
 

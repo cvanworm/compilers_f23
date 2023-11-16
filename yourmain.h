@@ -1,9 +1,11 @@
 int yourmain() {
-R[0] = 441;
+SR -= 1;
+R[1] = 441;
 F23_Time += 1;
-Mem[SR + 0] = R[0];
+Mem[SR + 0] = R[1];
 F23_Time += 20 + 1;
 print_int(Mem[SR + 0]);
-F23_Time += 20;
-return F23_Time;
+F23_Time += 20 + 1;
+SR += 1;
+return 0;
 }
