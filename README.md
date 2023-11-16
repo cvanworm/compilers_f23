@@ -1,22 +1,31 @@
 # Overview
-This program is a part of the compiler project for the course "Compiler Construction" at the University of Wyoming. **Languages include**: lex, yacc, and C
+This program is a part of the compiler project for the course "Compiler Construction" at the University of Wyoming. **Languages include**: ply, python
 
 ## Lexer
-Our lexer (lexer.lex) returns a series of tokens to our parser.
+Our lexer (lexf23.py) returns a series of tokens to our parser.
 
 ## Parser
-Our parser (parse.yacc) defines a context free grammar that outlines the structure of the language given in class. **Note**: This parser does not parse the entire class language.
+Our parser (yaccf23.py) defines a context free grammar that outlines the structure of the language given in class. **Note**: This parser does not parse the entire class language.
 
+## Symbol Table
+Our symbol table (symbol_table.py) is a list that stores the variables and their values and other helpful information.
+
+## Abstract Syntax Tree
+Our abstract syntax tree (astf23.py) is a tree that stores the structure of the program. It is used to help generate the code.
+
+## Code Generator
+Our code generator (codegenf23.py) generates code for the program. It walks the abstract syntax tree and generates code for each node. This file calls functions in genrator.py (spelled wrong once, kept it for fun) to actually output lines of code to yourmain.h.
 
 ## How to run
-- `$ make ` to compile and run lexer on tiny example 1 (tiny_example_1.txt)
-- `$ make code=tiny_example_2.txt ` to compile and run parser on the other tiny example
+- `$ make ` to compile and run tiny example 1 (tiny_example_1.txt)
+- `$ make code=2 ` to compile and run on the other tiny example
 - `$ make clean ` to remove extra files.
 
 ## Technologies
-This program uses lex and yacc. To download lex on Linux use the commands below. [Read more here](https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-generator/)
-- `$ sudo apt-get update`
-- `$ sudo apt-get install flex`
+This program uses ply and bigtree. Ply is the Python yacc and lex library. Bigtree is a library used to visualize the abstract syntax tree. To download these libraries on Linux use the commands below. [Read more here](https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-generator/)
+- `$ sudo apt install python3-pip`
+- `$ pip install ply`sudo apt-get install flex
+- `$ pip install 'bigtree[all]'`
 
 ### Authors
 - Calvin VanWormer
