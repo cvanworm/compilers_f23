@@ -52,15 +52,28 @@ def p_parameter_list(p):
         p[0] = p[1]
 
 def p_parameter(p):
-    '''parameter : K_INTEGER ID
-                | K_DOUBLE ID
-                | K_STRING ID'''
+    '''parameter : type ID'''
     p[0] = (p[2], p[1])
     SymbolTable.add('parameter', p[1], p[2], '', p[1])
+
+def p_type(p):
+    '''type : K_INTEGER
+            | K_DOUBLE
+            | K_STRING'''
+    p[0] = p[1]
+
+def p_value(p):
+    '''value : ICONSTANT
+            | DCONSTANT
+            | SCONSTANT
+            | ID'''
+    p[0] = p[1]
 
 def p_parameter_empty(p):
     'parameter : epsilon'
     p[0] = None
+
+
 
 
 def p_statements(p):
@@ -69,6 +82,7 @@ def p_statements(p):
 
 def p_statements_dapf(p):
     '''statements : declare 
+                  | declare_assign   
                   | assign 
                   | print 
                   | function_call'''
@@ -79,8 +93,7 @@ def p_statements_empty(p):
     p[0] = None
 
 def p_declare(p):
-    '''declare : K_INTEGER ID SEMI
-             | K_DOUBLE ID SEMI'''    
+    '''declare : type ID SEMI'''    
     SymbolTable.add('statements', 'id', p[2], '', p[1])
     p[0] = node("DECLARE", p[2], p[1])
 
@@ -94,6 +107,11 @@ def p_assign(p):
         sys.exit("Error: variable " + p[1] + " not declared on line " + str(p.lineno(1)))
     SymbolTable.add('statements', 'id', p[1], p[3])
     p[0] = node("ASSIGN", p[3], p[1])
+
+def p_declare_assign(p):
+    '''declare_assign : type ID ASSIGN value SEMI'''    
+    SymbolTable.add('statements', 'id', p[2], p[4], p[1])
+    p[0] = [node("ASSIGN", p[2], p[4]),node("DECLARE", p[2], p[1])]
 
 
 def p_print(p):
@@ -192,7 +210,9 @@ SymbolTable = symbol_table.SymbolTable()
 s = open('tiniest.txt','r').read()
 p = parser.parse(s)
 
-main(p, SymbolTable)
+# main(p, SymbolTable)
+print(p)
+print_ast(p)
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "-s":

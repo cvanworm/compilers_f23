@@ -131,6 +131,8 @@ def add_node_numbers(ast):
             for child in ast["children"]:
                 node_number += 1
                 child = add_node_numbers_helper(child, node_number)
+        else:
+            ast["name"] = str(ast["name"])
     ast = add_node_numbers_helper(ast, 0)
 
    

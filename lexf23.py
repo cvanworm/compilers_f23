@@ -109,7 +109,7 @@ t_PERIOD = r'\.'
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
-t_ignore_COMMENT = r'\#.*'
+t_ignore_COMMENT = r'\/\/.*'
 
 # A regular expression rule with some action code
 @TOKEN(identifier)

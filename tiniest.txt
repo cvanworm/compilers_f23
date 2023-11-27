@@ -1,9 +1,22 @@
+// ----------------------------------------------------------------------------
+//
+// This is the Fall 2023 target code for Compilers I.
+//
+// Your compiler should be able to lex, parse, and generate code for the
+// entire file by the end of the course.
+//
+// Written by: Craig C. Douglas
+// Modification history:
+//      Fri Aug 18 08:12:42 MDT 2023
+//
+// ----------------------------------------------------------------------------
+
 program tiny_example_1
 {
     function integer main()
     {
-        integer i;
-        i := 441;
-        print_integer( i );
+        //integer i;
+        //i := 1;
+        integer i := 0; 
     }
 }
