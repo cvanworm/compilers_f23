@@ -1,16 +1,16 @@
 code = 1
 
-all: parser py
+all: copy parser py 
 
 copy: tiniest.txt
 	cp ./examples/tiny_example_$(code).txt tiniest.txt
 
-parser: ./yacc/yacc_1_imports.py ./yacc/yacc_2_func_proc_param.py ./yacc/yacc_3_statements.py ./yacc/yacc_4_math.py ./yacc/yacc_5_run.py
-	cat ./yacc/yacc_1_imports.py ./yacc/yacc_2_func_proc_param.py ./yacc/yacc_3_statements.py ./yacc/yacc_4_math.py ./yacc/yacc_5_run.py > yaccf23.py
+parser: ./yacc/*.py
+	cat ./yacc/yacc_1* ./yacc/yacc_2* ./yacc/yacc_3* ./yacc/yacc_4* ./yacc/yacc_5* ./yacc/yacc_run.py > yaccf23.py
 
 
 py: yaccf23.py
-	python3 yaccf23.py
+	python3 yaccf23.py -all
 
 # py: yaccf23.py
 # 	python3 yaccf23.py -all > results.txt

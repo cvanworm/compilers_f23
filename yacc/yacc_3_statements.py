@@ -10,8 +10,20 @@ def p_statements_dapf(p):
                   | declare_assign   
                   | assign 
                   | print 
+                  | while
+                  | read
                   | function_call'''
     p[0] = p[1]
+
+def p_statement_dapf(p):
+    '''statement : declare 
+                 | declare_assign   
+                 | assign 
+                 | print 
+                 | while
+                 | function_call
+                 | read'''
+    p[0] = [p[1]]
 
 def p_statements_empty(p):
     'statements : epsilon'
@@ -45,6 +57,10 @@ def p_print(p):
              | K_PRINT_STRING LPAREN ID RPAREN SEMI
              | K_PRINT_DOUBLE LPAREN ID RPAREN SEMI'''
     p[0] = node("PRINT", p[3], p[1])
+
+def p_read(p):
+    '''read : K_READ_INTEGER LPAREN ID RPAREN SEMI'''
+    p[0] = node("READ", p[3], p[1])
 
 def p_function_call(p):
     'function_call : ID LPAREN ID RPAREN SEMI'

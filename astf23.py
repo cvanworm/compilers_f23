@@ -42,6 +42,7 @@ def procedure_node(id, parameters, children):
 
     Parameters:
     id (string): Name of the procedure
+    parameters (list[tuple]): List of parameters
     children (list[node]): List of children nodes
 
     Returns:
@@ -53,6 +54,24 @@ def procedure_node(id, parameters, children):
         "id": id,
         "parameters": get_parameters(parameters),
         "children": children,
+    }
+
+def loop_node(id, condition, children):
+    """Creates and returns a loop node
+
+    Parameters:
+    id (string): Name of the loop
+    condition (string): Condition of the loop
+    children (list[node]): List of children nodes
+
+    Returns:
+    node:Loop node
+
+    """
+    return {
+        "name": "WHILE",
+        "condition": f"({condition})",
+        "children": get_children(children),
     }
 
 def statements_node(children):
@@ -149,7 +168,7 @@ def print_ast(ast):
     add_node_numbers(copy_ast)
     root = nested_dict_to_tree(copy_ast)
     print('\n{:=^100}'.format("Abstract Syntax Tree"))
-    root.show(attr_list=["id", "return_type", "parameters", "node#"])
+    root.show(attr_list=["id", "return_type", "parameters", "node#", 'condition'])
     # root.show(attr_list=["node", "return_type", "node#"])
     print("="*100)
 

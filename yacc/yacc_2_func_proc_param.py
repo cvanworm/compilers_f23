@@ -30,18 +30,26 @@ def p_procedure(p):
     p[0] = procedure_node(p[2], [p[4]], p[7])
     SymbolTable.add('procedure', p[1], p[2])
 
+   
+
+def p_parameter(p):
+    '''parameter : type ID
+                 | type ID LBRACKET RBRACKET'''
+    if len(p) == 3:
+        p[0] = (p[2], p[1])
+        SymbolTable.add('parameter', p[1], p[2], '', p[1])
+    elif len(p) == 5:
+        p[0] = (p[2], f"{p[1]}[]")
+        SymbolTable.add('parameter', f"{p[1]}[]", p[2], '', f"{p[1]}[]")
+
+
 def p_parameter_list(p):
-    '''parameter_list : parameter_list COMMA parameter
+    '''parameter_list : parameter_list COMMA parameter_list
                       | parameter'''
     if len(p) == 4:
         p[0] = [p[3], p[1]]
     else:
         p[0] = p[1]
-
-def p_parameter(p):
-    '''parameter : type ID'''
-    p[0] = (p[2], p[1])
-    SymbolTable.add('parameter', p[1], p[2], '', p[1])
 
 def p_type(p):
     '''type : K_INTEGER

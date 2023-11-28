@@ -1,0 +1,18 @@
+program tiny_example_6
+{
+    function integer main()
+    {
+        while ( i >= 0 && i <= s1 )
+            print(i);
+
+        while( fm1 <= 4 || fm2 != 0 )
+        //while( fm1 <= 4 || fm1 % 2 != 0 )
+        {
+            print_string( "Number of points in the fine mesh (must be even and atleast 6) " );
+            read_integer( fm1 );
+            print_string( "yay" );
+            while ( i >= 0 && i <= s1 )
+                print(i);
+        } 
+    }
+}

@@ -5,7 +5,7 @@ from lexf23 import tokens
 # Get the symbol table
 import symtablef23 as symbol_table
 # Get the AST
-from astf23 import program_node, function_node, print_ast, node, statements_node, procedure_node
+from astf23 import program_node, function_node, print_ast, node, statements_node, procedure_node, loop_node
 # code generation
 from codegenf23 import main
 # flags
@@ -43,18 +43,26 @@ def p_procedure(p):
     p[0] = procedure_node(p[2], [p[4]], p[7])
     SymbolTable.add('procedure', p[1], p[2])
 
+   
+
+def p_parameter(p):
+    '''parameter : type ID
+                 | type ID LBRACKET RBRACKET'''
+    if len(p) == 3:
+        p[0] = (p[2], p[1])
+        SymbolTable.add('parameter', p[1], p[2], '', p[1])
+    elif len(p) == 5:
+        p[0] = (p[2], f"{p[1]}[]")
+        SymbolTable.add('parameter', f"{p[1]}[]", p[2], '', f"{p[1]}[]")
+
+
 def p_parameter_list(p):
-    '''parameter_list : parameter_list COMMA parameter
+    '''parameter_list : parameter_list COMMA parameter_list
                       | parameter'''
     if len(p) == 4:
         p[0] = [p[3], p[1]]
     else:
         p[0] = p[1]
-
-def p_parameter(p):
-    '''parameter : type ID'''
-    p[0] = (p[2], p[1])
-    SymbolTable.add('parameter', p[1], p[2], '', p[1])
 
 def p_type(p):
     '''type : K_INTEGER
@@ -85,8 +93,20 @@ def p_statements_dapf(p):
                   | declare_assign   
                   | assign 
                   | print 
+                  | while
+                  | read
                   | function_call'''
     p[0] = p[1]
+
+def p_statement_dapf(p):
+    '''statement : declare 
+                 | declare_assign   
+                 | assign 
+                 | print 
+                 | while
+                 | function_call
+                 | read'''
+    p[0] = [p[1]]
 
 def p_statements_empty(p):
     'statements : epsilon'
@@ -120,6 +140,10 @@ def p_print(p):
              | K_PRINT_STRING LPAREN ID RPAREN SEMI
              | K_PRINT_DOUBLE LPAREN ID RPAREN SEMI'''
     p[0] = node("PRINT", p[3], p[1])
+
+def p_read(p):
+    '''read : K_READ_INTEGER LPAREN ID RPAREN SEMI'''
+    p[0] = node("READ", p[3], p[1])
 
 def p_function_call(p):
     'function_call : ID LPAREN ID RPAREN SEMI'
@@ -180,6 +204,38 @@ def p_factor_id(p):
         sys.exit("Error: variable " + p[1] + " not defined on line " + str(p.lineno(1)))
     p[0] = err
 
+def p_bool_op(p):
+    '''bool_op : DAND
+               | DOR
+               | DEQ
+               | GEQ
+               | GT
+               | LEQ
+               | LT
+               | NE
+               | NOT '''
+    p[0] = p[1]
+
+def p_condition(p):
+    '''condition : value bool_op value'''
+    p[0] = f"{p[1]} {p[2]} {p[3]}"
+
+def p_bool(p):
+    '''bool : condition bool_op condition
+            | condition'''
+    if len(p) == 4:
+        p[0] = f"{p[1]} {p[2]} {p[3]}"
+    else:
+        p[0] = p[1]
+
+def p_while_statement(p):
+    '''while : K_WHILE LPAREN bool RPAREN statement'''
+    p[0] = loop_node("WHILE", p[3], p[5])
+
+def p_while_statements(p):
+    '''while : K_WHILE LPAREN bool RPAREN LCURLY statements RCURLY'''
+    p[0] = loop_node("WHILE", p[3], [p[6]])
+
 def p_epsilon(p):
     'epsilon :'
     pass
@@ -211,8 +267,6 @@ s = open('tiniest.txt','r').read()
 p = parser.parse(s)
 
 # main(p, SymbolTable)
-print(p)
-print_ast(p)
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "-s":
