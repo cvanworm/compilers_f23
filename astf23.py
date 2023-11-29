@@ -56,7 +56,7 @@ def procedure_node(id, parameters, children):
         "children": children,
     }
 
-def loop_node(id, condition, children):
+def logic_node(name, condition, children):
     """Creates and returns a loop node
 
     Parameters:
@@ -69,7 +69,7 @@ def loop_node(id, condition, children):
 
     """
     return {
-        "name": "WHILE",
+        "name": name,
         "condition": f"({condition})",
         "children": get_children(children),
     }

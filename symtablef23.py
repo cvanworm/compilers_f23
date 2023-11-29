@@ -35,6 +35,13 @@ class SymbolTable:
             self.doubles += 1
         elif symbol.type == 'string':
             self.strings += 1
+
+    def add_array(self, scope, name, index, value):
+        symbol = self.__find_symbol(scope, name)
+        if symbol == None:
+            return None
+        symbol.value[index] = value
+        print(symbol.value)
     
     def add_mem(self, scope, name, memory):
         symbol = self.__find_symbol(scope, name)
@@ -87,7 +94,10 @@ class SymbolTable:
         print('\n{:=^100}'.format("SYMBOL TABLE"))
         print("\n{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format("Scope", "Token", "Name", "Value", "Type", "Memory"))
         for symbol in self.symbols:
-            print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(symbol.scope, str(symbol.token), symbol.name, str(symbol.value), symbol.type, symbol.memory))
+            if type(symbol.value) == list:
+                print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(symbol.scope, str(symbol.token), symbol.name, f"[]{len(symbol.value)}", symbol.type, symbol.memory))
+            else:
+                print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(symbol.scope, str(symbol.token), symbol.name, str(symbol.value), symbol.type, symbol.memory))
         print()
         self.__get_symbol_stats()
         print(f"SR offset: {self.get_symbol_counts()}")
@@ -123,9 +133,16 @@ class Symbol:
         self.scope = scope
         self.token = token
         self.name = name
-        self.value = value
         self.type = symtype
         self.memory = ''
+
+        if type(value) == list:
+            size = int(value[0])
+            empty_list = [None for x in range(size)]
+            self.value = empty_list
+        else:
+            self.value = value
+        
 
 
     def add_mem(self, memory):

@@ -1,18 +1,80 @@
 program tiny_example_6
 {
-    function integer main()
-    {
-        while ( i >= 0 && i <= s1 )
-            print(i);
 
-        while( fm1 <= 4 || fm2 != 0 )
-        //while( fm1 <= 4 || fm1 % 2 != 0 )
+    // ------------------------------------------------------------------------
+    // Place a constant in every element of a vector.
+    // ------------------------------------------------------------------------
+
+    procedure
+         set_constant(
+            double  dval,                   // The constant value
+            double  dsoln[], integer s1     // Approximate solution
+                     )
+    {
+        integer i := 0;                     // Loop variable
+
+        while ( i >= 0 && i <= s1 )
+            dsoln[i++] := dval;
+
+    }   // of set_constant
+
+
+    // ------------------------------------------------------------------------
+    // Print every element of a vector, one per line with the index.
+    // ------------------------------------------------------------------------
+
+    procedure
+         print_vector(
+            string  title,                  // Identification of vector
+            double  dsoln[], integer s1     // Approximate solution
+                     )
+    {
+        integer i;
+
+        print_string( "Vector: " );
+        print_string( "title" );
+        print_string( "\ni  value\n" );
+        do ( i := 0; i <= s1; i++ )
         {
-            print_string( "Number of points in the fine mesh (must be even and atleast 6) " );
-            read_integer( fm1 );
-            print_string( "yay" );
-            while ( i >= 0 && i <= s1 )
-                print(i);
-        } 
-    }
+            print_integer( i );
+            print_string( " " );
+            print_double( dsoln[i] );
+        }   
+        print_string( "--- End of vector\n" );
+
+    }   // of print_vector
+
+
+    // ------------------------------------------------------------------------
+    // Calculate the little ell-infinity norm of the error in the solution.
+    // ------------------------------------------------------------------------
+
+    function
+    double error_norm(
+            double  dsoln[], integer s1         // Approximate solution
+                     )
+    {
+        integer i := 0;                 // Loop variable
+        double  asoln;                  // abs(dsoln[i])
+        double  l0_norm := 0.0d0;       // Little L1 norm
+
+        // The real solution is uniformly 0, so the maximum error is the
+        // absolute value of the approximate solution
+
+        while ( i <= s1 )
+        {
+            if ( dsoln[i] <= 0. ) then
+                asoln := -dsoln[i];
+            else
+                asoln := dsoln[i];
+            if ( asoln > l0_norm ) then
+            {
+                l0_norm := asoln;
+            }   
+            i++;
+        }   
+
+        return l0_norm;
+
+    }   // of error_norm
 }

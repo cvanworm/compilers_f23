@@ -18,10 +18,24 @@ def p_program_body_empty(p):
     'program_body : epsilon'
     p[0] = None
 
+def p_type(p):
+    '''type : K_INTEGER
+            | K_DOUBLE
+            | K_STRING'''
+    p[0] = p[1]
+
+def p_return(p):
+    '''return : K_RETURN value SEMI'''
+    p[0] = {"name": f"RETURN {p[2]}"}
+
+def p_return_empty(p):
+    'return : epsilon'
+    p[0] = None
+
 def p_function(p):
-    'function : K_FUNCTION K_INTEGER ID LPAREN RPAREN LCURLY statements RCURLY'
-    p[7] = statements_node(p[7])
-    p[0] = function_node(p[3], p[2], p[7])
+    'function : K_FUNCTION type ID LPAREN parameter_list RPAREN LCURLY statements return RCURLY'
+    p[8] = statements_node([p[8]])
+    p[0] = function_node(p[3], p[2], p[8]+[p[9]])
     SymbolTable.add('function', p[1], p[3])
 
 def p_procedure(p):
@@ -51,18 +65,16 @@ def p_parameter_list(p):
     else:
         p[0] = p[1]
 
-def p_type(p):
-    '''type : K_INTEGER
-            | K_DOUBLE
-            | K_STRING'''
-    p[0] = p[1]
-
 def p_value(p):
     '''value : ICONSTANT
             | DCONSTANT
             | SCONSTANT
-            | ID'''
-    p[0] = p[1]
+            | ID
+            | ID LBRACKET value RBRACKET'''
+    if len(p) == 5:
+        p[0] = f"{p[1]}[{p[3]}]"
+    else:
+        p[0] = p[1]
 
 def p_parameter_empty(p):
     'parameter : epsilon'
