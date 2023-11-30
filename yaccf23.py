@@ -101,9 +101,9 @@ def p_statements(p):
     p[0] = [p[2], p[1]]
 
 def p_statements_dapf(p):
-    '''statements : declare 
+    '''statements : declare SEMI
                   | declare_assign   
-                  | assign 
+                  | assign SEMI
                   | print 
                   | while
                   | do
@@ -113,9 +113,9 @@ def p_statements_dapf(p):
     p[0] = p[1]
 
 def p_statement_dapf(p):
-    '''statement : declare 
+    '''statement : declare SEMI
                  | declare_assign   
-                 | assign 
+                 | assign SEMI
                  | print 
                  | function_call
                  | read'''
@@ -126,8 +126,8 @@ def p_statements_empty(p):
     p[0] = None
 
 def p_declare(p):
-    '''declare : type ID SEMI
-               | type ID LBRACKET math RBRACKET SEMI''' 
+    '''declare : type ID
+               | type ID LBRACKET math RBRACKET''' 
     if len(p) == 7:
         SymbolTable.add('statements', 'id', p[2], [p[4]], f"{p[1]}[{p[4]}]")
         p[0] = node("DECLARE", p[2], f"{p[1]}[{p[4]}]")
@@ -135,19 +135,23 @@ def p_declare(p):
         SymbolTable.add('statements', 'id', p[2], '', p[1])
         p[0] = node("DECLARE", p[2], p[1])
 
+def p_declare_comma(p):
+    'declare : declare COMMA assign'
+    p[0] = [p[3]] + [p[1]]
+
 def p_assign(p):
-    '''assign : ID ASSIGN value SEMI
-            | ID inc_dec SEMI
-            | ID ASSIGN math SEMI
-            | ID LBRACKET math RBRACKET ASSIGN math SEMI'''
+    '''assign : ID ASSIGN value
+            | ID inc_dec
+            | ID ASSIGN math
+            | ID LBRACKET math RBRACKET ASSIGN math'''
     # err = SymbolTable.get_value('statements', p[1])
     # if err == None:
     #     sys.exit("Error: variable " + p[1] + " not declared on line " + str(p.lineno(1)))
     
-    if len(p) == 8:
+    if len(p) == 7:
         SymbolTable.add_array('statements', p[1], p[3], p[6])
         p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
-    elif len(p)==4:
+    elif len(p)==3:
         # if p[2] == "++":
             # SymbolTable.add('statements', 'id', p[1], p[1], "++")
         # else:
@@ -157,6 +161,15 @@ def p_assign(p):
     else:
         SymbolTable.add('statements', 'id', p[1], p[3])
         p[0] = node("ASSIGN", p[3], p[1])
+
+
+def p_multiple_assign(p):
+    '''assign : assign ASSIGN value'''
+    p[0] = [node("ASSIGN", p[3], p[1]['children'][0]['name'])] + [node("ASSIGN", p[3], p[1]['children'][1]['name'])]
+    SymbolTable.add('statements', 'id', p[1]['children'][0]['name'], p[3])
+    SymbolTable.add('statements', 'id', p[1]['children'][1]['name'], p[3])
+    
+
 
 def p_declare_assign(p):
     '''declare_assign : type ID ASSIGN value SEMI'''    
@@ -252,8 +265,14 @@ def p_factor_id(p):
     p[0] = p[1]
 
 def p_factor_array(p):
-    'factor : ID LBRACKET math RBRACKET'
+    'factor : ID LBRACKET value RBRACKET'
+    print("MATH", p[3])
     p[0] = f"{p[1]}[{p[3]}]"
+
+def p_factor_array_math(p):
+    '''factor : ID LBRACKET ID ICONSTANT RBRACKET'''
+    p[0] = f"{p[1]}[{p[3]} {p[4]}]"
+    
 
 def p_bool_op(p):
     '''bool_op : DAND
@@ -295,29 +314,38 @@ def p_do_statements(p):
     '''do : K_DO LPAREN do_assign SEMI condition SEMI ID inc_dec RPAREN LCURLY statements RCURLY'''
     p[0] = logic_node("DO", f"({p[3]}; {p[5]}; {p[7]}{p[8]})", [p[11]])
 
+def p_do_statement(p):
+    '''do : K_DO LPAREN do_assign SEMI condition SEMI ID inc_dec RPAREN statement'''
+    p[0] = logic_node("DO", f"({p[3]}; {p[5]}; {p[7]}{p[8]})", [p[10]])
+
 
 def p_if_statements(p):
     '''if : K_IF LPAREN bool RPAREN K_THEN LCURLY statements RCURLY else_if'''
-    p[0] = logic_node("IF", p[3], p[7])
+    p[0] = [p[9]]+ [logic_node("IF", p[3], p[7])]
 
 def p_if_statement(p):
     '''if : K_IF LPAREN bool RPAREN K_THEN statement else_if'''
-    p[0] = logic_node("IF", p[3], p[6])
+    p[0] = [p[7]] + [logic_node("IF", p[3], p[6])]
 
 def p_else_if_statements(p):
     '''else_if : K_ELSE K_IF LPAREN bool RPAREN K_THEN LCURLY statements RCURLY else'''
+    p[0] = [p[10]] + [logic_node("ELSE IF", p[4], p[8])]
 
 def p_else_if_statement(p):
     '''else_if : K_ELSE K_IF LPAREN bool RPAREN K_THEN statement else'''
+    p[0] = [p[8]] + [logic_node("ELSE IF", p[4], p[7])]
 
 def p_else_if(p):
     '''else_if : else'''
+    p[0] = p[1]
 
 def p_else_statements(p):
     '''else : K_ELSE LCURLY statements RCURLY'''
+    p[0] = logic_node("ELSE", "", p[3])
 
 def p_else_statement(p):
     '''else : K_ELSE statement'''
+    p[0] = logic_node("ELSE", "", p[2])
 
 def p_else_empty(p):
     '''else : epsilon'''

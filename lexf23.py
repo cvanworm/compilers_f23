@@ -134,7 +134,7 @@ def t_DCONSTANT(t):
     return t
 
 def t_ICONSTANT(t):
-    r'-?[0-9]+'
+    r'(-|\+)?[0-9]+'
     t.value = int(t.value)
     return t
 

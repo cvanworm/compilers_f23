@@ -28,6 +28,11 @@ def p_return(p):
     '''return : K_RETURN value SEMI'''
     p[0] = {"name": f"RETURN {p[2]}"}
 
+def p_return_func_call(p):
+    '''return : K_RETURN func SEMI'''
+    p[0] = {"name": f"RETURN {p[2]}({p[4]})"}
+    # BROKEN
+
 def p_return_empty(p):
     'return : epsilon'
     p[0] = None

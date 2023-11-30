@@ -68,11 +68,17 @@ def logic_node(name, condition, children):
     node:Loop node
 
     """
-    return {
-        "name": name,
-        "condition": f"({condition})",
-        "children": get_children(children),
-    }
+    if condition == "":
+        return {
+            "name": name,
+            "children": get_children(children),
+        }
+    else:
+        return {
+            "name": name,
+            "condition": f"({condition})",
+            "children": get_children(children),
+        }
 
 def statements_node(children):
     """Creates and returns a statements node, reformats children

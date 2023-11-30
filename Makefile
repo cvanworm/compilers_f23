@@ -1,9 +1,13 @@
-code = 1
+# code = 6
 
 all: copy parser py 
 
 copy: tiniest.txt
-	cp ./examples/tiny_example_$(code).txt tiniest.txt
+	cp ./examples/mg.f23 tiniest.txt
+
+# copy: tiniest.txt
+# 	cp ./examples/tiny_example_$(code).txt tiniest.txt
+
 
 parser: ./yacc/*.py
 	cat ./yacc/yacc_1* ./yacc/yacc_2* ./yacc/yacc_3* ./yacc/yacc_4* ./yacc/yacc_5* ./yacc/yacc_run.py > yaccf23.py

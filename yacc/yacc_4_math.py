@@ -72,6 +72,12 @@ def p_factor_id(p):
     p[0] = p[1]
 
 def p_factor_array(p):
-    'factor : ID LBRACKET math RBRACKET'
+    'factor : ID LBRACKET value RBRACKET'
+    print("MATH", p[3])
     p[0] = f"{p[1]}[{p[3]}]"
+
+def p_factor_array_math(p):
+    '''factor : ID LBRACKET ID ICONSTANT RBRACKET'''
+    p[0] = f"{p[1]}[{p[3]} {p[4]}]"
+    
 
