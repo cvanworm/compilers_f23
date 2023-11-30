@@ -25,22 +25,30 @@ def p_type(p):
     p[0] = p[1]
 
 def p_return(p):
-    '''return : K_RETURN value SEMI'''
-    p[0] = {"name": f"RETURN {p[2]}"}
-
-def p_return_func_call(p):
-    '''return : K_RETURN func SEMI'''
-    p[0] = {"name": f"RETURN {p[2]}({p[4]})"}
-    # BROKEN
+    '''return : K_RETURN value'''
+    p[0] = [return_node(p[2])]
 
 def p_return_empty(p):
     'return : epsilon'
-    p[0] = None
+    p[0] = []
+
+def p_return_func_call(p):
+    'return : K_RETURN function_call'
+    p[0] = [return_node(p[2])]
+
+def p_function_statements(p):
+    '''function_statements : function_statements function_statements'''
+    p[0] = [p[2], p[1]]
+
+def p_function_statements_fp(p):
+    '''function_statements : statements
+                           | procedure '''
+    p[0] = p[1]
 
 def p_function(p):
-    'function : K_FUNCTION type ID LPAREN parameter_list RPAREN LCURLY statements return RCURLY'
+    'function : K_FUNCTION type ID LPAREN parameter_list RPAREN LCURLY function_statements RCURLY'
     p[8] = statements_node([p[8]])
-    p[0] = function_node(p[3], p[2], p[8]+[p[9]])
+    p[0] = function_node(p[3], p[2], p[8])
     SymbolTable.add('function', p[1], p[3])
 
 def p_procedure(p):

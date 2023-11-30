@@ -121,7 +121,7 @@ def t_KEYWORD(t):
     return t
 
 def t_DCONSTANT(t):
-    r'([+-]?[0-9]+\.[0-9]*)([dD][+-]?[0-9]+)?'
+    r'([+-]?[0-9]*\.[0-9]*)([dD][+-]?[0-9]+)?'
     try:
         t.value = float(t.value)
     except ValueError:

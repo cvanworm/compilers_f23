@@ -31,7 +31,8 @@ def p_expression_term(p):
 
 def p_term(p):
     '''term : term TIMES factor
-            | term DIVIDE factor'''
+            | term DIVIDE factor
+            | term MOD factor'''
     print("Term:", p[2], p[1], p[3])
     if p[2] == '*':
         p[0] = f"{p[1]} * {p[3]}"

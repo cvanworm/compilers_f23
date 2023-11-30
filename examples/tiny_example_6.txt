@@ -1,9 +1,28 @@
 program tiny_example_6
 {
-    procedure do_stuff( )
+    function double main()
     {
-            dres[0] := dres[res1] := 0.0d0;
-            integer i, n:=1; 
+        //ASSIGN_PLUS
+        double i := 0;
+        i += 2;
+
+        // ASSIGN_MINUS
+        double k := 2;
+        k -= 2;
+
+        //ASSIGN_DIVIDE
+        double o := 3;
+        o /= 3;
+
+
+        //ASSIGN_MOD
+        double c := 5;
+        c /= 5;
+
+
+        //ASSIGN_MULTIPLY
+        double a := 10;
+        a *= 10 + i;
 
     }
 }

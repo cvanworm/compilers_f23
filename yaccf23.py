@@ -5,7 +5,7 @@ from lexf23 import tokens
 # Get the symbol table
 import symtablef23 as symbol_table
 # Get the AST
-from astf23 import program_node, function_node, print_ast, node, statements_node, procedure_node, logic_node
+from astf23 import program_node, function_node, print_ast, node, statements_node, procedure_node, logic_node, func_call_node, return_node
 # code generation
 from codegenf23 import main
 # flags
@@ -38,17 +38,30 @@ def p_type(p):
     p[0] = p[1]
 
 def p_return(p):
-    '''return : K_RETURN value SEMI'''
-    p[0] = {"name": f"RETURN {p[2]}"}
+    '''return : K_RETURN value'''
+    p[0] = [return_node(p[2])]
 
 def p_return_empty(p):
     'return : epsilon'
-    p[0] = None
+    p[0] = []
+
+def p_return_func_call(p):
+    'return : K_RETURN function_call'
+    p[0] = [return_node(p[2])]
+
+def p_function_statements(p):
+    '''function_statements : function_statements function_statements'''
+    p[0] = [p[2], p[1]]
+
+def p_function_statements_fp(p):
+    '''function_statements : statements
+                           | procedure '''
+    p[0] = p[1]
 
 def p_function(p):
-    'function : K_FUNCTION type ID LPAREN parameter_list RPAREN LCURLY statements return RCURLY'
+    'function : K_FUNCTION type ID LPAREN parameter_list RPAREN LCURLY function_statements RCURLY'
     p[8] = statements_node([p[8]])
-    p[0] = function_node(p[3], p[2], p[8]+[p[9]])
+    p[0] = function_node(p[3], p[2], p[8])
     SymbolTable.add('function', p[1], p[3])
 
 def p_procedure(p):
@@ -109,16 +122,18 @@ def p_statements_dapf(p):
                   | do
                   | if
                   | read
-                  | function_call'''
+                  | function_call SEMI
+                  | return SEMI'''
     p[0] = p[1]
 
 def p_statement_dapf(p):
     '''statement : declare SEMI
-                 | declare_assign   
+                 | declare_assign
                  | assign SEMI
                  | print 
-                 | function_call
-                 | read'''
+                 | function_call SEMI
+                 | read
+                 | return SEMI'''
     p[0] = [p[1]]
 
 def p_statements_empty(p):
@@ -135,9 +150,17 @@ def p_declare(p):
         SymbolTable.add('statements', 'id', p[2], '', p[1])
         p[0] = node("DECLARE", p[2], p[1])
 
-def p_declare_comma(p):
+
+
+def p_declare_comma_id(p):
+    'declare : declare COMMA ID'
+    p[0] = [node("DECLARE", p[3], p[1]['children'][1]['name'])] + [p[1]]
+    SymbolTable.add('statements', 'id', p[3], '', p[1]['children'][1]['name'])
+
+def p_declare_comma_assign(p):
     'declare : declare COMMA assign'
     p[0] = [p[3]] + [p[1]]
+    
 
 def p_assign(p):
     '''assign : ID ASSIGN value
@@ -161,6 +184,18 @@ def p_assign(p):
     else:
         SymbolTable.add('statements', 'id', p[1], p[3])
         p[0] = node("ASSIGN", p[3], p[1])
+
+def p_assign_func_call(p):
+    '''assign : ID ASSIGN function_call'''
+    p[0] = node("ASSIGN", p[3], p[1])
+
+def p_assign_math(p):
+    '''assign : ID ASSIGN_PLUS math
+              | ID ASSIGN_MINUS math
+              | ID ASSIGN_MULTIPLY math
+              | ID ASSIGN_DIVIDE math
+              | ID ASSIGN_MOD math'''
+    p[0] = node("ASSIGN", f"{p[1]} {p[2][0]} ({p[3]})", p[1])
 
 
 def p_multiple_assign(p):
@@ -187,9 +222,24 @@ def p_read(p):
     '''read : K_READ_INTEGER LPAREN ID RPAREN SEMI'''
     p[0] = node("READ", p[3], p[1])
 
+def p_arguments(p):
+    'arguments : arguments COMMA arguments'
+    p[0] = [p[1]] + [p[3]]
+
+def p_argument(p):
+    'arguments : value'
+    p[0] = {"name": p[1]}
+
+def p_arguments_empty(p):
+    'arguments : epsilon'
+    p[0] = []
+
 def p_function_call(p):
-    'function_call : ID LPAREN ID RPAREN SEMI'
-    p[0] = node("function call", p[1], p[3])
+    'function_call : ID LPAREN arguments RPAREN'
+    p[0] = func_call_node(p[1], p[3])
+
+
+# BROKEN
 
 def p_inc_dec(p):
     '''inc_dec : INCREMENT
@@ -224,7 +274,8 @@ def p_expression_term(p):
 
 def p_term(p):
     '''term : term TIMES factor
-            | term DIVIDE factor'''
+            | term DIVIDE factor
+            | term MOD factor'''
     print("Term:", p[2], p[1], p[3])
     if p[2] == '*':
         p[0] = f"{p[1]} * {p[3]}"
@@ -287,7 +338,7 @@ def p_bool_op(p):
     p[0] = p[1]
 
 def p_condition(p):
-    '''condition : value bool_op value'''
+    '''condition : math bool_op math'''
     p[0] = f"{p[1]} {p[2]} {p[3]}"
 
 def p_bool(p):

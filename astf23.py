@@ -132,12 +132,50 @@ def node(token, left, right):
     node:generic node
 
     """
+    if type(left) != dict:
+        left = {"name": left}
+    if type(right) != dict:
+        right = {"name": right}
     return {
         "name": token,
         "children": [
-            {"name": left},
-            {"name": right},
+            left,
+            right,
         ],
+    }
+
+def func_call_node(id, children):
+    """Creates and returns a function call node
+
+    Parameters:
+    id (string): Name of the function
+    children (list[node]): List of arguments passed to function
+
+    Returns:
+    node:Function call node
+
+    """
+    return {
+        "name": "FUNCTION CALL",
+        "id": id,
+        "children": get_children(children),
+    }
+
+def return_node(children):
+    """Creates and returns a return node
+
+    Parameters:
+    children (list[node]): List of children nodes
+
+    Returns:
+    node:Return node
+
+    """
+    if type(children) != dict:
+        children = {"name": children}
+    return {
+        "name": "RETURN",
+        "children": [children],
     }
 
 
