@@ -128,9 +128,10 @@ def p_statements_empty(p):
 
 def p_declare(p):
     '''declare : type ID
-               | type ID LBRACKET math RBRACKET''' 
-    if len(p) == 7:
-        SymbolTable.add('statements', 'id', p[2], [p[4]], f"{p[1]}[{p[4]}]")
+               | type ID LBRACKET ID RBRACKET''' 
+    if len(p) == 6:
+        #TODO
+        # SymbolTable.add('statements', 'id', p[2], [p[4]], f"{p[1]}[{p[4]}]")
         p[0] = node("DECLARE", p[2], f"{p[1]}[{p[4]}]")
     else:
         SymbolTable.add('statements', 'id', p[2], '', p[1])
@@ -177,6 +178,10 @@ def p_assign(p):
     else:
         SymbolTable.add('statements', 'id', p[1], p[3])
         p[0] = node("ASSIGN", p[3], p[1])
+
+def p_assign_array_string(p):
+    'assign : ID LBRACKET math RBRACKET ASSIGN SCONSTANT'
+    p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
 
 def p_assign_func_call(p):
     '''assign : ID ASSIGN function_call'''
@@ -269,7 +274,7 @@ def p_math(p):
             p[0] = f"{p[1]}--"
     else:
         p[0] = p[1]
-    print ("p[0]", p[0])
+    # print ("p[0]", p[0])
 
 def p_expression(p):
     '''expression : expression PLUS term
@@ -289,7 +294,7 @@ def p_term(p):
     '''term : term TIMES factor
             | term DIVIDE factor
             | term MOD factor'''
-    print("Term:", p[2], p[1], p[3])
+    # print("Term:", p[2], p[1], p[3])
     if p[2] == '*':
         p[0] = f"{p[1]} * {p[3]}"
     else:
@@ -330,7 +335,7 @@ def p_factor_id(p):
 
 def p_factor_array(p):
     'factor : ID LBRACKET value RBRACKET'
-    print("MATH", p[3])
+    # print("MATH", p[3])
     p[0] = f"{p[1]}[{p[3]}]"
 
 def p_factor_array_math(p):

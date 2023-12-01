@@ -1,0 +1,41 @@
+// ----------------------------------------------------------------------------
+//
+// This is a program that guesses a user's number
+//
+// Written by: Calvin VanWormer
+//
+// ----------------------------------------------------------------------------
+
+program number_guesser{
+
+    // ------------------------------------------------------------------------
+    // Return Number to guess
+    // ------------------------------------------------------------------------
+
+    function integer guess(integer user, integer comp){
+        while(comp != user){
+            if(comp < user) then
+                comp++;
+            else
+                comp--;      
+        }
+        return comp;
+    }
+
+    function integer main(integer argc, string argv[]){
+        
+        integer user_num;   
+        integer computer_num;
+        integer result;
+
+        user_num := argv[1]; // User inputs number
+        computer_num := 0;  // Computer starts at 0
+
+        result := guess(user_num, computer_num);
+
+        print_integer(result);
+
+        return 0;
+    }
+
+}

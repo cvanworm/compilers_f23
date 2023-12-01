@@ -13,7 +13,7 @@ def p_math(p):
             p[0] = f"{p[1]}--"
     else:
         p[0] = p[1]
-    print ("p[0]", p[0])
+    # print ("p[0]", p[0])
 
 def p_expression(p):
     '''expression : expression PLUS term
@@ -33,7 +33,7 @@ def p_term(p):
     '''term : term TIMES factor
             | term DIVIDE factor
             | term MOD factor'''
-    print("Term:", p[2], p[1], p[3])
+    # print("Term:", p[2], p[1], p[3])
     if p[2] == '*':
         p[0] = f"{p[1]} * {p[3]}"
     else:
@@ -74,7 +74,7 @@ def p_factor_id(p):
 
 def p_factor_array(p):
     'factor : ID LBRACKET value RBRACKET'
-    print("MATH", p[3])
+    # print("MATH", p[3])
     p[0] = f"{p[1]}[{p[3]}]"
 
 def p_factor_array_math(p):

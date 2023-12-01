@@ -32,9 +32,10 @@ def p_statements_empty(p):
 
 def p_declare(p):
     '''declare : type ID
-               | type ID LBRACKET math RBRACKET''' 
-    if len(p) == 7:
-        SymbolTable.add('statements', 'id', p[2], [p[4]], f"{p[1]}[{p[4]}]")
+               | type ID LBRACKET ID RBRACKET''' 
+    if len(p) == 6:
+        #TODO
+        # SymbolTable.add('statements', 'id', p[2], [p[4]], f"{p[1]}[{p[4]}]")
         p[0] = node("DECLARE", p[2], f"{p[1]}[{p[4]}]")
     else:
         SymbolTable.add('statements', 'id', p[2], '', p[1])
@@ -81,6 +82,10 @@ def p_assign(p):
     else:
         SymbolTable.add('statements', 'id', p[1], p[3])
         p[0] = node("ASSIGN", p[3], p[1])
+
+def p_assign_array_string(p):
+    'assign : ID LBRACKET math RBRACKET ASSIGN SCONSTANT'
+    p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
 
 def p_assign_func_call(p):
     '''assign : ID ASSIGN function_call'''

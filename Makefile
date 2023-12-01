@@ -3,7 +3,7 @@
 all: copy parser py 
 
 copy: tiniest.txt
-	cp ./examples/mg.f23 tiniest.txt
+	cp ./examples/thoney.f23 tiniest.txt
 
 # copy: tiniest.txt
 # 	cp ./examples/tiny_example_$(code).txt tiniest.txt
@@ -14,7 +14,7 @@ parser: ./yacc/*.py
 
 
 py: yaccf23.py
-	python3 yaccf23.py -all
+	python3 yaccf23.py -a > results.txt
 
 # py: yaccf23.py
 # 	python3 yaccf23.py -all > results.txt
