@@ -1,28 +1,36 @@
-program tiny_example_6
+// ----------------------------------------------------------------------------
+//
+// This is the Fall 2023 target code for Compilers I.
+//
+// Your compiler should be able to lex, parse, and generate code for the
+// entire file by the end of the course.
+//
+// Written by: Craig C. Douglas
+// Modification history:
+//      Fri Aug 18 08:12:42 MDT 2023
+//
+// ----------------------------------------------------------------------------
+
+
+program $two_grid_solver
 {
-    function double main()
+
+    // ------------------------------------------------------------------------
+    // The actual two grid multilevel algorithm.
+    // ------------------------------------------------------------------------
+
+    function
+    integer main( 
+            )
     {
-        //ASSIGN_PLUS
-        double i := 0;
-        i += 2;
-
-        // ASSIGN_MINUS
-        double k := 2;
-        k -= 2;
-
-        //ASSIGN_DIVIDE
-        double o := 3;
-        o /= 3;
 
 
-        //ASSIGN_MOD
-        double c := 5;
-        c /= 5;
+
+        // Do some Gauss-Seidel iterations on the fine mesh
+        enorm := gauss_seidel( j, k, k );
 
 
-        //ASSIGN_MULTIPLY
-        double a := 10;
-        a *= 10 + i;
+        
+    }   // of main
 
-    }
 }

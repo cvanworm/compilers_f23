@@ -11,7 +11,11 @@ def p_bool_op(p):
     p[0] = p[1]
 
 def p_condition(p):
-    '''condition : math bool_op math'''
+    '''condition : math bool_op math '''
+    p[0] = f"{p[1]} {p[2]} {p[3]}"
+
+def p_condition_func(p):
+    '''condition : function_call bool_op math '''
     p[0] = f"{p[1]} {p[2]} {p[3]}"
 
 def p_bool(p):

@@ -37,18 +37,6 @@ def p_type(p):
             | K_STRING'''
     p[0] = p[1]
 
-def p_return(p):
-    '''return : K_RETURN value'''
-    p[0] = [return_node(p[2])]
-
-def p_return_empty(p):
-    'return : epsilon'
-    p[0] = []
-
-def p_return_func_call(p):
-    'return : K_RETURN function_call'
-    p[0] = [return_node(p[2])]
-
 def p_function_statements(p):
     '''function_statements : function_statements function_statements'''
     p[0] = [p[2], p[1]]
@@ -106,16 +94,13 @@ def p_parameter_empty(p):
     'parameter : epsilon'
     p[0] = None
 
-
-
-
 def p_statements(p):
     'statements : statements statements'
     p[0] = [p[2], p[1]]
 
 def p_statements_dapf(p):
     '''statements : declare SEMI
-                  | declare_assign   
+                  | declare_assign SEMI
                   | assign SEMI
                   | print 
                   | while
@@ -128,7 +113,7 @@ def p_statements_dapf(p):
 
 def p_statement_dapf(p):
     '''statement : declare SEMI
-                 | declare_assign
+                 | declare_assign SEMI
                  | assign SEMI
                  | print 
                  | function_call SEMI
@@ -140,6 +125,7 @@ def p_statements_empty(p):
     'statements : epsilon'
     p[0] = None
 
+
 def p_declare(p):
     '''declare : type ID
                | type ID LBRACKET math RBRACKET''' 
@@ -150,7 +136,14 @@ def p_declare(p):
         SymbolTable.add('statements', 'id', p[2], '', p[1])
         p[0] = node("DECLARE", p[2], p[1])
 
-
+def p_declare_comma_array(p):
+    '''declare : type factor COMMA factor COMMA factor
+             | type factor COMMA factor '''
+    if len(p) == 7:
+        p[0] = [node("DECLARE", p[2], p[1])] + [node("DECLARE", p[4], p[1])] + [node("DECLARE", p[6], p[1])]
+    else:
+        p[0] = [node("DECLARE", p[2], p[1])] + [node("DECLARE", p[4], p[1])]
+    
 
 def p_declare_comma_id(p):
     'declare : declare COMMA ID'
@@ -207,9 +200,14 @@ def p_multiple_assign(p):
 
 
 def p_declare_assign(p):
-    '''declare_assign : type ID ASSIGN value SEMI'''    
+    '''declare_assign : type ID ASSIGN value'''    
     SymbolTable.add('statements', 'id', p[2], p[4], p[1])
     p[0] = [node("ASSIGN", p[4], p[2]),node("DECLARE", p[2], p[1])]
+
+def p_declare_assign_array_dec(p):
+    'declare_assign : declare_assign COMMA ID'
+    p[0] = [p[1]] + [node("DECLARE", p[3], p[1][1]['children'][1]['name'])]
+
 
 
 def p_print(p):
@@ -239,7 +237,22 @@ def p_function_call(p):
     p[0] = func_call_node(p[1], p[3])
 
 
-# BROKEN
+def p_return(p):
+    '''return : K_RETURN value'''
+    p[0] = [return_node(p[2])]
+
+def p_return_empty(p):
+    'return : epsilon'
+    p[0] = []
+
+def p_return_func_call(p):
+    'return : K_RETURN function_call'
+    p[0] = [return_node(p[2])]
+
+def p_return_assign(p):
+    'return : K_RETURN assign'
+    p[0] = [return_node(p[2])]
+
 
 def p_inc_dec(p):
     '''inc_dec : INCREMENT
@@ -338,7 +351,11 @@ def p_bool_op(p):
     p[0] = p[1]
 
 def p_condition(p):
-    '''condition : math bool_op math'''
+    '''condition : math bool_op math '''
+    p[0] = f"{p[1]} {p[2]} {p[3]}"
+
+def p_condition_func(p):
+    '''condition : function_call bool_op math '''
     p[0] = f"{p[1]} {p[2]} {p[3]}"
 
 def p_bool(p):
@@ -422,7 +439,7 @@ if len(sys.argv) > 1:
 
 
 # Build the parser
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
 
 # SymbolTable instance
 SymbolTable = symbol_table.SymbolTable()

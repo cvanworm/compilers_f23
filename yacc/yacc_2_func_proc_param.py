@@ -24,18 +24,6 @@ def p_type(p):
             | K_STRING'''
     p[0] = p[1]
 
-def p_return(p):
-    '''return : K_RETURN value'''
-    p[0] = [return_node(p[2])]
-
-def p_return_empty(p):
-    'return : epsilon'
-    p[0] = []
-
-def p_return_func_call(p):
-    'return : K_RETURN function_call'
-    p[0] = [return_node(p[2])]
-
 def p_function_statements(p):
     '''function_statements : function_statements function_statements'''
     p[0] = [p[2], p[1]]

@@ -247,7 +247,7 @@ program $two_grid_solver
             )
     {
         integer rval := 0;      // Return value
-        //! integer fm1:=1, cm1;    // Fine and coarse mesh upper limits
+        integer fm1:=1, cm1;    // Fine and coarse mesh upper limits
         double  enorm;          // Error norm
 
         // Determine fine mesh size.  Coarse mesh is roughly half the size.
@@ -264,10 +264,10 @@ program $two_grid_solver
         print_string( "\n" );
 
         // Allocate space dynamically
-        //!double fm[fm1+1],       // Fine grid approximate solution
-        //!       frhs[fm1+1],     // Fine grid right hand side
-        //!       fres[fm1+1];     // Fine grid residuals
-        //!double cm[cm1+1], crhs[cm1+1];  // Coarse grid solution and right
+        double fm[fm1+1],       // Fine grid approximate solution
+               frhs[fm1+1],     // Fine grid right hand side
+               fres[fm1+1];     // Fine grid residuals
+        double cm[cm1+1], crhs[cm1+1];  // Coarse grid solution and right
                                         // hand side
 
         // Set the initial guess to the solution
@@ -293,16 +293,16 @@ program $two_grid_solver
         // coarse mesh right hand side.
         residuals( fm, fm1, frhs, fm1, fres, fm1 );
         print_vector( "Residuals on fine mesh", fres, fm1 );
-        //!if ( interpolate( fres, fm1, crhs, cm1 ) != 0 ) then
-        //!    return rval := 1;
+        if ( interpolate( fres, fm1, crhs, cm1 ) != 0 ) then
+            return rval := 1;
 
         // Do some Gauss-Seidel iterations on the coarse mesh
         enorm := gauss_seidel( 500, cm, cm1, crhs, cm1 );
         print_vector( "coarse mesh correction", cm, cm1 );
 
         // Interpolate the correction to the fine grid
-        //!if ( interpolate( cm, cm1, fm, fm1 ) > 0 ) then
-        //!    return 2;
+        if ( interpolate( cm, cm1, fm, fm1 ) > 0 ) then
+            return 2;
         enorm := error_norm( fm, fm1 );
         print_string( "Fine mesh error norm := " );
         print_double( enorm );

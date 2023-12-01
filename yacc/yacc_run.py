@@ -20,7 +20,7 @@ if len(sys.argv) > 1:
 
 
 # Build the parser
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
 
 # SymbolTable instance
 SymbolTable = symbol_table.SymbolTable()

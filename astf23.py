@@ -178,6 +178,7 @@ def return_node(children):
         "children": [children],
     }
 
+test = []
 
 def add_node_numbers(ast):
     """Adds node numbers to the AST
@@ -188,15 +189,16 @@ def add_node_numbers(ast):
     Returns:
     node:Root node of the AST with node numbers
     """
-    def add_node_numbers_helper(ast, node_number):
+    def add_node_numbers_helper(ast):
         if "children" in ast:
-            ast["name"] += ' #' + str(node_number)
+            ast["name"] += ' #' + str(len(test))
             for child in ast["children"]:
-                node_number += 1
-                child = add_node_numbers_helper(child, node_number)
+                test.append(1)
+                child = add_node_numbers_helper(child)
         else:
-            ast["name"] = str(ast["name"])
-    ast = add_node_numbers_helper(ast, 0)
+            ast["name"] = str(ast["name"]) + ' #' + str(len(test))
+
+    ast = add_node_numbers_helper(ast)
 
    
 
