@@ -1,9 +1,9 @@
-# code = 6
+code = mg
 
 all: copy parser py 
 
 copy: tiniest.txt
-	cp ./examples/thoney.f23 tiniest.txt
+	cp ./examples/${code}.f23 tiniest.txt
 
 # copy: tiniest.txt
 # 	cp ./examples/tiny_example_$(code).txt tiniest.txt

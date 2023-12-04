@@ -1,0 +1,360 @@
+VALID CODE
+
+========================================Abstract Syntax Tree========================================
+PROGRAM #0 [id=$two_grid_solver]
+├── PROCEDURE #1 [id=set_constant, parameters=[('dval', 'double'), ('dsoln', 'double[]'), ('s1', 'integer')]]
+│   ├── DECLARE #2
+│   │   ├── i #3
+│   │   └── integer #4
+│   ├── ASSIGN #5
+│   │   ├── 0 #6
+│   │   └── i #7
+│   └── WHILE #8 [condition=(i >= 0 && i <= s1)]
+│       └── ASSIGN #9
+│           ├── dval #10
+│           └── dsoln[i++] #11
+├── PROCEDURE #12 [id=print_vector, parameters=[('title', 'string'), ('dsoln', 'double[]'), ('s1', 'integer')]]
+│   ├── DECLARE #13
+│   │   ├── i #14
+│   │   └── integer #15
+│   ├── PRINT #16
+│   │   ├── "Vector: " #17
+│   │   └── print_string #18
+│   ├── PRINT #19
+│   │   ├── "title" #20
+│   │   └── print_string #21
+│   ├── PRINT #22
+│   │   ├── "\ni  value\n" #23
+│   │   └── print_string #24
+│   ├── DO #25 [condition=((i := 0; i <= s1; i++))]
+│   │   ├── PRINT #26
+│   │   │   ├── i #27
+│   │   │   └── print_integer #28
+│   │   ├── PRINT #29
+│   │   │   ├── " " #30
+│   │   │   └── print_string #31
+│   │   └── PRINT #32
+│   │       ├── dsoln[i] #33
+│   │       └── print_double #34
+│   └── PRINT #35
+│       ├── "--- End of vector\n" #36
+│       └── print_string #37
+├── FUNCTION #38 [id=error_norm, return_type=double]
+│   ├── DECLARE #39
+│   │   ├── i #40
+│   │   └── integer #41
+│   ├── ASSIGN #42
+│   │   ├── 0 #43
+│   │   └── i #44
+│   ├── DECLARE #45
+│   │   ├── asoln #46
+│   │   └── double #47
+│   ├── DECLARE #48
+│   │   ├── l0_norm #49
+│   │   └── double #50
+│   ├── ASSIGN #51
+│   │   ├── 0.0 #52
+│   │   └── l0_norm #53
+│   ├── WHILE #54 [condition=(i <= s1)]
+│   │   ├── IF #55 [condition=(dsoln[i] <= 0.0)]
+│   │   │   └── ASSIGN #56
+│   │   │       ├── -dsoln[i] #57
+│   │   │       └── asoln #58
+│   │   ├── ELSE #59
+│   │   │   └── ASSIGN #60
+│   │   │       ├── dsoln[i] #61
+│   │   │       └── asoln #62
+│   │   ├── IF #63 [condition=(asoln > l0_norm)]
+│   │   │   └── ASSIGN #64
+│   │   │       ├── asoln #65
+│   │   │       └── l0_norm #66
+│   │   └── ASSIGN #67
+│   │       ├── i #68
+│   │       └── ++ #69
+│   └── RETURN #70
+│       └── l0_norm #71
+├── PROCEDURE #72 [id=residuals, parameters=[('dsoln', 'double[]'), ('s1', 'integer'), ('drhs', 'double[]'), ('rhs1', 'integer'), ('dres', 'double[]'), ('res1', 'integer')]]
+│   ├── DECLARE #73
+│   │   ├── i #74
+│   │   └── integer #75
+│   ├── ASSIGN #76
+│   │   ├── 0.0 #77
+│   │   └── dres[0] #78
+│   ├── ASSIGN #79
+│   │   ├── 0.0 #80
+│   │   └── dres[res1] #81
+│   └── DO #82 [condition=((i := 1; i < s1; i++))]
+│       └── ASSIGN #83
+│           ├── drhs[i] - 2.0 * dsoln[i] + dsoln[i -1] + dsoln[i 1] #84
+│           └── dres[i] #85
+├── FUNCTION #86 [id=gauss_seidel, return_type=double]
+│   ├── DECLARE #87
+│   │   ├── i #88
+│   │   └── integer #89
+│   ├── ASSIGN #90
+│   │   ├── 1 #91
+│   │   └── n #92
+│   ├── WHILE #93 [condition=(n <= iters)]
+│   │   ├── DO #94 [condition=((i := 1; i < s1; i++))]
+│   │   │   └── ASSIGN #95
+│   │   │       ├── drhs[i] + dsoln[i -1] + dsoln[i 1] / 2.0 #96
+│   │   │       └── dsoln[i] #97
+│   │   └── ASSIGN #98
+│   │       ├── n #99
+│   │       └── ++ #100
+│   └── RETURN #101
+│       └── FUNCTION CALL #102 [id=error_norm]
+│           ├── s1 #103
+│           └── dsoln #104
+├── FUNCTION #105 [id=interpolate, return_type=integer]
+│   ├── PROCEDURE #106 [id=coarsen, parameters=[('dfrom', 'double[]'), ('f1', 'integer'), ('dto', 'double[]'), ('t1', 'integer')]]
+│   │   ├── DECLARE #107
+│   │   │   ├── i #108
+│   │   │   └── integer #109
+│   │   ├── DECLARE #110
+│   │   │   ├── m #111
+│   │   │   └── integer #112
+│   │   ├── ASSIGN #113
+│   │   │   ├── 0.0 #114
+│   │   │   └── dto[0] #115
+│   │   ├── ASSIGN #116
+│   │   │   ├── 0.0 #117
+│   │   │   └── dto[t1] #118
+│   │   ├── ASSIGN #119
+│   │   │   ├── 0 #120
+│   │   │   └── m #121
+│   │   └── DO #122 [condition=((i := 1; i < t1; i++))]
+│   │       ├── ASSIGN #123
+│   │       │   ├── m + (2) #124
+│   │       │   └── m #125
+│   │       └── ASSIGN #126
+│   │           ├── dfrom[m] + 0.5 * dfrom[m -1] + dfrom[m 1] #127
+│   │           └── dto[i] #128
+│   ├── PROCEDURE #129 [id=refine_add, parameters=[('dfrom', 'double[]'), ('f1', 'integer'), ('dto', 'double[]'), ('t1', 'integer')]]
+│   │   ├── DECLARE #130
+│   │   │   ├── i #131
+│   │   │   └── integer #132
+│   │   ├── DECLARE #133
+│   │   │   ├── m #134
+│   │   │   └── integer #135
+│   │   ├── ASSIGN #136
+│   │   │   ├── 0 #137
+│   │   │   └── m #138
+│   │   ├── DO #139 [condition=((i := 1; i < f1; i++))]
+│   │   │   ├── ASSIGN #140
+│   │   │   │   ├── m + 2 #141
+│   │   │   │   └── m #142
+│   │   │   └── ASSIGN #143
+│   │   │       ├── dto[m] + dfrom[i] #144
+│   │   │       └── dto[m] #145
+│   │   ├── ASSIGN #146
+│   │   │   ├── -1 #147
+│   │   │   └── m #148
+│   │   └── DO #149 [condition=((i := 0; i < f1; i++))]
+│   │       ├── ASSIGN #150
+│   │       │   ├── m + 2 #151
+│   │       │   └── m #152
+│   │       └── ASSIGN #153
+│   │           ├── dto[m] + 0.5 * dfrom[i] + dfrom[i 1] #154
+│   │           └── dto[m] #155
+│   ├── IF #156 [condition=(t1 == f1 / 2)]
+│   │   └── FUNCTION CALL #157 [id=coarsen]
+│   │       ├── t1 #158
+│   │       ├── dto #159
+│   │       ├── f1 #160
+│   │       └── dfrom #161
+│   ├── ELSE IF #162 [condition=(t1 == f1 * 2)]
+│   │   └── FUNCTION CALL #163 [id=refine_add]
+│   │       ├── t1 #164
+│   │       ├── dto #165
+│   │       ├── f1 #166
+│   │       └── dfrom #167
+│   ├── ELSE #168
+│   │   ├── PRINT #169
+│   │   │   ├── "Error in routine interp: data size mismatch.\n" #170
+│   │   │   └── print_string #171
+│   │   └── RETURN #172
+│   │       └── 0 #173
+│   └── RETURN #174
+│       └── 1 #175
+└── FUNCTION #176 [id=main, return_type=integer]
+    ├── DECLARE #177
+    │   ├── rval #178
+    │   └── integer #179
+    ├── ASSIGN #180
+    │   ├── 0 #181
+    │   └── rval #182
+    ├── DECLARE #183
+    │   ├── cm1 #184
+    │   └── integer #185
+    ├── DECLARE #186
+    │   ├── fm1 #187
+    │   └── integer #188
+    ├── ASSIGN #189
+    │   ├── 1 #190
+    │   └── fm1 #191
+    ├── DECLARE #192
+    │   ├── enorm #193
+    │   └── double #194
+    ├── WHILE #195 [condition=(fm1 <= 4 || fm1 / 2 != 0)]
+    │   ├── PRINT #196
+    │   │   ├── "Number of points in the fine mesh (must be even and atleast 6) " #197
+    │   │   └── print_string #198
+    │   └── READ #199
+    │       ├── fm1 #200
+    │       └── read_integer #201
+    ├── ASSIGN #202
+    │   ├── fm1 / 2 #203
+    │   └── cm1 #204
+    ├── PRINT #205
+    │   ├── "Fine   mesh points 0:" #206
+    │   └── print_string #207
+    ├── PRINT #208
+    │   ├── fm1 #209
+    │   └── print_integer #210
+    ├── PRINT #211
+    │   ├── "\nCoarse mesh points 0:" #212
+    │   └── print_string #213
+    ├── PRINT #214
+    │   ├── cm1 #215
+    │   └── print_integer #216
+    ├── PRINT #217
+    │   ├── "\n" #218
+    │   └── print_string #219
+    ├── DECLARE #220
+    │   ├── fres[fm1 1] #221
+    │   └── double #222
+    ├── DECLARE #223
+    │   ├── frhs[fm1 1] #224
+    │   └── double #225
+    ├── DECLARE #226
+    │   ├── fm[fm1 1] #227
+    │   └── double #228
+    ├── DECLARE #229
+    │   ├── crhs[cm1 1] #230
+    │   └── double #231
+    ├── DECLARE #232
+    │   ├── cm[cm1 1] #233
+    │   └── double #234
+    ├── FUNCTION CALL #235 [id=set_constant]
+    │   ├── fm1 #236
+    │   ├── fm #237
+    │   └── 1.0 #238
+    ├── ASSIGN #239
+    │   ├── 0.0 #240
+    │   └── fm[0] #241
+    ├── ASSIGN #242
+    │   ├── 0.0 #243
+    │   └── fm[fm1] #244
+    ├── FUNCTION CALL #245 [id=print_vector]
+    │   ├── fm1 #246
+    │   ├── fm #247
+    │   └── "Initial guess" #248
+    ├── ASSIGN #249
+    │   ├── FUNCTION CALL #250 [id=error_norm]
+    │   │   ├── fm1 #251
+    │   │   └── fm #252
+    │   └── enorm #253
+    ├── PRINT #254
+    │   ├── "initial error norm := " #255
+    │   └── print_string #256
+    ├── PRINT #257
+    │   ├── enorm #258
+    │   └── print_double #259
+    ├── PRINT #260
+    │   ├── "\n" #261
+    │   └── print_string #262
+    ├── ASSIGN #263
+    │   ├── FUNCTION CALL #264 [id=gauss_seidel]
+    │   │   ├── fm1 #265
+    │   │   ├── frhs #266
+    │   │   ├── fm1 #267
+    │   │   ├── fm #268
+    │   │   └── 4 #269
+    │   └── enorm #270
+    ├── FUNCTION CALL #271 [id=print_vector]
+    │   ├── fm1 #272
+    │   ├── fm #273
+    │   └── "after first fine mesh smoothing" #274
+    ├── PRINT #275
+    │   ├── "Fine mesh error norm := " #276
+    │   └── print_string #277
+    ├── PRINT #278
+    │   ├── enorm #279
+    │   └── print_double #280
+    ├── PRINT #281
+    │   ├── "\n" #282
+    │   └── print_string #283
+    ├── FUNCTION CALL #284 [id=residuals]
+    │   ├── fm1 #285
+    │   ├── fres #286
+    │   ├── fm1 #287
+    │   ├── frhs #288
+    │   ├── fm1 #289
+    │   └── fm #290
+    ├── FUNCTION CALL #291 [id=print_vector]
+    │   ├── fm1 #292
+    │   ├── fres #293
+    │   └── "Residuals on fine mesh" #294
+    ├── IF #295 [condition=({'name': 'FUNCTION CALL', 'id': 'interpolate', 'children': [{'name': 'cm1'}, {'name': 'crhs'}, {'name': 'fm1'}, {'name': 'fres'}]} != 0)]
+    │   └── RETURN #296
+    │       └── ASSIGN #297
+    │           ├── 1 #298
+    │           └── rval #299
+    ├── ASSIGN #300
+    │   ├── FUNCTION CALL #301 [id=gauss_seidel]
+    │   │   ├── cm1 #302
+    │   │   ├── crhs #303
+    │   │   ├── cm1 #304
+    │   │   ├── cm #305
+    │   │   └── 500 #306
+    │   └── enorm #307
+    ├── FUNCTION CALL #308 [id=print_vector]
+    │   ├── cm1 #309
+    │   ├── cm #310
+    │   └── "coarse mesh correction" #311
+    ├── IF #312 [condition=({'name': 'FUNCTION CALL', 'id': 'interpolate', 'children': [{'name': 'fm1'}, {'name': 'fm'}, {'name': 'cm1'}, {'name': 'cm'}]} > 0)]
+    │   └── RETURN #313
+    │       └── 2 #314
+    ├── ASSIGN #315
+    │   ├── FUNCTION CALL #316 [id=error_norm]
+    │   │   ├── fm1 #317
+    │   │   └── fm #318
+    │   └── enorm #319
+    ├── PRINT #320
+    │   ├── "Fine mesh error norm := " #321
+    │   └── print_string #322
+    ├── PRINT #323
+    │   ├── enorm #324
+    │   └── print_double #325
+    ├── PRINT #326
+    │   ├── "\n" #327
+    │   └── print_string #328
+    ├── FUNCTION CALL #329 [id=print_vector]
+    │   ├── fm1 #330
+    │   ├── fm #331
+    │   └── "after interpolation to fine mesh" #332
+    ├── ASSIGN #333
+    │   ├── FUNCTION CALL #334 [id=gauss_seidel]
+    │   │   ├── fm1 #335
+    │   │   ├── frhs #336
+    │   │   ├── fm1 #337
+    │   │   ├── fm #338
+    │   │   └── 4 #339
+    │   └── enorm #340
+    ├── FUNCTION CALL #341 [id=print_vector]
+    │   ├── fm1 #342
+    │   ├── fm #343
+    │   └── "after second fine mesh smoothing" #344
+    ├── PRINT #345
+    │   ├── "Fine mesh error norm := " #346
+    │   └── print_string #347
+    ├── PRINT #348
+    │   ├── enorm #349
+    │   └── print_double #350
+    ├── PRINT #351
+    │   ├── "\n" #352
+    │   └── print_string #353
+    └── RETURN #354
+        └── rval #355
+====================================================================================================
