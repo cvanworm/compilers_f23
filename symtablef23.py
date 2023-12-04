@@ -1,11 +1,19 @@
 class SymbolTable:
     def __init__(self):
-        self.symbols = []
+        self.scopes = []
         self.integers = 0
         self.doubles = 0
         self.strings = 0
 
-    def add(self, scope, token, name, value='', symtype=''):
+    def new_scope(self):
+        """Adds a scope to the symbol table
+        --------
+        Adds a new list inside of the scopes array
+        to represent a new scope
+        """
+        self.scopes.append([])
+
+    def add(self, token, name, value='', symtype=''):
         """Adds a symbol to the symbol table
 
         Parameters:
@@ -17,16 +25,16 @@ class SymbolTable:
 
         """
         # create symbol instance
-        symbol = Symbol(scope, token, name, value, symtype)
+        symbol = Symbol(token, name, value, symtype)
 
         # check if symbol already exists at scope and update value
-        for sym in self.symbols:
-            if sym.scope == scope and sym.name == name:
+        for sym in self.scopes[-1]:
+            if sym.name == name:
                 sym.value = value
                 return
         
         # otherwise add it
-        self.symbols.append(symbol)
+        self.scopes[-1].append(symbol)
 
         # update counts
         if symbol.type == 'integer':
@@ -36,8 +44,8 @@ class SymbolTable:
         elif symbol.type == 'string':
             self.strings += 1
 
-    def add_array(self, scope, name, index, value):
-        symbol = self.__find_symbol(scope, name)
+    def add_array(self, name, index, value):
+        symbol = self.__find_symbol(name)
         if symbol == None:
             return None
         symbol.value[index] = value
@@ -93,17 +101,20 @@ class SymbolTable:
     def print(self):
         print('\n{:=^100}'.format("SYMBOL TABLE"))
         print("\n{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format("Scope", "Token", "Name", "Value", "Type", "Memory"))
-        for symbol in self.symbols:
-            if type(symbol.value) == list:
-                print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(symbol.scope, str(symbol.token), symbol.name, f"[]{len(symbol.value)}", symbol.type, symbol.memory))
-            else:
-                print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(symbol.scope, str(symbol.token), symbol.name, str(symbol.value), symbol.type, symbol.memory))
+        for i in range(len(self.scopes)):
+            for symbol in self.scopes[i]:
+                if type(symbol.value) == list:
+                    print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(i, str(symbol.token), symbol.name, f"[]{len(symbol.value)}", symbol.type, symbol.memory))
+                else:
+                    print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(i, str(symbol.token), symbol.name, str(symbol.value), symbol.type, symbol.memory))
+            print("-"*100)
+            
         print()
         self.__get_symbol_stats()
-        print(f"SR offset: {self.get_symbol_counts()}")
+        # print(f"SR offset: {self.get_symbol_counts()}")
         print("="*100)
 
-    def __find_symbol(self, scope, name):
+    def __find_symbol(self, name):
         """Private method to find a symbol in the symbol table
 
         Parameters:
@@ -113,8 +124,8 @@ class SymbolTable:
         Returns:
         symbol || None
         """
-        for symbol in self.symbols:
-            if symbol.scope == scope and symbol.name == name:
+        for symbol in self.scopes[-1]:
+            if symbol.name == name:
                 return symbol
         return None
     
@@ -129,8 +140,7 @@ class SymbolTable:
 
 
 class Symbol:
-    def __init__(self, scope, token, name, value='', symtype=''):
-        self.scope = scope
+    def __init__(self, token, name, value='', symtype=''):
         self.token = token
         self.name = name
         self.type = symtype
