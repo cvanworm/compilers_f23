@@ -11,7 +11,6 @@ from codegenf23 import main
 # flags
 import sys
 
-
 def p_program(p):
     'program : K_PROGRAM ID LCURLY program_body RCURLY'
     p[0] = program_node(p[2], [p[4]])
@@ -179,7 +178,7 @@ def p_assign(p):
     # err = SymbolTable.get_value('statements', p[1])
     # if err == None:
     #     sys.exit("Error: variable " + p[1] + " not declared on line " + str(p.lineno(1)))
-    
+    # TODO: HERE
     if len(p) == 7:
         SymbolTable.add_array(p[1], p[3], p[6])
         p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")

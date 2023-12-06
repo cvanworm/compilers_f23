@@ -254,7 +254,7 @@ program $two_grid_solver
         while( fm1 <= 4 || fm1 % 2 != 0 )
         {
             print_string( "Number of points in the fine mesh (must be even and atleast 6) " );
-            read_integer( fm1 );
+            fm1 := get_integer();
         }   
         cm1 := fm1 / 2;
         print_string( "Fine   mesh points 0:" );

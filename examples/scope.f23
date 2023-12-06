@@ -1,7 +1,8 @@
 program scope_test
 {
-    function integer main1()
+    function integer main2(integer i, integer j)
     {
-        double j,l;
+        integer i;
+        i := 1 + 2;
     }
 }
