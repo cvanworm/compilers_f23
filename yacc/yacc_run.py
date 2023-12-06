@@ -23,12 +23,11 @@ if len(sys.argv) > 1:
 parser = yacc.yacc(debug=True)
 
 # SymbolTable instance
-SymbolTable = symbol_table.SymbolTable()
+SymbolTable = symbol_table.SymbolTable("Parsing")
 
 s = open('tiniest.txt','r').read()
 p = parser.parse(s)
 
-# main(p, SymbolTable)
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "-s":
@@ -41,4 +40,7 @@ if len(sys.argv) > 1:
         # print(p)
         print_ast(p)
         SymbolTable.print()
+
+main(p)
+
 

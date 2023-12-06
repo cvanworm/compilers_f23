@@ -18,7 +18,7 @@ def program_node(id, children):
     return {"name": "PROGRAM", "id": id, "children": get_children(children)}
 
 
-def function_node(id, return_type, children):
+def function_node(id, parameters, return_type, children):
     """Creates and returns a function node
 
     Parameters:
@@ -33,6 +33,7 @@ def function_node(id, return_type, children):
     return {
         "name": "FUNCTION",
         "id": id,
+        "parameters": get_parameters(parameters),
         "return_type": return_type,
         "children": children,
     }

@@ -1,4 +1,4 @@
-code = mg
+code = scope
 
 all: copy parser py 
 

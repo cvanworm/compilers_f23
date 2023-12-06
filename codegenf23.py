@@ -1,5 +1,7 @@
 from genrator import assign_int, print_variable, print_sconstant
 
+import symtablef23 as symbol_table
+
 access_times = {
     "R": 1,
     "F": 2,
@@ -15,10 +17,16 @@ SI = 0
 IR = 1
 FR = 1
 
-def main(tree, symboltable):
+def main(tree):
     global file
     global SymbolTable
-    SymbolTable = symboltable
+    global full_tree
+    full_tree = tree
+    SymbolTable = symbol_table.SymbolTable("walking")
+    find_node(tree, "FUNCTION", "main")
+    # SymbolTable.print()
+
+    exit()
     file = open("yourmain.h", "w+")
     file.write("int yourmain() {\n")
     file.write(f"SR -= {SymbolTable.get_symbol_counts()};\n")
@@ -28,14 +36,46 @@ def main(tree, symboltable):
     file.write("}\n")
     file.close()
 
+
+def find_node(tree, token, name):
+    if 'children' not in tree:
+        return
+    elif tree['name'] == token and tree['id'] == name:
+        print("MAIN", tree)
+        SymbolTable.new_scope()
+        walk(tree)
+        SymbolTable.print()
+        SymbolTable.pop_scope()
+        return
+    else:
+        for child in tree['children']:
+                find_node(child, token, name)
+
 def walk(tree):
     if 'children' not in tree:
         return
     else:
         if tree['name'] == 'ASSIGN':
-            assign_code('statements', tree['children'][1]['name'])
+            print("Assign", )
+            # assign_code('statements', tree['children'][1]['name'])
+            SymbolTable.add('id', tree['children'][1]['name'], tree['children'][0]['name'])
+        elif tree['name'] == 'DECLARE':
+            print("Declare",)
+            SymbolTable.add('id', tree['children'][0]['name'], '', tree['children'][1]['name'])
+            # assign_code('statements', tree['children'][1]['name'])
         elif tree['name'] == 'PRINT':
-            print_code('statements', tree['children'][0]['name'])
+            print("Print", tree['children'][0]['name'])
+            # print_code('statements', tree['children'][0]['name'])
+        elif tree['name'] == 'FUNCTION CALL':
+            print(f"{tree['id']}()")
+            # print(full_tree)
+            # SymbolTable.new_scope()
+            # TODO: find the token type from symbol table with id
+            # replace procedure with that value
+            find_node(full_tree, "PROCEDURE", tree['id'])
+
+            
+
         else:
             for child in tree['children']:
                 walk(child)

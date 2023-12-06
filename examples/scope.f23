@@ -1,9 +1,26 @@
 program scope_test
 {
-    function integer main1()
+    procedure pri_nts()
     {
+        print_string("hello");
+        integer k := 7;
+        print_integer(k);
+    }
 
-        integer i;
-        i := pri_nt();
+    procedure fun()
+    {
+        integer w := 2;
+    }
+
+    function integer main ()
+    {
+        integer i := 5;
+        integer j := 8;
+        pri_nts();
+        integer a := 1;
+        print_integer(i);
+        fun();
+
+        return 1;
     }
 }

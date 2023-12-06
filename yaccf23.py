@@ -53,7 +53,7 @@ def p_scope(p):
 def p_function(p):
     'function : K_FUNCTION scope type ID LPAREN parameter_list RPAREN LCURLY function_statements RCURLY'
     p[9] = statements_node([p[9]])
-    p[0] = function_node(p[4], p[3], p[9])
+    p[0] = function_node(p[4], p[6], p[3], p[9])
     SymbolTable.add('function', p[1], p[4])
 
 def p_procedure(p):
@@ -195,7 +195,6 @@ def p_assign(p):
         p[0] = node("ASSIGN", p[3], p[1])
 
 def p_assign_array_string(p):
-    # TODO HERE
     'assign : ID LBRACKET math RBRACKET ASSIGN SCONSTANT'
     p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
     SymbolTable.add_array('id', p[3], p[6])
@@ -206,12 +205,15 @@ def p_assign_func_call(p):
     SymbolTable.add('id', p[1], f"{p[3]['id']}()")
 
 def p_assign_math(p):
+    # TODO HERE
     '''assign : ID ASSIGN_PLUS math
               | ID ASSIGN_MINUS math
               | ID ASSIGN_MULTIPLY math
               | ID ASSIGN_DIVIDE math
               | ID ASSIGN_MOD math'''
     p[0] = node("ASSIGN", f"{p[1]} {p[2][0]} ({p[3]})", p[1])
+    value = SymbolTable.get_value(p[1])
+    SymbolTable.add('id', p[1], f"{value} {p[2][0]} ({p[3]})")
 
 
 def p_multiple_assign(p):
@@ -230,6 +232,7 @@ def p_declare_assign(p):
 
 def p_declare_assign_array_dec(p):
     'declare_assign : declare_assign COMMA ID'
+    SymbolTable.add('id', p[3], '', p[1][1]['children'][1]['name'])
     p[0] = [p[1]] + [node("DECLARE", p[3], p[1][1]['children'][1]['name'])]
 
 
@@ -466,12 +469,11 @@ if len(sys.argv) > 1:
 parser = yacc.yacc(debug=True)
 
 # SymbolTable instance
-SymbolTable = symbol_table.SymbolTable()
+SymbolTable = symbol_table.SymbolTable("Parsing")
 
 s = open('tiniest.txt','r').read()
 p = parser.parse(s)
 
-# main(p, SymbolTable)
 
 if len(sys.argv) > 1:
     if sys.argv[1] == "-s":
@@ -484,4 +486,7 @@ if len(sys.argv) > 1:
         # print(p)
         print_ast(p)
         SymbolTable.print()
+
+main(p)
+
 

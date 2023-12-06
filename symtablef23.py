@@ -1,5 +1,6 @@
 class SymbolTable:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.scopes = []
         self.integers = 0
         self.doubles = 0
@@ -12,6 +13,14 @@ class SymbolTable:
         to represent a new scope
         """
         self.scopes.append([])
+
+    def pop_scope(self):
+        """Removes a scope from the symbol table
+        --------
+        Removes the last list inside of the scopes array
+        to represent the end of a scope
+        """
+        self.scopes.pop()
 
     def add(self, token, name, value='', symtype=''):
         """Adds a symbol to the symbol table
@@ -63,7 +72,7 @@ class SymbolTable:
             return None
         symbol.add_mem(memory)
 
-    def get_value(self, scope, name):
+    def get_value(self, name):
         """Finds a symbol in the symbol table
 
         Parameters:
@@ -74,7 +83,7 @@ class SymbolTable:
         symbol || none:Symbol if found, None otherwise
         
         """
-        symbol = self.__find_symbol(scope, name)
+        symbol = self.__find_symbol(name)
         return symbol.get_value() if symbol else None
     
     
@@ -105,7 +114,7 @@ class SymbolTable:
         return symbol.memory if symbol else None
 
     def print(self):
-        print('\n{:=^100}'.format("SYMBOL TABLE"))
+        print('\n{:=^100}'.format(f"SYMBOL TABLE {(self.name.upper())}"))
         print("\n{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format("Scope", "Token", "Name", "Value", "Type", "Memory"))
         for i in range(len(self.scopes)):
             for symbol in self.scopes[i]:

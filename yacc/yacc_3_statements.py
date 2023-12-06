@@ -112,6 +112,8 @@ def p_assign_math(p):
               | ID ASSIGN_DIVIDE math
               | ID ASSIGN_MOD math'''
     p[0] = node("ASSIGN", f"{p[1]} {p[2][0]} ({p[3]})", p[1])
+    value = SymbolTable.get_value(p[1])
+    SymbolTable.add('id', p[1], f"{value} {p[2][0]} ({p[3]})")
 
 
 def p_multiple_assign(p):
@@ -130,6 +132,7 @@ def p_declare_assign(p):
 
 def p_declare_assign_array_dec(p):
     'declare_assign : declare_assign COMMA ID'
+    SymbolTable.add('id', p[3], '', p[1][1]['children'][1]['name'])
     p[0] = [p[1]] + [node("DECLARE", p[3], p[1][1]['children'][1]['name'])]
 
 
