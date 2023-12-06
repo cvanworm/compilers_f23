@@ -43,7 +43,7 @@ def p_declare(p):
 def p_declare_array_iconstant(p):
     'declare : type ID LBRACKET ICONSTANT RBRACKET'
     p[0] = node("DECLARE", p[2], f"{p[1]}[{p[4]}]")
-    SymbolTable.add('id', p[2], "", f"{p[1]}[{p[4]}]")
+    SymbolTable.add('id', p[2], [p[4]], f"{p[1]}[{p[4]}]")
 
 def p_declare_comma_array(p):
     '''declare : type factor COMMA factor COMMA factor
@@ -78,15 +78,16 @@ def p_assign(p):
     # err = SymbolTable.get_value('statements', p[1])
     # if err == None:
     #     sys.exit("Error: variable " + p[1] + " not declared on line " + str(p.lineno(1)))
-    # TODO: HERE
+    
     if len(p) == 7:
         SymbolTable.add_array(p[1], p[3], p[6])
         p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
     elif len(p)==3:
-        # if p[2] == "++":
-            # SymbolTable.add('statements', 'id', p[1], p[1], "++")
-        # else:
-            # SymbolTable.add('statements', 'id', p[1], p[1], "++")
+        if p[2] == "++":
+            SymbolTable.add('id', p[1],"++")
+        elif p[2] == "--":
+            SymbolTable.add('id', p[1],"--")
+
         p[0] = node("ASSIGN", p[1], p[2])
         
     else:
@@ -96,12 +97,15 @@ def p_assign(p):
 def p_assign_array_string(p):
     'assign : ID LBRACKET math RBRACKET ASSIGN SCONSTANT'
     p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
+    SymbolTable.add_array('id', p[3], p[6])
 
 def p_assign_func_call(p):
     '''assign : ID ASSIGN function_call'''
     p[0] = node("ASSIGN", p[3], p[1])
+    SymbolTable.add('id', p[1], f"{p[3]['id']}()")
 
 def p_assign_math(p):
+    # TODO HERE
     '''assign : ID ASSIGN_PLUS math
               | ID ASSIGN_MINUS math
               | ID ASSIGN_MULTIPLY math

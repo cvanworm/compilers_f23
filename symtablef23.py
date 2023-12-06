@@ -30,7 +30,12 @@ class SymbolTable:
         # check if symbol already exists at scope and update value
         for sym in self.scopes[-1]:
             if sym.name == name:
-                sym.value = value
+                if symbol.value == "++":
+                    sym.value += 1
+                elif symbol.value == "--":
+                    sym.value -= 1
+                else:
+                    sym.value = value
                 return
         
         # otherwise add it
@@ -48,6 +53,7 @@ class SymbolTable:
         symbol = self.__find_symbol(name)
         if symbol == None:
             return None
+        print("arr:", symbol.value)
         symbol.value[index] = value
         print(symbol.value)
     
@@ -104,7 +110,7 @@ class SymbolTable:
         for i in range(len(self.scopes)):
             for symbol in self.scopes[i]:
                 if type(symbol.value) == list:
-                    print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(i, str(symbol.token), symbol.name, f"[]{len(symbol.value)}", symbol.type, symbol.memory))
+                    print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(i, str(symbol.token), symbol.name, f"[...]", symbol.type, symbol.memory))
                 else:
                     print("{:<16}{:<16}{:<16}{:<16}{:<16}{:<16}".format(i, str(symbol.token), symbol.name, str(symbol.value), symbol.type, symbol.memory))
             print("-"*100)

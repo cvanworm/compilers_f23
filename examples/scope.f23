@@ -2,6 +2,8 @@ program scope_test
 {
     function integer main1()
     {
-        double j,l;
+
+        integer i;
+        i := pri_nt();
     }
 }
