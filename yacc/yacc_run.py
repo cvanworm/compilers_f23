@@ -41,6 +41,6 @@ if len(sys.argv) > 1:
         print_ast(p)
         SymbolTable.print()
 
-main(p)
+main(SymbolTable, p)
 
 

@@ -1,25 +1,23 @@
 program scope_test
 {
-    procedure pri_nts()
+    procedure pri_nts(integer k, integer q)
     {
-        print_string("hello");
-        integer k := 7;
         print_integer(k);
     }
 
-    procedure fun()
+    function integer fun()
     {
         integer w := 2;
+
+        pri_nts();
     }
 
     function integer main ()
     {
         integer i := 5;
         integer j := 8;
-        pri_nts();
-        integer a := 1;
-        print_integer(i);
-        fun();
+
+        pri_nts(i, j, k);
 
         return 1;
     }

@@ -41,13 +41,13 @@ def p_function(p):
     'function : K_FUNCTION scope type ID LPAREN parameter_list RPAREN LCURLY function_statements RCURLY'
     p[9] = statements_node([p[9]])
     p[0] = function_node(p[4], p[6], p[3], p[9])
-    SymbolTable.add('function', p[1], p[4])
+    SymbolTable.add('function', p[4])
 
 def p_procedure(p):
     'procedure : K_PROCEDURE scope ID LPAREN parameter_list RPAREN LCURLY statements RCURLY'
     p[8] = statements_node(p[8])
     p[0] = procedure_node(p[3], [p[5]], p[8])
-    SymbolTable.add('procedure', p[1], p[3])
+    SymbolTable.add('procedure', p[3])
 
    
 

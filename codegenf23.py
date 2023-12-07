@@ -17,10 +17,12 @@ SI = 0
 IR = 1
 FR = 1
 
-def main(tree):
+def main(pst, tree):
     global file
     global SymbolTable
     global full_tree
+    global Parse_SymbolTable
+    Parse_SymbolTable = pst
     full_tree = tree
     SymbolTable = symbol_table.SymbolTable("walking")
     find_node(tree, "FUNCTION", "main")
@@ -42,7 +44,7 @@ def find_node(tree, token, name):
         return
     elif tree['name'] == token and tree['id'] == name:
         print("MAIN", tree)
-        SymbolTable.new_scope()
+        SymbolTable.new_scope(name)
         walk(tree)
         SymbolTable.print()
         SymbolTable.pop_scope()
@@ -68,11 +70,19 @@ def walk(tree):
             # print_code('statements', tree['children'][0]['name'])
         elif tree['name'] == 'FUNCTION CALL':
             print(f"{tree['id']}()")
-            # print(full_tree)
-            # SymbolTable.new_scope()
-            # TODO: find the token type from symbol table with id
-            # replace procedure with that value
-            find_node(full_tree, "PROCEDURE", tree['id'])
+            # Get type of function/procedure
+            token = Parse_SymbolTable.get_token(tree['id'])
+
+            # Bundle the arguments as a list of (value, memory_location)
+            args = []
+            for child in tree['children']:
+                    # TODO: get value and mem location
+                    args.append(child['name'])
+            # reverse the args
+            args.reverse()
+            print("ARGS:", args)
+            # Continue walking the tree
+            find_node(full_tree, token, tree['id'])
 
             
 
