@@ -3,6 +3,7 @@ program scope_test
     procedure pri_nts(integer k, integer q)
     {
         print_integer(k);
+        print_integer(q);
     }
 
     function integer fun()
@@ -17,7 +18,7 @@ program scope_test
         integer i := 5;
         integer j := 8;
 
-        pri_nts(i, j, k);
+        pri_nts(i, j);
 
         return 1;
     }

@@ -13,7 +13,8 @@ access_times = {
     "Function call": 100,
     # "Everything else": 1,
 }
-SI = 0
+
+SI = []
 IR = 1
 FR = 1
 
@@ -25,33 +26,41 @@ def main(pst, tree):
     Parse_SymbolTable = pst
     full_tree = tree
     SymbolTable = symbol_table.SymbolTable("walking")
-    find_node(tree, "FUNCTION", "main")
     # SymbolTable.print()
 
-    exit()
+    # exit()
     file = open("yourmain.h", "w+")
     file.write("int yourmain() {\n")
-    file.write(f"SR -= {SymbolTable.get_symbol_counts()};\n")
-    walk(tree)
-    file.write(f"SR += {SymbolTable.get_symbol_counts()};\n")
+    file.write(f"SR -= {Parse_SymbolTable.get_symbol_counts()};\n")
+    find_node(tree, "FUNCTION", "main")
+    file.write(f"SR += {Parse_SymbolTable.get_symbol_counts()};\n")
     file.write("return 0;\n")
     file.write("}\n")
     file.close()
 
 
-def find_node(tree, token, name):
+def find_node(tree, token, name, args=[]):
     if 'children' not in tree:
         return
     elif tree['name'] == token and tree['id'] == name:
-        print("MAIN", tree)
+        # print("MAIN", tree)
         SymbolTable.new_scope(name)
+        # check if token is procedure or function and has args
+        if (token == 'FUNCTION' or token == 'PROCEDURE') and len(tree['parameters'])>0:
+            parameters = tree['parameters']
+            print("PARAMETERS:", parameters)
+            print("ARGS:", args)
+            for i in range(len(args)):
+                print("Parameters:", args[i][0], args[i][1], parameters[i][0], parameters[i][1])
+                SymbolTable.add('id', parameters[i][0], args[i][0], parameters[i][1], args[i][1])
+
         walk(tree)
         SymbolTable.print()
         SymbolTable.pop_scope()
         return
     else:
         for child in tree['children']:
-                find_node(child, token, name)
+                find_node(child, token, name, args)
 
 def walk(tree):
     if 'children' not in tree:
@@ -59,15 +68,15 @@ def walk(tree):
     else:
         if tree['name'] == 'ASSIGN':
             print("Assign", )
-            # assign_code('statements', tree['children'][1]['name'])
             SymbolTable.add('id', tree['children'][1]['name'], tree['children'][0]['name'])
+            assign_code(tree['children'][1]['name'])
         elif tree['name'] == 'DECLARE':
             print("Declare",)
             SymbolTable.add('id', tree['children'][0]['name'], '', tree['children'][1]['name'])
             # assign_code('statements', tree['children'][1]['name'])
         elif tree['name'] == 'PRINT':
             print("Print", tree['children'][0]['name'])
-            # print_code('statements', tree['children'][0]['name'])
+            print_code(tree['children'][0]['name'])
         elif tree['name'] == 'FUNCTION CALL':
             print(f"{tree['id']}()")
             # Get type of function/procedure
@@ -77,12 +86,14 @@ def walk(tree):
             args = []
             for child in tree['children']:
                     # TODO: get value and mem location
-                    args.append(child['name'])
+                    value = SymbolTable.get_value(child['name'])
+                    mem = SymbolTable.get_mem(child['name'])
+                    args.append((value, mem))
             # reverse the args
             args.reverse()
             print("ARGS:", args)
             # Continue walking the tree
-            find_node(full_tree, token, tree['id'])
+            find_node(full_tree, token, tree['id'], args)
 
             
 
@@ -91,23 +102,21 @@ def walk(tree):
                 walk(child)
 
 
-def assign_code(scope, name):
-    type = SymbolTable.get_type(scope, name)
-    value = SymbolTable.get_value(scope, name)
-    print(type)
-    print(value)
-    print(name)
+def assign_code(name):
+    type = SymbolTable.get_type(name)
+    value = SymbolTable.get_value(name)
     if type == 'integer':
-        memory_location = assign_int(value, SI, IR, file)
-        # IR += 1
+        memory_location = assign_int(value, len(SI), IR, file)
+        SI.append(1)
 
-    SymbolTable.add_mem(scope, name, memory_location)
+    SymbolTable.add_mem(name, memory_location)
     
 
-def print_code(scope, name):
+def print_code(name):
     if name[0] == '"':
         print_sconstant(name, file)
     else:
-        type = SymbolTable.get_type(scope, name)
-        mem = SymbolTable.get_mem(scope, name)
+        type = SymbolTable.get_type(name)
+        mem = SymbolTable.get_mem(name)
+        print("TEST:", type, mem)
         print_variable(mem, type, file)

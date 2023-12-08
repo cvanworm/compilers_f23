@@ -27,7 +27,7 @@ class SymbolTable:
         """
         self.scopes.pop()
 
-    def add(self, token, name, value='', symtype=''):
+    def add(self, token, name, value='', symtype='', memory=''):
         """Adds a symbol to the symbol table
 
         Parameters:
@@ -39,7 +39,7 @@ class SymbolTable:
 
         """
         # create symbol instance
-        symbol = Symbol(token, name, value, symtype)
+        symbol = Symbol(token, name, value, symtype, memory)
 
         # check if symbol already exists at scope and update value
         for sym in self.scopes[-1].symbols:
@@ -71,8 +71,8 @@ class SymbolTable:
         symbol.value[index] = value
         print(symbol.value)
     
-    def add_mem(self, scope, name, memory):
-        symbol = self.__find_symbol(scope, name)
+    def add_mem(self, name, memory):
+        symbol = self.__find_symbol(name)
         if symbol == None:
             return None
         symbol.add_mem(memory)
@@ -92,7 +92,7 @@ class SymbolTable:
         return symbol.get_value() if symbol else None
     
     
-    def get_type(self, scope, name):
+    def get_type(self, name):
         """Returns the type of a symbol in the symbol table
 
         Parameters:
@@ -102,7 +102,7 @@ class SymbolTable:
         Returns:
         symbol.type || None
         """
-        symbol = self.__find_symbol(scope, name)
+        symbol = self.__find_symbol(name)
         return symbol.get_type() if symbol else None
 
     def get_token(self, name):
@@ -117,7 +117,7 @@ class SymbolTable:
         symbol = self.__find_symbol(name)
         return symbol.token.upper() if symbol else None
     
-    def get_mem(self, scope, name):
+    def get_mem(self, name):
         """Returns the memory address of a symbol in the symbol table
 
         Parameters:
@@ -127,7 +127,7 @@ class SymbolTable:
         Returns:
         symbol.memory || None
         """
-        symbol = self.__find_symbol(scope, name)
+        symbol = self.__find_symbol(name)
         return symbol.memory if symbol else None
 
     def print(self):
@@ -180,11 +180,11 @@ class Scope:
         self.symbols = []
 
 class Symbol:
-    def __init__(self, token, name, value='', symtype=''):
+    def __init__(self, token, name, value='', symtype='', memory=''):
         self.token = token
         self.name = name
         self.type = symtype
-        self.memory = ''
+        self.memory = memory
 
         if type(value) == list:
             size = int(value[0])
