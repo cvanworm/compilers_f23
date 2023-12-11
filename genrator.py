@@ -1,3 +1,15 @@
+access_times = {
+    "R": 1,
+    "F": 2,
+    "Mem": 20,
+    "int /": 19,
+    "int %": 20,
+    "double /": 38,
+    "double %": 40,
+    "Function call": 100,
+    # "Everything else": 1,
+}
+
 def assign_int(value, stack_index, ir_index, filename):
     """Prints generated code for an integer assignment to yourmain.h
 
@@ -17,6 +29,25 @@ def assign_int(value, stack_index, ir_index, filename):
     filename.write(f"F23_Time += 20 + 1;\n")
 
     return f"Mem[SR + {stack_index}]"
+
+def assign_double(value, frame_index, fr_index, filename):
+    """Prints generated code for an double assignment to yourmain.h
+
+    Parameters:
+    value (double): Value of the double
+    frame_index (int): Current index on frame register
+    fr_index (int): Current index of next empty float register
+    filename (string): Name of the file to write to
+
+    Returns:
+    memory (string): Memory address of the variable
+    """
+    filename.write(f"F[{fr_index}] = {value};\n")
+    filename.write(f"F23_Time += {access_times['F']};\n")
+    filename.write(f"FMem[FR + {frame_index}] = F[{fr_index}];\n")
+    filename.write(f"F23_Time += {access_times['Mem']} + {access_times['F']};\n")
+
+    return f"FMem[FR + {frame_index}]"
 
 
 def print_sconstant(sconstant, filename):
@@ -40,27 +71,6 @@ def print_variable(mem, type, filename):
     if type == "integer":
         filename.write(f"print_int({mem});\n")
     filename.write(f"F23_Time += 20 + 1;\n")
-
-
-def assign_float(scope, name, stack_index, fr_index, filename):
-    """Prints generated code for an float assignment to yourmain.h
-
-    Parameters:
-    scope (string): Scope of the symbol
-    name (string): Name of the symbol
-    stack_index (int): Current index on stack
-    fr_index (int): Current index of next empty float register
-    filename (string): Name of the file to write to
-
-    Returns:
-    fr_index: Current index of next empty float register
-    """
-    value = symbol_find(scope, name)
-
-    filename.write(f"F[{fr_index}] = {value}\n")
-    filename.write(f"F23_Time += 1\n")
-    filename.write(f"*(double*)Mem[SR + {stack_index}] = F[{fr_index}]\n")
-    filename.write(f"F23_Time += 20 + 1\n")
 
 
 def assign_string(scope, name):
