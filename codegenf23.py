@@ -2,6 +2,8 @@ from genrator import assign_int, print_variable, print_sconstant
 
 import symtablef23 as symbol_table
 
+import re
+
 access_times = {
     "R": 1,
     "F": 2,
@@ -67,8 +69,11 @@ def walk(tree):
         return
     else:
         if tree['name'] == 'ASSIGN':
-            print("Assign", )
-            SymbolTable.add('id', tree['children'][1]['name'], tree['children'][0]['name'])
+            print("Assign", tree['children'])
+            value = tree['children'][0]['name']
+            if not str(value).isdigit():
+                value = evaluate(value)
+            SymbolTable.add('id', tree['children'][1]['name'], value)
             assign_code(tree['children'][1]['name'])
         elif tree['name'] == 'DECLARE':
             print("Declare",)
@@ -105,10 +110,14 @@ def walk(tree):
 def assign_code(name):
     type = SymbolTable.get_type(name)
     value = SymbolTable.get_value(name)
+    mem = SymbolTable.get_mem(name)
     if type == 'integer':
-        memory_location = assign_int(value, len(SI), IR, file)
-        SI.append(1)
-
+        if not mem:
+            memory_location = assign_int(value, len(SI), IR, file)
+            SI.append(1)
+        else:
+            print("MEM:", mem)
+            memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), IR, file)
     SymbolTable.add_mem(name, memory_location)
     
 
@@ -120,3 +129,15 @@ def print_code(name):
         mem = SymbolTable.get_mem(name)
         print("TEST:", type, mem)
         print_variable(mem, type, file)
+
+def evaluate(expr):
+    letter = r'[a-zA-Z]'
+    identifier = r'(' + letter + '|\$|_)(' + letter + '|\$|_|\d){0,31}'
+    print("EXPR:", expr)
+    ids = re.search( identifier, expr)
+    while ids != None:
+        print("IDS:", ids.group())
+        value = SymbolTable.get_value(ids.group())
+        expr = expr.replace(ids.group(), str(value))
+        ids = re.search( identifier, expr)
+    return eval(expr)

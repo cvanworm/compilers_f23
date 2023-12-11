@@ -3,22 +3,25 @@ program scope_test
     procedure pri_nts(integer k, integer q)
     {
         print_integer(k);
+        print_string("\n");
         print_integer(q);
     }
 
-    function integer fun()
+    function integer fun(integer j)
     {
-        integer w := 2;
+        integer w := 10;
 
-        pri_nts();
+        //pri_nts();
     }
 
     function integer main ()
     {
-        integer i := 5;
+        integer i_k := 5;
         integer j := 8;
 
-        pri_nts(i, j);
+        i_k *= 2;
+
+        integer a := 9;
 
         return 1;
     }
