@@ -54,7 +54,8 @@ def find_node(tree, token, name, args=[]):
             print("ARGS:", args)
             for i in range(len(args)):
                 print("Parameters:", args[i][0], args[i][1], parameters[i][0], parameters[i][1])
-                SymbolTable.add('id', parameters[i][0], args[i][0], parameters[i][1], args[i][1])
+                SymbolTable.add('id', parameters[i][0], args[i][0], parameters[i][1])
+                assign_code(parameters[i][0])
 
         walk(tree)
         SymbolTable.print()

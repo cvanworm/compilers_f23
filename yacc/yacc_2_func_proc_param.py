@@ -56,10 +56,10 @@ def p_parameter(p):
                  | type ID LBRACKET RBRACKET'''
     if len(p) == 3:
         p[0] = (p[2], p[1])
-        # SymbolTable.add('parameter', p[1], p[2], '', p[1])
+        SymbolTable.add('parameter', p[2], '', p[1])
     elif len(p) == 5:
         p[0] = (p[2], f"{p[1]}[]")
-        # SymbolTable.add('parameter', f"{p[1]}[]", p[2], '', f"{p[1]}[]")
+        SymbolTable.add('parameter', p[2], '', f"{p[1]}[]")
 
 
 def p_parameter_list(p):

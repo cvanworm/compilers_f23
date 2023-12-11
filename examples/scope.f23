@@ -5,6 +5,8 @@ program scope_test
         print_integer(k);
         print_string("\n");
         print_integer(q);
+
+        integer f := 4;
     }
 
     function integer fun(integer j)
@@ -16,12 +18,12 @@ program scope_test
 
     function integer main ()
     {
-        integer i_k := 5;
-        integer j := 8;
+        integer i := 1;
+        integer j := 3;
 
-        i_k *= 2;
+        pri_nts(i,j);
 
-        integer a := 9;
+        integer f := 4;
 
         return 1;
     }
