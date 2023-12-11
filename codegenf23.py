@@ -16,9 +16,10 @@ access_times = {
     # "Everything else": 1,
 }
 
-SI = []
-IR = 1
-FR = 1
+SI = [] # Stack Register index
+FI = [] # Frame Register index
+IR = 1 # Integer Register index
+FR = 1 # Float Register index
 
 def main(pst, tree):
     global file
@@ -119,6 +120,16 @@ def assign_code(name):
         else:
             print("MEM:", mem)
             memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), IR, file)
+
+    if type == 'double':
+        if not mem:
+            memory_location = assign_double(value, len(FI), FR, file)
+            FI.append(1)
+            FI.append(1)
+        else:
+            print("MEM:", mem)
+            memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), FR, file)
+            
     SymbolTable.add_mem(name, memory_location)
     
 
