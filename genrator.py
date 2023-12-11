@@ -7,7 +7,7 @@ access_times = {
     "double /": 38,
     "double %": 40,
     "Function call": 100,
-    # "Everything else": 1,
+    "else": 1
 }
 
 def assign_int(value, stack_index, ir_index, filename):
@@ -24,9 +24,9 @@ def assign_int(value, stack_index, ir_index, filename):
     """
 
     filename.write(f"R[{ir_index}] = {value};\n")
-    filename.write(f"F23_Time += 1;\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
     filename.write(f"Mem[SR + {stack_index}] = R[{ir_index}];\n")
-    filename.write(f"F23_Time += 20 + 1;\n")
+    filename.write(f"F23_Time += {access_times['Mem']} + {access_times['R']};\n")
 
     return f"Mem[SR + {stack_index}]"
 
@@ -70,7 +70,11 @@ def print_variable(mem, type, filename):
     """
     if type == "integer":
         filename.write(f"print_int({mem});\n")
-    filename.write(f"F23_Time += 20 + 1;\n")
+        filename.write(f"F23_Time += {access_times['Mem']};\n")
+    elif type == "double":
+        filename.write(f"print_double({mem});\n")
+        filename.write(f"F23_Time += {access_times['Mem']};\n")
+    
 
 
 def assign_string(scope, name):

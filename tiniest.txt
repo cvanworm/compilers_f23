@@ -1,12 +1,8 @@
 program scope_test
 {
-    procedure pri_nts(integer k, integer q)
+    procedure pri_nts(double t)
     {
-        print_integer(k);
-        print_string("\n");
-        print_integer(q);
-
-        integer f := 4;
+        print_double(t);
     }
 
     function integer fun(integer j)
@@ -18,12 +14,10 @@ program scope_test
 
     function integer main ()
     {
-        integer i := 1;
-        integer j := 3;
-
-        pri_nts(i,j);
-
-        integer f := 4;
+        double k;
+        k := 3.3;
+        
+        pri_nts(k);
 
         return 1;
     }

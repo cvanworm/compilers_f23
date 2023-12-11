@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant
+from genrator import assign_int, print_variable, print_sconstant, assign_double
 
 import symtablef23 as symbol_table
 
@@ -23,6 +23,8 @@ def main(pst, tree):
     file = open("yourmain.h", "w+")
     file.write("int yourmain() {\n")
     file.write(f"SR -= {Parse_SymbolTable.get_symbol_counts()};\n")
+    file.write("FR = SR;\n")
+    file.write("FR += SR/2;\n")
     find_node(tree, "FUNCTION", "main")
     file.write(f"SR += {Parse_SymbolTable.get_symbol_counts()};\n")
     file.write("return 0;\n")
@@ -61,7 +63,7 @@ def walk(tree):
         if tree['name'] == 'ASSIGN':
             print("Assign", tree['children'])
             value = tree['children'][0]['name']
-            if not str(value).isdigit():
+            if type(value) == str:
                 value = evaluate(value)
             SymbolTable.add('id', tree['children'][1]['name'], value)
             assign_code(tree['children'][1]['name'])
@@ -116,7 +118,7 @@ def assign_code(name):
             FI.append(1)
         else:
             print("MEM:", mem)
-            memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), FR, file)
+            memory_location = assign_double(value, int(mem.split(" ")[2][:-1]), FR, file)
             
     SymbolTable.add_mem(name, memory_location)
     
