@@ -15,9 +15,8 @@ program scope_test
     function integer main ()
     {
 
-        double i := 12.25;
-        double k := 3.3333;
-        integer l:= 4;
+        integer arr[10];
+        //arr [4] := 3;
         
         //pri_nts(k);
 

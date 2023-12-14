@@ -75,7 +75,20 @@ def print_variable(mem, type, filename):
         filename.write(f"print_double({mem});\n")
         filename.write(f"F23_Time += {access_times['Mem']};\n")
     
+def declare_array(size, file):
+    """Prints generated code for an array declaration to yourmain.h
 
+    Parameters:
+    size (int): Size of the array
+    file (string): Name of the file to write to
+
+    Returns:
+    memory (string): Memory address range of the array
+    """
+    file.write(f"allocate_in_Mem( {size} )")
+    file.write(f"F23_Time += {access_times['else']};\n")
+
+    
 
 def assign_string(scope, name):
     """Prints generated code for an string assignment to yourmain.h
@@ -87,6 +100,9 @@ def assign_string(scope, name):
     Returns:
     """
     #I am not sure what to do here yet
+
+
+
 
 
 

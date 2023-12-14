@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant, assign_double
+from genrator import assign_int, print_variable, print_sconstant, assign_double, declare_array
 
 import symtablef23 as symbol_table
 
@@ -72,7 +72,7 @@ def walk(tree):
             SymbolTable.add('id', tree['children'][1]['name'], value)
             assign_code(tree['children'][1]['name'])
         elif tree['name'] == 'DECLARE':
-            print("Declare",)
+            print("Declare", tree['children'])
             SymbolTable.add('id', tree['children'][0]['name'], '', tree['children'][1]['name'])
             # assign_code('statements', tree['children'][1]['name'])
         elif tree['name'] == 'PRINT':
@@ -123,6 +123,9 @@ def assign_code(name):
         else:
             print("MEM:", mem)
             memory_location = assign_double(value, int(mem.split(" ")[2][:-1]), FR, file)
+
+    if type == 'array':
+        print('ARRAY')
             
     SymbolTable.add_mem(name, memory_location)
     
@@ -147,3 +150,15 @@ def evaluate(expr):
         expr = expr.replace(ids.group(), str(value))
         ids = re.search( identifier, expr)
     return eval(expr)
+
+def declare_code(name):
+    type = SymbolTable.get_type(name)
+
+    if type == 'array':
+        array_type = SymbolTable.get_array_type(name)
+        size = SymbolTable.get_size(name)
+
+        if array_type == 'double':
+            size = size*2
+
+        declare_array(size, file)
