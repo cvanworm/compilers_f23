@@ -1,17 +1,19 @@
 int yourmain() {
-SR -= 6;
+SR -= 8;
 FR = SR;
-FR += SR/2;
-F[1] = 3.3;
+FR += 8/2;
+F[1] = 12.25;
 F23_Time += 2;
 FMem[FR + 0] = F[1];
 F23_Time += 20 + 2;
-F[1] = 3.3;
+F[1] = 3.3333;
 F23_Time += 2;
 FMem[FR + 2] = F[1];
 F23_Time += 20 + 2;
-print_double(FMem[FR + 2]);
-F23_Time += 20;
-SR += 6;
+R[1] = 4;
+F23_Time += 1;
+Mem[SR + 0] = R[1];
+F23_Time += 20 + 1;
+SR += 8;
 return 0;
 }

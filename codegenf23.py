@@ -17,16 +17,20 @@ def main(pst, tree):
     Parse_SymbolTable = pst
     full_tree = tree
     SymbolTable = symbol_table.SymbolTable("walking")
+    var_count = Parse_SymbolTable.get_symbol_counts()
+    if var_count % 2 != 0:
+        var_count += 1
     # SymbolTable.print()
 
     # exit()
     file = open("yourmain.h", "w+")
     file.write("int yourmain() {\n")
-    file.write(f"SR -= {Parse_SymbolTable.get_symbol_counts()};\n")
+    file.write(f"SR -= {var_count};\n")
     file.write("FR = SR;\n")
-    file.write("FR += SR/2;\n")
+    file.write(f"FR += {var_count}/2;\n")
+               
     find_node(tree, "FUNCTION", "main")
-    file.write(f"SR += {Parse_SymbolTable.get_symbol_counts()};\n")
+    file.write(f"SR += {var_count};\n")
     file.write("return 0;\n")
     file.write("}\n")
     file.close()

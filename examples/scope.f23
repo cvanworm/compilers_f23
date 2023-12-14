@@ -1,8 +1,8 @@
 program scope_test
 {
-    procedure pri_nts(double t)
+    procedure pri_nts(integer t)
     {
-        print_double(t);
+        print_integer(t);
     }
 
     function integer fun(integer j)
@@ -14,10 +14,12 @@ program scope_test
 
     function integer main ()
     {
-        double k;
-        k := 3.3;
+
+        double i := 12.25;
+        double k := 3.3333;
+        integer l:= 4;
         
-        pri_nts(k);
+        //pri_nts(k);
 
         return 1;
     }
