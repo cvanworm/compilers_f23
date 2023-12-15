@@ -75,20 +75,44 @@ def print_variable(mem, type, filename):
         filename.write(f"print_double({mem});\n")
         filename.write(f"F23_Time += {access_times['Mem']};\n")
     
-def declare_array(size, file):
+def declare_array(name, size, file):
     """Prints generated code for an array declaration to yourmain.h
 
     Parameters:
+    name (string): Name of the array
     size (int): Size of the array
     file (string): Name of the file to write to
 
     Returns:
     memory (string): Memory address range of the array
     """
-    file.write(f"allocate_in_Mem( {size} )")
+    file.write(f"int {name} = allocate_in_Mem( {size} );\n")
     file.write(f"F23_Time += {access_times['else']};\n")
 
+def assign_array(name, type, value, loc, filename):
+    """Prints generated code for an integer assignment to yourmain.h
+
+    Parameters:
+    name (string): Name of the array
+    type (string): Type of the array
+    value (int): Value of the integer
+    loc (int): Memory address of the array
+    filename (string): Name of the file to write to
+
+    """
+    if type == "integer":
+        filename.write(f"R[1] = {value};\n")
+        filename.write(f"F23_Time += {access_times['R']};\n")
+        filename.write(f"Mem[{name}+{loc}] = R[1];\n")
+        filename.write(f"F23_Time += {access_times['Mem']} + {access_times['R']};\n")
+    else:
+        filename.write(f"F[1] = {value};\n")
+        filename.write(f"F23_Time += {access_times['F']};\n")
+        filename.write(f"FMem[{name}+{loc*2}] = F[1];\n")
+        filename.write(f"F23_Time += {access_times['Mem']} + {access_times['F']};\n")
+
     
+  
 
 def assign_string(scope, name):
     """Prints generated code for an string assignment to yourmain.h

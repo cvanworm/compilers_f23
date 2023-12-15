@@ -1,7 +1,35 @@
 int yourmain() {
-SR -= 4;
+SR -= 6;
 FR = SR;
-FR += 4/2;
-SR += 4;
+FR += 6/2;
+R[1] = 1;
+F23_Time += 1;
+Mem[SR + 0] = R[1];
+F23_Time += 20 + 1;
+R[1] = 2;
+F23_Time += 1;
+Mem[SR + 1] = R[1];
+F23_Time += 20 + 1;
+R[1] = 1;
+F23_Time += 1;
+Mem[SR + 2] = R[1];
+F23_Time += 20 + 1;
+R[1] = 2;
+F23_Time += 1;
+Mem[SR + 3] = R[1];
+F23_Time += 20 + 1;
+int array = allocate_in_Mem( 4 );
+F23_Time += 1;
+R[1] = 1;
+F23_Time += 1;
+Mem[array+0] = R[1];
+F23_Time += 20 + 1;
+R[1] = 2;
+F23_Time += 1;
+Mem[array+1] = R[1];
+F23_Time += 20 + 1;
+print_int(Mem[SR + 2]);
+F23_Time += 20;
+SR += 6;
 return 0;
 }

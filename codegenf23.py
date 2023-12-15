@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant, assign_double, declare_array
+from genrator import assign_int, print_variable, print_sconstant, assign_double, declare_array, assign_array
 
 import symtablef23 as symbol_table
 
@@ -45,12 +45,14 @@ def find_node(tree, token, name, args=[]):
         # check if token is procedure or function and has args
         if (token == 'FUNCTION' or token == 'PROCEDURE') and len(tree['parameters'])>0:
             parameters = tree['parameters']
-            print("PARAMETERS:", parameters)
-            print("ARGS:", args)
+            # print("PARAMETERS:", parameters)
+            # print("ARGS:", args)
             for i in range(len(args)):
-                print("Parameters:", args[i][0], args[i][1], parameters[i][0], parameters[i][1])
+                # print("Parameters:", args[i][0], args[i][1], parameters[i][0], parameters[i][1])
                 SymbolTable.add('id', parameters[i][0], args[i][0], parameters[i][1])
-                assign_code(parameters[i][0])
+                # print("Name:", parameters[i][0])
+                # print("Value:", args[i][0])
+                assign_code(parameters[i][0], args[i][0])
 
         walk(tree)
         SymbolTable.print()
@@ -67,14 +69,21 @@ def walk(tree):
         if tree['name'] == 'ASSIGN':
             print("Assign", tree['children'])
             value = tree['children'][0]['name']
+            name = tree['children'][1]['name']
             if type(value) == str:
                 value = evaluate(value)
-            SymbolTable.add('id', tree['children'][1]['name'], value)
-            assign_code(tree['children'][1]['name'])
+            if '[' in name:
+                name = name.split('[')
+                index = name[1][:-1]
+                #TODO: add value to symbol table
+                # SymbolTable.add_array(name[0], index, value)
+            else:
+                SymbolTable.add('id', name, value)
+            assign_code(tree['children'][1]['name'],value)
         elif tree['name'] == 'DECLARE':
             print("Declare", tree['children'])
             SymbolTable.add('id', tree['children'][0]['name'], '', tree['children'][1]['name'])
-            # assign_code('statements', tree['children'][1]['name'])
+            declare_code(tree['children'][0]['name'])
         elif tree['name'] == 'PRINT':
             print("Print", tree['children'][0]['name'])
             print_code(tree['children'][0]['name'])
@@ -103,31 +112,38 @@ def walk(tree):
                 walk(child)
 
 
-def assign_code(name):
-    type = SymbolTable.get_type(name)
-    value = SymbolTable.get_value(name)
-    mem = SymbolTable.get_mem(name)
-    if type == 'integer':
-        if not mem:
-            memory_location = assign_int(value, len(SI), IR, file)
-            SI.append(1)
-        else:
-            print("MEM:", mem)
-            memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), IR, file)
+def assign_code(name,value):
+    # print("VALUE:", value)
+    # print("NAME:", name)
+    if '[' in name:
+        name = name.split('[')
+        type = SymbolTable.get_type(name[0])
+        type = type.split('[')[0]
+        location = int(name[1][:-1])
+        # print("loc:",location)
+        assign_array(name[0], type, value, location, file)
+        # value = SymbolTable.get_value(name)
+    else:
+        type = SymbolTable.get_type(name)
+        # value = SymbolTable.get_value(name)
+        mem = SymbolTable.get_mem(name)
+        if type == 'integer':
+            if not mem:
+                memory_location = assign_int(value, len(SI), IR, file)
+                SI.append(1)
+            else:
+                print("MEM:", mem)
+                memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), IR, file)
 
-    if type == 'double':
-        if not mem:
-            memory_location = assign_double(value, len(FI), FR, file)
-            FI.append(1)
-            FI.append(1)
-        else:
-            print("MEM:", mem)
-            memory_location = assign_double(value, int(mem.split(" ")[2][:-1]), FR, file)
-
-    if type == 'array':
-        print('ARRAY')
-            
-    SymbolTable.add_mem(name, memory_location)
+        if type == 'double':
+            if not mem:
+                memory_location = assign_double(value, len(FI), FR, file)
+                FI.append(1)
+                FI.append(1)
+            else:
+                print("MEM:", mem)
+                memory_location = assign_double(value, int(mem.split(" ")[2][:-1]), FR, file)
+        SymbolTable.add_mem(name, memory_location)
     
 
 def print_code(name):
@@ -152,13 +168,19 @@ def evaluate(expr):
     return eval(expr)
 
 def declare_code(name):
-    type = SymbolTable.get_type(name)
+    arr_type = SymbolTable.get_type(name)
+    print("ARR TYPE:", arr_type)
 
-    if type == 'array':
-        array_type = SymbolTable.get_array_type(name)
-        size = SymbolTable.get_size(name)
+    if '[' in arr_type:
+        arr_type = arr_type.split('[')
+        array_type = arr_type[0]
+        
+        #TODO: check if array size is math expression
+        size = int(arr_type[1][:-1])
 
         if array_type == 'double':
             size = size*2
 
-        declare_array(size, file)
+        declare_array(name, size, file)
+        memory_location = f"Mem[{name}] - Mem[{name}+{size-1}]"
+        SymbolTable.add_mem(name, memory_location)
