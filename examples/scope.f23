@@ -6,12 +6,8 @@ program scope_test
         integer i := 9;
         integer j := 4;
         if ( i == 9 ) then {
-            print_string("i");
-            print_string("i");
+            print_string("o");
         }
-        else {
-            print_string("h");
-            print_string("h");
-        }
+
     }
 }

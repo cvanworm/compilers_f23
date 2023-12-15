@@ -1,36 +1,30 @@
 int yourmain() {
-SR -= 2;
+SR -= 10;
 FR = SR;
 FR += SR/2;
-R[1] = 9;
+R[1] = 441;
 F23_Time += 1;
 Mem[SR + 0] = R[1];
 F23_Time += 20 + 1;
-R[1] = 4;
+R[1] = 441;
 F23_Time += 1;
 Mem[SR + 1] = R[1];
 F23_Time += 20 + 1;
-R[1] =  9;
+F[1] = 661.5;
+F23_Time += 2;
+FMem[FR + 0] = F[1];
+F23_Time += 20 + 2;
+print_string("i = ");
 F23_Time += 1;
-R[2] =  9;
+print_int(Mem[SR + 1]);
+F23_Time += 20;
+print_string(", a = ");
 F23_Time += 1;
-R[3] =  R[1] == R[2];
+print_double(FMem[FR + 0]);
+F23_Time += 20;
+print_string("\n");
 F23_Time += 1;
-if (R[3] == 1) goto If;
-if (R[3] != 1) goto Else;
-If: 
-print_string("i");
+R[1] = 10;
 F23_Time += 1;
-print_string("i");
-F23_Time += 1;
-goto EndIf;
-Else: 
-print_string("h");
-F23_Time += 1;
-print_string("h");
-F23_Time += 1;
-goto EndIf;
-EndIf: 
-SR += 2;
-return 0;
-}
+Mem[SR + 2] = R[1];
+F23_Time += 20 + 1;

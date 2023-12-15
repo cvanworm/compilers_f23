@@ -11,3 +11,7 @@ from codegenf23 import main
 # flags
 import sys
 
+ifs = []
+whiles = []
+dos = []
+

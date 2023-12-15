@@ -69,13 +69,6 @@ def logic_node(name, children):
     node:Loop node
 
     """
-    # if condition == "":
-    #     return {
-    #         "name": name,
-    #         "children": get_children(children),
-    #     }
-    # else:
-    # condition = {"name": "CONDITION", "children": [condition]}
     return {
         "name": name,
         "children": get_children(children),
@@ -91,10 +84,6 @@ def statements_node(children):
     node:Statements node
 
     """
-    # return {
-    #     "name": "STATEMENTS",
-    #     "children": get_children(children),
-    # }
     return get_children(children)
 
 def find_leaves(leaves, nested):

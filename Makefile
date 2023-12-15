@@ -1,6 +1,6 @@
-code = scope
+code = fib2
 
-all: copy parser py f23 run
+all: copy parser py 
 
 copy: tiniest.txt
 	cp ./examples/${code}.f23 tiniest.txt

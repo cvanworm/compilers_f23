@@ -91,16 +91,6 @@ def walk(tree):
             print("ARGS:", args)
             # Continue walking the tree
             find_node(full_tree, token, tree['id'], args)
-        elif tree['name'] == 'CONDITION':
-            if 'children' in tree['children'][0]['children'][0]['name']:
-                # i == 9 && j == 10
-                # TODO
-                pass
-            else:
-                bool_op = tree['children'][0]['name']
-                left = SymbolTable.get_value(tree['children'][0]['children'][0]['name'])
-                right = SymbolTable.get_value(tree['children'][0]['children'][1]['name'])
-                create_condition(left, right, bool_op, file)
 
         elif tree['name'] == 'IF':
             create_goto("If", file)
@@ -116,6 +106,13 @@ def walk(tree):
 
         elif tree['name'] == 'LOGIC':
             for child in tree['children']:
+                if child['name'] == 'CONDITION':
+                    bool_op = child['children'][0]['name']
+                    left = SymbolTable.get_value(child['children'][0]['children'][0]['name'])
+                    right = SymbolTable.get_value(child['children'][0]['children'][1]['name'])
+                    if 'ELSE' not in tree['children']:
+                        create_condition(left, right, bool_op, file)
+                
                 walk(child)
             create_goto("EndIf", file)
             close_goto(file)
