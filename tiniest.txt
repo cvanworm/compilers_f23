@@ -5,7 +5,7 @@ program scope_test
         integer array[4];
         array[0] := t;
         array[1] := g;
-        print_integer(t);
+        print_integer(array[0]);
     }
 
     function integer fun(integer j)
@@ -17,10 +17,13 @@ program scope_test
 
     function integer main ()
     {
-        integer k := 1;
-        integer i := 2;
+        double arr[10];
+        arr[0] := 3.3;
+        arr[1] := 2.2;
+        print_double(arr[0]);
+        print_double(arr[1]);
 
-        pri_nts(k,i);
+
 
         return 1;
     }

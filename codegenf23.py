@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant, assign_double, declare_array, assign_array
+from genrator import assign_int, print_variable, print_sconstant, assign_double, declare_array, assign_array, print_array
 
 import symtablef23 as symbol_table
 
@@ -149,6 +149,12 @@ def assign_code(name,value):
 def print_code(name):
     if name[0] == '"':
         print_sconstant(name, file)
+    elif '[' in name:
+        name = name.split('[')
+        location = int(name[1][:-1])
+        type = SymbolTable.get_type(name[0])
+        type = type.split('[')[0]
+        print_array(name[0], type, location, file)
     else:
         type = SymbolTable.get_type(name)
         mem = SymbolTable.get_mem(name)

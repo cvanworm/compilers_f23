@@ -112,7 +112,21 @@ def assign_array(name, type, value, loc, filename):
         filename.write(f"F23_Time += {access_times['Mem']} + {access_times['F']};\n")
 
     
-  
+def print_array(name, type, location, filename):
+    """Prints generated code for a variable print statement to yourmain.h regardless of type
+
+    Parameters:
+    name (string): Name of the array
+    type (string): Type of the array
+    location (int): Memory address of the index in the array
+    filename (string): Name of the file to write to
+    """
+    if type == "integer":
+        filename.write(f"print_int(Mem[{name}+{location}]);\n")
+        filename.write(f"F23_Time += {access_times['Mem']};\n")
+    elif type == "double":
+        filename.write(f"print_double(FMem[{name}+{location*2}]);\n")
+        filename.write(f"F23_Time += {access_times['Mem']};\n")
 
 def assign_string(scope, name):
     """Prints generated code for an string assignment to yourmain.h
