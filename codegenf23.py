@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant, assign_double
+from genrator import assign_int, print_variable, print_sconstant, assign_double, create_condition, create_goto, close_goto
 
 import symtablef23 as symbol_table
 
@@ -91,8 +91,34 @@ def walk(tree):
             print("ARGS:", args)
             # Continue walking the tree
             find_node(full_tree, token, tree['id'], args)
+        elif tree['name'] == 'CONDITION':
+            if 'children' in tree['children'][0]['children'][0]['name']:
+                # i == 9 && j == 10
+                # TODO
+                pass
+            else:
+                bool_op = tree['children'][0]['name']
+                left = SymbolTable.get_value(tree['children'][0]['children'][0]['name'])
+                right = SymbolTable.get_value(tree['children'][0]['children'][1]['name'])
+                create_condition(left, right, bool_op, file)
 
-            
+        elif tree['name'] == 'IF':
+            create_goto("If", file)
+            for child in tree['children']:
+                walk(child)
+            close_goto(file, "EndIf")
+
+        elif tree['name'] == 'ELSE':
+            create_goto("Else", file)
+            for child in tree['children']:
+                walk(child)
+            close_goto(file, "EndIf")
+
+        elif tree['name'] == 'LOGIC':
+            for child in tree['children']:
+                walk(child)
+            create_goto("EndIf", file)
+            close_goto(file)
 
         else:
             for child in tree['children']:

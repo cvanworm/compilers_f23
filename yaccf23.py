@@ -379,19 +379,23 @@ def p_bool_op(p):
 
 def p_condition(p):
     '''condition : math bool_op math '''
-    p[0] = f"{p[1]} {p[2]} {p[3]}"
+    # p[0] = f"{p[1]} {p[2]} {p[3]}"
+    p[0] = node(p[2], p[1], p[3])
 
 def p_condition_func(p):
     '''condition : function_call bool_op math '''
     p[0] = f"{p[1]} {p[2]} {p[3]}"
+    # TODO
 
 def p_bool(p):
     '''bool : condition bool_op condition
             | condition'''
     if len(p) == 4:
-        p[0] = f"{p[1]} {p[2]} {p[3]}"
+        # p[0] = f"{p[1]} {p[2]} {p[3]}"
+        p[0] = {"name": "CONDITION", "children": [node(p[2], p[1], p[3])]}
     else:
-        p[0] = p[1]
+        # p[0] = p[1]
+        p[0] = {"name": "CONDITION", "children": [p[1]]}
 
 def p_while_statement(p):
     '''while : K_WHILE LPAREN bool RPAREN statement'''
@@ -416,11 +420,11 @@ def p_do_statement(p):
 
 def p_if_statements(p):
     '''if : K_IF LPAREN bool RPAREN K_THEN LCURLY statements RCURLY else_if'''
-    p[0] = [p[9]]+ [logic_node("IF", p[3], p[7])]
+    p[0] = {"name": "LOGIC", "children": [p[3]] + [logic_node("IF", p[7])] + [p[9]]}
 
 def p_if_statement(p):
     '''if : K_IF LPAREN bool RPAREN K_THEN statement else_if'''
-    p[0] = [p[7]] + [logic_node("IF", p[3], p[6])]
+    p[0] = {"name": "LOGIC", "children": [p[3]] + [logic_node("IF", p[6])] + [p[7]]}
 
 def p_else_if_statements(p):
     '''else_if : K_ELSE K_IF LPAREN bool RPAREN K_THEN LCURLY statements RCURLY else'''
@@ -436,11 +440,11 @@ def p_else_if(p):
 
 def p_else_statements(p):
     '''else : K_ELSE LCURLY statements RCURLY'''
-    p[0] = logic_node("ELSE", "", p[3])
+    p[0] = logic_node("ELSE", p[3])
 
 def p_else_statement(p):
     '''else : K_ELSE statement'''
-    p[0] = logic_node("ELSE", "", p[2])
+    p[0] = logic_node("ELSE", p[2])
 
 def p_else_empty(p):
     '''else : epsilon'''

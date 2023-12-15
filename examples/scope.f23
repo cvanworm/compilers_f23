@@ -1,24 +1,17 @@
 program scope_test
 {
-    procedure pri_nts(double t)
-    {
-        print_double(t);
-    }
-
-    function integer fun(integer j)
-    {
-        integer w := 10;
-
-        //pri_nts();
-    }
 
     function integer main ()
     {
-        double k;
-        k := 3.3;
-        
-        pri_nts(k);
-
-        return 1;
+        integer i := 9;
+        integer j := 4;
+        if ( i == 9 ) then {
+            print_string("i");
+            print_string("i");
+        }
+        else {
+            print_string("h");
+            print_string("h");
+        }
     }
 }
