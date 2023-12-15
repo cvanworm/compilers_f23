@@ -1,21 +1,17 @@
 int yourmain() {
-SR -= 4;
+SR -= 6;
 FR = SR;
-FR += 4/2;
-int arr = allocate_in_Mem( 20 );
+FR += 6/2;
+int arr = allocate_in_Mem( 10 );
 F23_Time += 1;
-F[1] = 3.3;
-F23_Time += 2;
-FMem[arr+0] = F[1];
-F23_Time += 20 + 2;
-F[1] = 2.2;
-F23_Time += 2;
-FMem[arr+2] = F[1];
-F23_Time += 20 + 2;
-print_double(FMem[arr+0]);
-F23_Time += 20;
-print_double(FMem[arr+2]);
-F23_Time += 20;
-SR += 4;
+R[1] = 0;
+F23_Time += 1;
+Mem[SR + 0] = R[1];
+F23_Time += 20 + 1;
+R[1] = 5;
+F23_Time += 1;
+Mem[arr+None] = R[1];
+F23_Time += 20 + 1;
+SR += 6;
 return 0;
 }

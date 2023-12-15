@@ -119,7 +119,8 @@ def assign_code(name,value):
         name = name.split('[')
         type = SymbolTable.get_type(name[0])
         type = type.split('[')[0]
-        location = int(name[1][:-1])
+        location = name[1][:-1]
+        location = SymbolTable.get_value(location)
         # print("loc:",location)
         assign_array(name[0], type, value, location, file)
         # value = SymbolTable.get_value(name)
@@ -151,7 +152,8 @@ def print_code(name):
         print_sconstant(name, file)
     elif '[' in name:
         name = name.split('[')
-        location = int(name[1][:-1])
+        location = name[1][:-1]
+        location = SymbolTable.get_value(location)
         type = SymbolTable.get_type(name[0])
         type = type.split('[')[0]
         print_array(name[0], type, location, file)

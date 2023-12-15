@@ -17,11 +17,9 @@ program scope_test
 
     function integer main ()
     {
-        double arr[10];
-        arr[0] := 3.3;
-        arr[1] := 2.2;
-        print_double(arr[0]);
-        print_double(arr[1]);
+        integer arr[10];
+        integer i := 0;
+        arr[0] := 5;
 
 
 
