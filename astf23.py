@@ -57,7 +57,7 @@ def procedure_node(id, parameters, children):
         "children": children,
     }
 
-def logic_node(name, condition, children):
+def logic_node(name, children):
     """Creates and returns a loop node
 
     Parameters:
@@ -69,17 +69,10 @@ def logic_node(name, condition, children):
     node:Loop node
 
     """
-    if condition == "":
-        return {
-            "name": name,
-            "children": get_children(children),
-        }
-    else:
-        return {
-            "name": name,
-            "condition": f"({condition})",
-            "children": get_children(children),
-        }
+    return {
+        "name": name,
+        "children": get_children(children),
+    }
 
 def statements_node(children):
     """Creates and returns a statements node, reformats children
@@ -91,10 +84,6 @@ def statements_node(children):
     node:Statements node
 
     """
-    # return {
-    #     "name": "STATEMENTS",
-    #     "children": get_children(children),
-    # }
     return get_children(children)
 
 def find_leaves(leaves, nested):

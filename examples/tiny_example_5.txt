@@ -1,8 +1,11 @@
-program tiny_example_3
+program tiny_example_5
 {
-    procedure pr_int( integer i )
+    function integer main( )
     {
-        string title;
-        title := "Hello";
+        integer i := 43;
+        if ( i == 4) then
+            print_string("hi");
+        else
+            print_string("bye");
     }
 }

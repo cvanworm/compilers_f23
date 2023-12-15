@@ -138,6 +138,29 @@ def assign_string(scope, name):
     Returns:
     """
     #I am not sure what to do here yet
+    pass
+
+def create_condition(left, right, bool_op, filename, else_goto='EndIf'):
+    """Prints generated code for a condition to yourmain.h
+
+    Parameters:
+    """
+    filename.write(f"R[1] =  {left};\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
+    filename.write(f"R[2] =  {right};\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
+    filename.write(f"R[3] = R[1] {bool_op} R[2];\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
+    filename.write(f"if (R[3] == 1) goto If;\n")
+    filename.write(f"if (R[3] != 1) goto {else_goto};\n")
+
+def create_goto(name, filename):
+    filename.write(f"{name}: \n")
+
+def close_goto(filename, end=""):
+    if end != "":
+        filename.write(f"goto {end};\n")
+
 
 
 

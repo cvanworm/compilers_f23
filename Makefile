@@ -14,7 +14,7 @@ parser: ./yacc/*.py
 
 
 py: yaccf23.py
-	python3 yaccf23.py -all 
+	python3 yaccf23.py -all
 
 # py: yaccf23.py
 # 	python3 yaccf23.py -all > results.txt

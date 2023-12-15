@@ -3,8 +3,10 @@ program scope_test
     procedure pri_nts(integer t, integer g)
     {
         integer array[4];
+        integer l := 2;
         array[0] := t;
         array[1] := g;
+        array[l] := 6;
         print_integer(array[0]);
     }
 
@@ -17,11 +19,10 @@ program scope_test
 
     function integer main ()
     {
-        integer arr[10];
-        integer i := 0;
-        arr[0] := 5;
-
-
+        integer k := 3;
+        integer i := 5;
+        
+        pri_nts(k, i);
 
         return 1;
     }

@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant, assign_double, declare_array, assign_array, print_array
+from genrator import assign_int, print_variable, print_sconstant, assign_double, create_condition, create_goto, close_goto, declare_array, assign_array, print_array
 
 import symtablef23 as symbol_table
 
@@ -69,9 +69,8 @@ def walk(tree):
         if tree['name'] == 'ASSIGN':
             print("Assign", tree['children'])
             value = tree['children'][0]['name']
+            value = SymbolTable.get_value(value)
             name = tree['children'][1]['name']
-            if type(value) == str:
-                value = evaluate(value)
             if '[' in name:
                 name = name.split('[')
                 index = name[1][:-1]
@@ -105,7 +104,32 @@ def walk(tree):
             # Continue walking the tree
             find_node(full_tree, token, tree['id'], args)
 
-            
+        elif 'IF' in tree['name'] and 'ELSE' not in tree['name'] and 'CONDITION' not in tree['name']:
+            create_goto("If", file)
+            for child in tree['children']:
+                walk(child)
+            close_goto(file, "EndIf")
+
+        elif 'ELSE' in tree['name']:
+            create_goto("Else", file)
+            for child in tree['children']:
+                walk(child)
+            close_goto(file, "EndIf")
+
+        elif 'LOGIC' in tree['name']:
+            for child in tree['children']:
+                if 'CONDITION' in child['name']:
+                    bool_op = child['children'][0]['name']
+                    left = SymbolTable.get_value(child['children'][0]['children'][0]['name'])
+                    right = SymbolTable.get_value(child['children'][0]['children'][1]['name'])
+                    if len(tree['children']) <= 2:
+                        create_condition(left, right, bool_op, file)
+                    else:
+                        create_condition(left, right, bool_op, file, "Else")
+                
+                walk(child)
+            create_goto("EndIf", file)
+            close_goto(file)
 
         else:
             for child in tree['children']:
@@ -163,17 +187,17 @@ def print_code(name):
         print("TEST:", type, mem)
         print_variable(mem, type, file)
 
-def evaluate(expr):
-    letter = r'[a-zA-Z]'
-    identifier = r'(' + letter + '|\$|_)(' + letter + '|\$|_|\d){0,31}'
-    print("EXPR:", expr)
-    ids = re.search( identifier, expr)
-    while ids != None:
-        print("IDS:", ids.group())
-        value = SymbolTable.get_value(ids.group())
-        expr = expr.replace(ids.group(), str(value))
-        ids = re.search( identifier, expr)
-    return eval(expr)
+# def evaluate(expr):
+#     letter = r'[a-zA-Z]'
+#     identifier = r'(' + letter + '|\$|_)(' + letter + '|\$|_|\d){0,31}'
+#     print("EXPR:", expr)
+#     ids = re.search( identifier, expr)
+#     while ids != None:
+#         print("IDS:", ids.group())
+#         value = SymbolTable.get_value(ids.group())
+#         expr = expr.replace(ids.group(), str(value))
+#         ids = re.search( identifier, expr)
+#     return eval(expr)
 
 def declare_code(name):
     arr_type = SymbolTable.get_type(name)

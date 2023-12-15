@@ -80,7 +80,7 @@ def p_assign(p):
     #     sys.exit("Error: variable " + p[1] + " not declared on line " + str(p.lineno(1)))
     
     if len(p) == 7:
-        SymbolTable.add_array(p[1], p[3], p[6])
+        # SymbolTable.add_array(p[1], p[3], p[6])
         p[0] = node("ASSIGN", p[6], f"{p[1]}[{p[3]}]")
     elif len(p)==3:
         if p[2] == "++":

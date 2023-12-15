@@ -1,0 +1,67 @@
+// ----------------------------------------------------------------------------
+//
+// Written by: Alicia Thoney and Calvin VanWormer
+//
+// ----------------------------------------------------------------------------
+program $medium_1
+{
+
+    procedure tiny_example_4(integer i)
+    {
+        double a;
+        a := ( 3 * i ) / 2.0d0;     //shows math
+        print_string( "i = " );
+        print_integer( i );
+        print_string( ", a = " );
+        print_double( a );
+        print_string( "\n" );
+    }
+
+    function integer fib(integer n)
+    {
+        integer num1 := 0;
+        integer num2 := 1;
+        integer next_num := num2;
+        integer count := 1;
+
+        while ( count < n )     //shows while loops
+        {
+            print_integer( next_num );
+            num1 := num2;
+            num2 := next_num;
+            next_num := num1 + num2;
+            count++;
+        }
+        return num2;
+    }
+
+    function
+    integer main()
+    {
+        integer i := 441;
+        tiny_example_4(i);  //shows argument passing
+
+        integer n := 10;  
+
+        integer arr[5];
+        arr[0] := 1;
+        arr[1] := 2;
+        arr[2] := 3;
+        arr[3] := 4;
+        arr[4] := 5;
+        do ( i := 0; i <= s1; i++ )
+        {
+            print_integer(arr[i]);
+        }
+
+        if (arr[2] == 6) then
+            print_string("Arr at index 2 is 6");
+        else if (arr[2] == 3) then
+            print_string("Arr at index 2 is 3");
+        else
+            print_string("Arr at index 2 is not 6");
+
+        return 0;
+
+    } // of main
+} // of $medium_1

@@ -88,6 +88,8 @@ class SymbolTable:
         symbol || none:Symbol if found, None otherwise
         
         """
+        if type(name) == int or type(name) == float or str(name).isdigit():
+            return name
         symbol = self.__find_symbol(name)
         return symbol.get_value() if symbol else None
     
