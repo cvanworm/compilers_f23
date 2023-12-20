@@ -20,7 +20,7 @@ Our code generator (`codegenf23.py`) generates code for the program. It walks th
 Our class language, individual examples, and tiny examples can be found in the examples folder.
 
 ## `mg.f23` Parse Tree
-Our parse tree generated for `mg.f23` can be found in `./results/results.txt`
+Our parse tree generated for `mg.f23` can be found in `./results/results.txt`*more info on what works
 
 ## How to run
 - `$ make ` to compile and run `scope.f23` (a smaller example of the class language that we can generate code for)
@@ -35,3 +35,13 @@ This program uses ply and bigtree. Ply is the Python yacc and lex library. Bigtr
 ### Authors
 - Calvin VanWormer
 - Alicia Thoney
+
+### * What works
+Our compiler can lex and parse the entire language. Our generator can generate code for the following items:
+- variable declarations/assignments/accessing
+- array declarations/assignments/accessing
+- function/procedure calls
+- while loops
+- if and if/else statements
+- do loops
+- printing variables/constants
