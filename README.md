@@ -23,8 +23,7 @@ Our class language, individual examples, and tiny examples can be found in the e
 Our parse tree generated for `mg.f23` can be found in `./results/results.txt`
 
 ## How to run
-- `$ make ` to compile and run `mg.f23`
-- `$ make code=<last_name> ` to compile and run on `thoney.f23` or `vanwormer.f23`
+- `$ make ` to compile and run `scope.f23` (a smaller example of the class language that we can generate code for)
 - `$ make clean ` to remove extra files.
 
 ## Technologies

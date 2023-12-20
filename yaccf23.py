@@ -192,7 +192,7 @@ def p_assign(p):
         elif p[2] == "--":
             SymbolTable.add('id', p[1],"--")
 
-        p[0] = node("ASSIGN", p[1], p[2])
+        p[0] = node("ASSIGN", p[2], p[1])
         
     else:
         SymbolTable.add('id', p[1], p[3])
@@ -383,8 +383,7 @@ def p_bool_op(p):
 
 def p_condition(p):
     '''condition : math bool_op math '''
-    # p[0] = f"{p[1]} {p[2]} {p[3]}"
-    p[0] = node(p[2], p[1], p[3])
+    p[0] = node(p[2], p[3], p[1])
 
 def p_condition_func(p):
     '''condition : function_call bool_op math '''
@@ -397,7 +396,7 @@ def p_bool(p):
             | condition'''
     if len(p) == 4:
         # p[0] = f"{p[1]} {p[2]} {p[3]}"
-        p[0] = {"name": "CONDITION", "children": [node(p[2], p[1], p[3])]}
+        p[0] = {"name": "CONDITION", "children": [node(p[2], p[3], p[1])]}
     else:
         # p[0] = p[1]
         p[0] = {"name": "CONDITION", "children": [p[1]]}

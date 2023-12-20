@@ -1,27 +1,24 @@
 program scope_test
 {
-    procedure pri_nts(integer t, integer g)
+    procedure pri_nts(integer t)
     {
         integer array[4];
         integer l := 2;
         array[0] := t;
+        print_integer(t);
+        print_string("\n");
 
         array[1] := g;
         array[l] := 6;
         print_integer(array[0]);
         print_string("\n");
-        print_integer(array[1]);
-        print_string("\n");
-        print_integer(array[l]);
-
-        print_string("\n");
     }
 
-    procedure fun(integer j, integer k)
+    procedure fun(double j, double k)
     {
-        print_integer(j);
+        print_double(j);
         print_string("\n");
-        print_integer(k);
+        print_double(k);
         print_string("\n");
 
 
@@ -33,7 +30,7 @@ program scope_test
         integer k := 5;
         integer i := 0;
 
-        pri_nts(k, i);
+        pri_nts(k);
         
         while (i < k) {
             print_integer(i);
@@ -41,8 +38,8 @@ program scope_test
             i++;
         }
 
-        integer a := 9;
-        integer c := 19;
+        double a := 9.0;
+        double c := 19.0;
         fun(a,c);
 
         if (a < c) then {
@@ -50,16 +47,5 @@ program scope_test
         } else {
             print_string("c is smaller or the same.");
         }
-
-        print_string("\n");
-
-
-        integer j;
-        integer w := 10;
-        do ( j := 0; j <= w; j++ )
-        {
-            print_integer( j );
-            print_string( " " );
-        }   
     }
 }

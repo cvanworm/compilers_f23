@@ -88,7 +88,7 @@ def p_assign(p):
         elif p[2] == "--":
             SymbolTable.add('id', p[1],"--")
 
-        p[0] = node("ASSIGN", p[1], p[2])
+        p[0] = node("ASSIGN", p[2], p[1])
         
     else:
         SymbolTable.add('id', p[1], p[3])

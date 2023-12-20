@@ -1,4 +1,4 @@
-from genrator import assign_int, print_variable, print_sconstant, assign_double, create_condition, create_goto, close_goto, declare_array, assign_array, print_array
+from genrator import assign_int, print_variable, print_sconstant, assign_double, create_condition, create_goto, close_goto, declare_array, assign_array, print_array, create_condition_while
 
 import symtablef23 as symbol_table
 
@@ -27,7 +27,7 @@ def main(pst, tree):
     file.write("int yourmain() {\n")
     file.write(f"SR -= {var_count};\n")
     file.write("FR = SR;\n")
-    file.write(f"FR += {var_count}/2;\n")
+    file.write(f"FR -= {var_count}/2;\n")
                
     find_node(tree, "FUNCTION", "main")
     file.write(f"SR += {var_count};\n")
@@ -69,16 +69,23 @@ def walk(tree):
         if tree['name'] == 'ASSIGN':
             print("Assign", tree['children'])
             value = tree['children'][0]['name']
+            print("VALUE", value)
             value = SymbolTable.get_value(value)
+            print("VALUE", value)
             name = tree['children'][1]['name']
+            print("NAME", name)
             if '[' in name:
                 name = name.split('[')
                 index = name[1][:-1]
+                assign_code(tree['children'][1]['name'],value)
                 #TODO: add value to symbol table
                 # SymbolTable.add_array(name[0], index, value)
             else:
                 SymbolTable.add('id', name, value)
-            assign_code(tree['children'][1]['name'],value)
+                if value == "++" or value == "--":
+                    assign_code(tree['children'][1]['name'],value, value)
+                else:
+                    assign_code(tree['children'][1]['name'],value)
         elif tree['name'] == 'DECLARE':
             print("Declare", tree['children'])
             SymbolTable.add('id', tree['children'][0]['name'], '', tree['children'][1]['name'])
@@ -90,7 +97,6 @@ def walk(tree):
             print(f"{tree['id']}()")
             # Get type of function/procedure
             token = Parse_SymbolTable.get_token(tree['id'])
-
             # Bundle the arguments as a list of (value, memory_location)
             args = []
             for child in tree['children']:
@@ -117,11 +123,12 @@ def walk(tree):
             close_goto(file, "EndIf")
 
         elif 'LOGIC' in tree['name']:
+            SymbolTable.new_scope("LOGIC")
             for child in tree['children']:
                 if 'CONDITION' in child['name']:
                     bool_op = child['children'][0]['name']
-                    left = SymbolTable.get_value(child['children'][0]['children'][0]['name'])
-                    right = SymbolTable.get_value(child['children'][0]['children'][1]['name'])
+                    left = SymbolTable.get_value(child['children'][0]['children'][1]['name'])
+                    right = SymbolTable.get_value(child['children'][0]['children'][0]['name'])
                     if len(tree['children']) <= 2:
                         create_condition(left, right, bool_op, file)
                     else:
@@ -130,13 +137,53 @@ def walk(tree):
                 walk(child)
             create_goto("EndIf", file)
             close_goto(file)
+            SymbolTable.print()
+            SymbolTable.pop_scope()
+
+        elif "WHILE" in tree['name']:
+            create_goto("While", file)
+            for child in tree['children']:
+                if 'CONDITION' in child['name']:
+                    bool_op = child['children'][0]['name']
+                    left = SymbolTable.get_mem(child['children'][0]['children'][1]['name'])
+                    right = SymbolTable.get_mem(child['children'][0]['children'][0]['name'])
+                    create_condition_while(left, right, bool_op, file)
+                
+                walk(child)
+            close_goto(file, "While")
+            create_goto("EndWhile", file)
+
+        elif "DO" in tree['name']:
+            print("TREE", tree['children'][0]['children'])
+            change_variable = ''
+            change_by = ''
+            for child in tree['children'][0]['children']:
+                if 'CONDITION' in child['name']:
+                    create_goto("Do", file)
+
+                    bool_op = child['children'][0]['name']
+                    left = SymbolTable.get_mem(child['children'][0]['children'][1]['name'])
+                    right = SymbolTable.get_mem(child['children'][0]['children'][0]['name'])
+                    create_condition_while(left, right, bool_op, file, 'EndDo')
+                if 'CHANGE' in child['name']:
+                    change_variable = child['children'][1]['name']
+                    change_by = child['children'][0]['name']
+                    # assign_code(child['children'][1]['name'], SymbolTable.get_value(child['children'][1]['name']), child['children'][0]['name'])
+
+                walk(child)
+            for child in tree['children'][1:]:
+                walk(child)
+            assign_code(change_variable, SymbolTable.get_value(change_variable), change_by)
+            close_goto(file, "Do")
+            create_goto("EndDo", file)
+
 
         else:
             for child in tree['children']:
                 walk(child)
 
 
-def assign_code(name,value):
+def assign_code(name,value, inc_dec=None):
     # print("VALUE:", value)
     # print("NAME:", name)
     if '[' in name:
@@ -151,14 +198,17 @@ def assign_code(name,value):
     else:
         type = SymbolTable.get_type(name)
         # value = SymbolTable.get_value(name)
+        print("type", type)
         mem = SymbolTable.get_mem(name)
+
         if type == 'integer':
             if not mem:
-                memory_location = assign_int(value, len(SI), IR, file)
+                memory_location = assign_int(value, len(SI), IR, file, inc_dec)
+                print("HERE", memory_location)
                 SI.append(1)
             else:
                 print("MEM:", mem)
-                memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), IR, file)
+                memory_location = assign_int(value, int(mem.split(" ")[2][:-1]), IR, file, inc_dec)
 
         if type == 'double':
             if not mem:
@@ -186,18 +236,6 @@ def print_code(name):
         mem = SymbolTable.get_mem(name)
         print("TEST:", type, mem)
         print_variable(mem, type, file)
-
-# def evaluate(expr):
-#     letter = r'[a-zA-Z]'
-#     identifier = r'(' + letter + '|\$|_)(' + letter + '|\$|_|\d){0,31}'
-#     print("EXPR:", expr)
-#     ids = re.search( identifier, expr)
-#     while ids != None:
-#         print("IDS:", ids.group())
-#         value = SymbolTable.get_value(ids.group())
-#         expr = expr.replace(ids.group(), str(value))
-#         ids = re.search( identifier, expr)
-#     return eval(expr)
 
 def declare_code(name):
     arr_type = SymbolTable.get_type(name)

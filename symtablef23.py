@@ -44,15 +44,30 @@ class SymbolTable:
         # check if symbol already exists at scope and update value
         for sym in self.scopes[-1].symbols:
             if sym.name == name:
-                if symbol.value == "++":
+                if value == "++":
                     sym.value += 1
-                elif symbol.value == "--":
+                elif value == "--":
                     sym.value -= 1
                 else:
                     sym.value = value
+                
+                self.print()
                 return
+            
+        # check if symbol exists in a parent scope
+        parent_symbol = self.__find_symbol(name)
+        if parent_symbol != None:
+            if value == "++":
+                symbol.value = parent_symbol.value + 1
+            elif value == "--":
+                symbol.value = parent_symbol - 1
+            else:
+                symbol.value = value
+            symbol.token = parent_symbol.token
+            symbol.type = parent_symbol.type
+            symbol.memory = parent_symbol.memory
         
-        # otherwise add it
+        # add it
         self.scopes[-1].symbols.append(symbol)
 
         # update counts
@@ -88,7 +103,7 @@ class SymbolTable:
         symbol || none:Symbol if found, None otherwise
         
         """
-        if type(name) == int or type(name) == float or str(name).isdigit():
+        if type(name) == int or type(name) == float or str(name).isdigit() or name == "++" or name == "--":
             return name
         symbol = self.__find_symbol(name)
         return symbol.get_value() if symbol else None

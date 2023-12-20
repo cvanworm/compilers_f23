@@ -10,7 +10,7 @@ access_times = {
     "else": 1
 }
 
-def assign_int(value, stack_index, ir_index, filename):
+def assign_int(value, stack_index, ir_index, filename, inc_dec=False):
     """Prints generated code for an integer assignment to yourmain.h
 
     Parameters:
@@ -22,11 +22,19 @@ def assign_int(value, stack_index, ir_index, filename):
     Returns:
     memory (string): Memory address of the variable
     """
-
-    filename.write(f"R[{ir_index}] = {value};\n")
-    filename.write(f"F23_Time += {access_times['R']};\n")
-    filename.write(f"Mem[SR + {stack_index}] = R[{ir_index}];\n")
-    filename.write(f"F23_Time += {access_times['Mem']} + {access_times['R']};\n")
+    if inc_dec:
+        filename.write(f"R[{ir_index}] = 1;\n")
+        filename.write(f"F23_Time += {access_times['R']};\n")
+        if inc_dec == "++":
+            filename.write(f"Mem[SR + {stack_index}] += R[{ir_index}];\n")
+        else:
+            filename.write(f"Mem[SR + {stack_index}] -= R[{ir_index}];\n")
+        filename.write(f"F23_Time += {access_times['Mem']} + {access_times['R']};\n")
+    else:
+        filename.write(f"R[{ir_index}] = {value};\n")
+        filename.write(f"F23_Time += {access_times['R']};\n")
+        filename.write(f"Mem[SR + {stack_index}] = R[{ir_index}];\n")
+        filename.write(f"F23_Time += {access_times['Mem']} + {access_times['R']};\n")
 
     return f"Mem[SR + {stack_index}]"
 
@@ -69,7 +77,7 @@ def print_variable(mem, type, filename):
     filename (string): Name of the file to write to
     """
     if type == "integer":
-        filename.write(f"print_int({mem});\n")
+        filename.write(f"print_integer({mem});\n")
         filename.write(f"F23_Time += {access_times['Mem']};\n")
     elif type == "double":
         filename.write(f"print_double({mem});\n")
@@ -122,7 +130,7 @@ def print_array(name, type, location, filename):
     filename (string): Name of the file to write to
     """
     if type == "integer":
-        filename.write(f"print_int(Mem[{name}+{location}]);\n")
+        filename.write(f"print_integer(Mem[{name}+{location}]);\n")
         filename.write(f"F23_Time += {access_times['Mem']};\n")
     elif type == "double":
         filename.write(f"print_double(FMem[{name}+{location*2}]);\n")
@@ -152,6 +160,19 @@ def create_condition(left, right, bool_op, filename, else_goto='EndIf'):
     filename.write(f"R[3] = R[1] {bool_op} R[2];\n")
     filename.write(f"F23_Time += {access_times['R']};\n")
     filename.write(f"if (R[3] == 1) goto If;\n")
+    filename.write(f"if (R[3] != 1) goto {else_goto};\n")
+
+def create_condition_while(left, right, bool_op, filename, else_goto='EndWhile'):
+    """Prints generated code for a condition to yourmain.h
+
+    Parameters:
+    """
+    filename.write(f"R[1] =  {left};\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
+    filename.write(f"R[2] =  {right};\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
+    filename.write(f"R[3] = R[1] {bool_op} R[2];\n")
+    filename.write(f"F23_Time += {access_times['R']};\n")
     filename.write(f"if (R[3] != 1) goto {else_goto};\n")
 
 def create_goto(name, filename):

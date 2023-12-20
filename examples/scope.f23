@@ -5,25 +5,61 @@ program scope_test
         integer array[4];
         integer l := 2;
         array[0] := t;
+
         array[1] := g;
         array[l] := 6;
         print_integer(array[0]);
+        print_string("\n");
+        print_integer(array[1]);
+        print_string("\n");
+        print_integer(array[l]);
+
+        print_string("\n");
     }
 
-    function integer fun(integer j)
+    procedure fun(integer j, integer k)
     {
-        integer w := 10;
+        print_integer(j);
+        print_string("\n");
+        print_integer(k);
+        print_string("\n");
 
-        //pri_nts();
+
     }
 
     function integer main ()
     {
-        integer k := 3;
-        integer i := 5;
-        
-        pri_nts(k, i);
 
-        return 1;
+        integer k := 5;
+        integer i := 0;
+
+        pri_nts(k, i);
+        
+        while (i < k) {
+            print_integer(i);
+            print_string("\n");
+            i++;
+        }
+
+        integer a := 9;
+        integer c := 19;
+        fun(a,c);
+
+        if (a < c) then {
+            print_string("a is smaller or the same");
+        } else {
+            print_string("c is smaller or the same.");
+        }
+
+        print_string("\n");
+
+
+        integer j;
+        integer w := 10;
+        do ( j := 0; j <= w; j++ )
+        {
+            print_integer( j );
+            print_string( " " );
+        }   
     }
 }
